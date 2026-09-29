@@ -29,7 +29,7 @@
 
 ## 当前源码验证范围
 
-在 macOS arm64、Node 22.23.1、pnpm 11.7.0 上，从本仓库候选源码安装依赖后，`pc/` 的 `pnpm run qianshou:build` 已通过；PC 与广州研究链路的定向测试为 9/9 通过。`website/` 的 `npm run build:check` 已通过。广州的定向测试通过，但全仓构建仍有未解决的生成类型与管理台测试接口错误，范围与复现命令见 [`guangzhou/TESTING.md`](guangzhou/TESTING.md)。上海 V8 的 P0 离线安全测试 75 项通过，但完整测试仍有失败，详见 [`shanghai-v8/TESTING.md`](shanghai-v8/TESTING.md)。以上均不是 Windows 原生安装、现网应用部署或正式收费链路的验收。
+在 macOS arm64、Node 22.23.1、pnpm 11.7.0 上，从本仓库候选源码安装依赖后，`pc/` 的 `pnpm run qianshou:build` 已通过；PC 与广州研究链路的定向测试为 9/9 通过。`website/` 的 `npm run build:check` 已通过。广州的定向测试通过，但全仓构建仍有未解决的生成类型与管理台测试接口错误，范围与复现命令见 [`guangzhou/TESTING.md`](guangzhou/TESTING.md)。上海 V8 的 P0 离线安全测试 75 项通过，但完整测试仍有失败，详见 [`shanghai-v8/TESTING.md`](shanghai-v8/TESTING.md)。2026 年 9 月 30 日，上海现网完成两次受哈希保护的安全更新，服务健康回执与有限的节点重连回执见上海测试说明。这些证据尚不等于 Windows 原生安装、跨机媒体生产或正式收费链路的验收。
 
 ## 源码、许可与贡献
 

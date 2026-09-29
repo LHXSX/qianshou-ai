@@ -66,17 +66,28 @@ class ProvisionRequest(BaseModel):
 def _js(v):
     return json.dumps(v, ensure_ascii=False) if not isinstance(v, str) else v
 
-def _row_to_dict(r):
-    d = dict(r)
+_PUBLIC_MODEL_COLUMNS = (
+    "id, name, version, description, size_mb, sha256, filename, "
+    "download_path, mirrors, runtime, requirements, industry, tags, status"
+)
+_PUBLIC_MODEL_FIELDS = frozenset(
+    ("id", "name", "version", "description", "size_mb", "sha256", "filename",
+     "download_path", "mirrors", "runtime", "requirements", "industry", "tags", "status")
+)
+_CATALOG_MODEL_FIELDS = frozenset(_PUBLIC_MODEL_FIELDS - {"description", "status"})
+
+
+def _public_model(r, *, catalog: bool = False):
+    # Public routes must never serialize DB rows wholesale: they can contain
+    # serve/stop commands, internal health endpoints, and future admin fields.
+    allowed = _CATALOG_MODEL_FIELDS if catalog else _PUBLIC_MODEL_FIELDS
+    d = {key: value for key, value in dict(r).items() if key in allowed}
     for k in ("mirrors", "requirements"):
         if k in d and isinstance(d[k], str):
             d[k] = json.loads(d[k])
     for k in ("industry", "tags"):
         if k in d and d[k] is None:
             d[k] = []
-    for k in ("created_at", "updated_at"):
-        if k in d and d[k]:
-            d[k] = str(d[k])
     return d
 
 # ── ① 列表 (行业/标签过滤) ──────────────────────────
@@ -88,25 +99,30 @@ def list_models(
     status: str = Query("active"),
     db: Session = Depends(get_session),
 ):
-    conds, params = [], {}
-    if status != "all":
-        conds.append("status = :status"); params["status"] = status
+    # This is an anonymous catalog. Hidden/draft models have no public list
+    # mode; administrators manage them through authenticated admin routes.
+    if status != "active":
+        raise HTTPException(status_code=403, detail="仅公开已上架模型")
+    conds, params = ["status = 'active'"], {}
     if industry:
         conds.append(":industry = ANY(industry)"); params["industry"] = industry
     if tag:
         conds.append(":tag = ANY(tags)"); params["tag"] = tag
     where = "WHERE " + " AND ".join(conds) if conds else ""
-    rows = db.execute(text(f"SELECT * FROM we_models {where} ORDER BY name"), params).mappings().all()
-    return {"ok": True, "count": len(rows), "models": [_row_to_dict(r) for r in rows]}
+    rows = db.execute(text(f"SELECT {_PUBLIC_MODEL_COLUMNS} FROM we_models {where} ORDER BY name"), params).mappings().all()
+    return {"ok": True, "count": len(rows), "models": [_public_model(r) for r in rows]}
 
 # ── ② 单个详情 ──────────────────────────────────────
 
 @router.get("/{model_id}", response_model=dict)
 def get_model(model_id: str, db: Session = Depends(get_session)):
-    row = db.execute(text("SELECT * FROM we_models WHERE id = :id"), {"id": model_id}).mappings().first()
+    row = db.execute(
+        text(f"SELECT {_PUBLIC_MODEL_COLUMNS} FROM we_models WHERE id = :id AND status = 'active'"),
+        {"id": model_id},
+    ).mappings().first()
     if not row:
         raise HTTPException(404, f"模型 {model_id} 不存在")
-    return {"ok": True, "model": _row_to_dict(row)}
+    return {"ok": True, "model": _public_model(row)}
 
 # ── ③ 创建 (admin) ──────────────────────────────────
 
@@ -166,18 +182,8 @@ def get_catalog(industry: Optional[str] = Query(None), db: Session = Depends(get
     params = {}
     if industry:
         conds.append(":industry = ANY(industry)"); params["industry"] = industry
-    rows = db.execute(text(f"SELECT * FROM we_models WHERE {' AND '.join(conds)} ORDER BY name"), params).mappings().all()
-    models = []
-    for r in rows:
-        d = _row_to_dict(r)
-        models.append({
-            "id": d["id"], "name": d["name"], "version": d["version"],
-            "size_mb": d["size_mb"], "sha256": d["sha256"],
-            "filename": d["filename"], "download_path": d["download_path"],
-            "mirrors": d.get("mirrors", []),
-            "runtime": d["runtime"], "requirements": d.get("requirements", {}),
-            "industry": d.get("industry", []), "tags": d.get("tags", []),
-        })
+    rows = db.execute(text(f"SELECT {_PUBLIC_MODEL_COLUMNS} FROM we_models WHERE {' AND '.join(conds)} ORDER BY name"), params).mappings().all()
+    models = [_public_model(r, catalog=True) for r in rows]
     return {
         "ok": True, "version": "1.0",
         "generated_at": datetime.now(timezone.utc).isoformat(),
