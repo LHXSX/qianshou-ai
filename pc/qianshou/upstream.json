@@ -1,0 +1,9 @@
+{
+  "version": "0.1.6-alpha.2",
+  "upstreamCommit": "ddefc45fbc7f8e46dd73185e68295696d1297887",
+  "archiveSha256": "fd7aa383a9ffd122ab9e3d50d21b860452f183c2a4d71990b3998c8fb19caaee",
+  "source": "https://codeload.github.com/deepseek-ai/deepseek-harness/tar.gz/refs/tags/dsh-v0.1.6-alpha.2",
+  "product": "千手 PC",
+  "productVersion": "0.3.0-dev.1",
+  "status": "development"
+}

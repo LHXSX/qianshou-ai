@@ -1,0 +1,9 @@
+- dialog "Welcome to Qianshou Agent":
+  - heading "Welcome to Qianshou Agent" [level=2]
+  - paragraph: 0.2.1 Preview
+  - paragraph: Qianshou Agent puts specialist employees around a lead designer so they can use tools and complete real work.
+  - paragraph: "Talk with the lead agent: it understands your requirements, coordinates specialists, and moves projects forward using code, terminals, automation and authorized devices."
+  - paragraph: Connect your own model providers and API keys, and assign models to individual employees as needed. Cloud requests are billed by your configured providers; the app does not include shared paid access. This is a preview release, and we continue to improve its features and experience.
+  - link "Qianshou website":
+    - /url: https://qianshousuanli.com
+  - button "Get started"

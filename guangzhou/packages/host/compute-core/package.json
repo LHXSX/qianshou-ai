@@ -1,0 +1,153 @@
+{
+  "name": "@deepseek-ai/dsh-compute-core",
+  "version": "0.1.5-rc.2",
+  "description": "Qianshou core connection and bounded local compute planning",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./supply": {
+      "types": "./lib/types/supply.d.ts",
+      "default": "./lib/supply.js"
+    },
+    "./tools": {
+      "types": "./lib/types/tools.d.ts",
+      "default": "./lib/tools.js"
+    },
+    "./protocol": {
+      "types": "./lib/types/protocol.d.ts",
+      "default": "./lib/protocol.js"
+    },
+    "./validation": {
+      "types": "./lib/types/validation.d.ts",
+      "default": "./lib/validation.js"
+    },
+    "./executor": {
+      "types": "./lib/types/executor.d.ts",
+      "default": "./lib/executor.js"
+    },
+    "./task-state": {
+      "types": "./lib/types/task-state.d.ts",
+      "default": "./lib/task-state.js"
+    },
+    "./task-store": {
+      "types": "./lib/types/task-store.d.ts",
+      "default": "./lib/task-store.js"
+    },
+    "./submission-ledger": {
+      "types": "./lib/types/submission-ledger.d.ts",
+      "default": "./lib/submission-ledger.js"
+    },
+    "./envelope-security": {
+      "types": "./lib/types/envelope-security.d.ts",
+      "default": "./lib/envelope-security.js"
+    },
+    "./contributor-policy": {
+      "types": "./lib/types/contributor-policy.d.ts",
+      "default": "./lib/contributor-policy.js"
+    },
+    "./resource-observer": {
+      "types": "./lib/types/resource-observer.d.ts",
+      "default": "./lib/resource-observer.js"
+    },
+    "./scheduler": {
+      "types": "./lib/types/scheduler.d.ts",
+      "default": "./lib/scheduler.js"
+    },
+    "./node-protocol": {
+      "types": "./lib/types/node-protocol.d.ts",
+      "default": "./lib/node-protocol.js"
+    },
+    "./node-session": {
+      "types": "./lib/types/node-session.d.ts",
+      "default": "./lib/node-session.js"
+    },
+    "./node-transport": {
+      "types": "./lib/types/node-transport.d.ts",
+      "default": "./lib/node-transport.js"
+    },
+    "./employee-task-coordinator": {
+      "types": "./lib/types/employee-task-coordinator.d.ts",
+      "default": "./lib/employee-task-coordinator.js"
+    },
+    "./capability-manifest": {
+      "types": "./lib/types/capability-manifest.d.ts",
+      "default": "./lib/capability-manifest.js"
+    },
+    "./plugin-contract": {
+      "types": "./lib/types/plugin-contract.d.ts",
+      "default": "./lib/plugin-contract.js"
+    },
+    "./plugin-market": {
+      "types": "./lib/types/plugin-market.d.ts",
+      "default": "./lib/plugin-market.js"
+    },
+    "./resident-loop": {
+      "types": "./lib/types/resident-loop.d.ts",
+      "default": "./lib/resident-loop.js"
+    },
+    "./task-workspace": {
+      "types": "./lib/types/task-workspace.d.ts",
+      "default": "./lib/task-workspace.js"
+    },
+    "./task-output": {
+      "types": "./lib/types/task-output.d.ts",
+      "default": "./lib/task-output.js"
+    },
+    "./local-task-runner": {
+      "types": "./lib/types/local-task-runner.d.ts",
+      "default": "./lib/local-task-runner.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./result-assets": {
+      "types": "./lib/types/result-assets.d.ts",
+      "default": "./lib/result-assets.js"
+    },
+    "./resident": {
+      "types": "./lib/types/resident/index.d.ts",
+      "default": "./lib/resident/index.js"
+    },
+    "./transport/memory-session": {
+      "types": "./lib/types/transport/memory-session.d.ts",
+      "default": "./lib/transport/memory-session.js"
+    },
+    "./edge-worker": {
+      "types": "./lib/types/edge-worker/connection.d.ts",
+      "default": "./lib/edge-worker/connection.js"
+    },
+    "./transport/edge-worker-session": {
+      "types": "./lib/types/transport/edge-worker-session.d.ts",
+      "default": "./lib/transport/edge-worker-session.js"
+    },
+    "./node-capability": {
+      "types": "./lib/types/node-capability.d.ts",
+      "default": "./lib/node-capability.js"
+    }
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "dependencies": {
+    "@deepseek-ai/dsh-brand": "workspace:^",
+    "@deepseek-ai/dsh-atomic-write": "workspace:^",
+    "@deepseek-ai/schemastery": "workspace:^"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-tools": "workspace:^"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-agent": "workspace:^",
+    "@deepseek-ai/dsh-client-connection": "workspace:^",
+    "@deepseek-ai/dsh-tools": "workspace:^"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "_provenance": {
+    "capturedAt": "2026-09-17T04:5x UTC",
+    "route": "GET /api/v8/developer/tasks/{workload_id}/result",
+    "core": "https://qianshousuanli.com",
+    "account": "QA 账号（验收账号，id 207 · 名称不入库）",
+    "desensitized": "只保留平台返回的字段与取值；没有令牌、没有口令、没有第三方个人信息。",
+    "why": "AT-01/AT-07 的原始观察显示产品结果路由回 inlineOutput=null/artifactRef=null，而平台同一路由有完整载荷。本夹具是那份载荷的原文，用来钉住字段名，避免按猜测实现。",
+    "relatedEvidence": [
+      "docs/dev-plan/evidence/双机验收/AT-01.json（产品路由回 null 的原始观察）",
+      "docs/dev-plan/evidence/双机验收/AT-07.json（顶层键 [\"ok\",\"id\",\"task_id\",\"workload_id\",\"status\",\"result\",\"summary\",\"elapsed_ms\",\"download_url\"]）",
+      "docs/dev-plan/evidence/双机验收/总表.md §2.2"
+    ]
+  },
+  "wordCountDone": {
+    "ok": true,
+    "id": "302391f8-2ba1-420d-b749-c1ecfba0ec48",
+    "task_id": "302391f8-2ba1-420d-b749-c1ecfba0ec48",
+    "workload_id": "302391f8-2ba1-420d-b749-c1ecfba0ec48",
+    "status": "DONE",
+    "result": {
+      "status": "ok",
+      "schema_version": "v1",
+      "task_type": "word_count",
+      "elapsed_ms": 0,
+      "summary": {
+        "input_bytes": 33,
+        "total_tokens": 6,
+        "unique_tokens": 3,
+        "top_n_returned": 3,
+        "jieba_enabled": 0,
+        "top1_token": "alpha"
+      },
+      "result_lines": ["alpha\t3", "beta\t2", "gamma\t1"],
+      "duplicate_groups": [],
+      "summary_text": "合并 1 个分片 · 共 3 条结果"
+    },
+    "summary": "合并 1 个分片 · 3 条结果",
+    "elapsed_ms": 0,
+    "download_url": "/api/v8/developer/tasks/302391f8-2ba1-420d-b749-c1ecfba0ec48/download"
+  },
+  "base64DoneWithFailedItems": {
+    "ok": true,
+    "id": "89dd8e18-8761-4561-b03b-bd70e25214c7",
+    "task_id": "89dd8e18-8761-4561-b03b-bd70e25214c7",
+    "workload_id": "89dd8e18-8761-4561-b03b-bd70e25214c7",
+    "status": "DONE",
+    "result": {
+      "status": "ok",
+      "schema_version": "v1",
+      "task_type": "base64_decode",
+      "elapsed_ms": 0,
+      "summary": { "items": 1, "success": 0, "failed": 1 },
+      "result": [{ "value": "@@@ not base64 @@@", "error": "invalid base64" }],
+      "summary_text": "✅ Base64 解码完成\n⚡ 用时 0ms\n📥 输入 1 项\n✓ 成功 0 · ✗ 失败 1",
+      "results": [{ "value": "@@@ not base64 @@@", "error": "invalid base64" }]
+    },
+    "summary": "完成 1 个分片",
+    "elapsed_ms": 22,
+    "download_url": "/api/v8/developer/tasks/89dd8e18-8761-4561-b03b-bd70e25214c7/download"
+  }
+}

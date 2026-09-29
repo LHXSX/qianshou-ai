@@ -1,0 +1,31 @@
+# The PC profile has one configured cloud route. A missing account credential
+# must fail at this route instead of falling back to a direct vendor account.
+- id: llm-deepseek
+  disabled: true
+# Vendor search and feedback exports are not Qianshou service routes.
+- id: web-search-deepseek
+  disabled: true
+- id: session-telemetry-otel
+  disabled: true
+- id: ui-message-feedback
+  disabled: true
+- id: message-feedback
+  disabled: true
+- id: command-feedback
+  disabled: true
+# This version-controlled roster belongs only to the isolated Qianshou profile.
+- id: agent-presets
+  config:
+    default: qianshou-ceo
+    includeShippedRoot: false
+    includeUserRoot: false
+    roots:
+      - path: !!js process.env.QIANSHOU_PRESET_ROOT
+        trust: system
+# Child evidence is retained under the real root Session and, when DSH_HOME is
+# set, under $DSH_HOME/qianshou/child-changes so a later Host can read it.
+- id: workspace-changes
+  config:
+    includeChildren: true
+    childMaxRecords: 128
+    childMaxBytes: 67108864

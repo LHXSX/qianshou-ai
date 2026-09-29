@@ -1,0 +1,89 @@
+{
+  "title": "qianshou/capability/v1",
+  "description": "The node's capability DECLARATION (section 2 of the contract, the foundation). A node states a semantic capability plus the concrete implementation binding that satisfies it — never a bare package name. See contracts/README.md §2.2 and decision one. FIELD PROVENANCE: provides/impl/health/limits and the impl={runtime,version,path} shape come from the phase brief's node example verbatim; `native_binaries` is NOT from the brief — it is the platform's real field name (core/worker.py:63, storage/repo.py:1892, engine/planner.py:925, services/workers/heartbeat.py:78,109) and is included so this contract can pin the field that was misspelled `native_bins` for two months. `contract` const added by this draft. DELIBERATELY OPEN ROOT: `additionalProperties` is absent on the root object so a newer node can add keys without breaking a v1 reader. Key discipline for the root is therefore NOT enforced here — it is enforced by the three-stage unknown-field funnel (README §3 决定二), which is why the mutation test targets this document. Nested `impl` and `limits` stay closed where they are contract-owned shapes.",
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "qianshou/capability/v1",
+      "description": "Contract discriminator."
+    },
+    "provides": {
+      "type": "array",
+      "description": "Every capability this node claims, each with the concrete implementation that backs the claim. A claim without an impl binding is not a claim — that is the whole point of decision one. The same semantic capability may be satisfied by different implementations on different nodes (three OCR packages, two whisper variants); see capabilities.registry.json.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability": {
+            "type": "string",
+            "description": "Semantic capability name from capabilities.registry.json, e.g. `media.transcode`. MUST be a registry member: an unregistered name is an unfulfillable promise, and the contract test rejects it."
+          },
+          "impl": {
+            "type": "object",
+            "description": "The concrete binding. `runtime` MUST equal an implementation id registered for this capability, so a node cannot claim media.transcode while binding to an unrelated tool.",
+            "properties": {
+              "runtime": {
+                "type": "string",
+                "description": "Implementation id, e.g. `ffmpeg`, `pytesseract`, `faster_whisper`. This is the layer that is allowed to change without touching the task that asked for the capability."
+              },
+              "version": {
+                "type": "string",
+                "description": "Version of the implementation as the node measured it (e.g. ffmpeg `8.0.1`). Free-form string because vendor version schemes are not uniform; min_version matching is therefore a code-level comparison, not a schema constraint."
+              },
+              "path": {
+                "type": "string",
+                "description": "Absolute path of the executable, for binary runtimes. Absent for library/in-process runtimes (e.g. a python package). NEVER trust this path for execution without re-verifying it on the executing node."
+              },
+              "prompt_style": {
+                "type": "string",
+                "description": "Prompt style the local model or generator accepted, copied from the node's own probe. Absent when the model did not report one. Never invented from a package name."
+              },
+              "loras": {
+                "type": "object",
+                "description": "Installed LoRA metadata the local model reported. Absent when the probe did not receive any.",
+                "properties": {
+                  "trigger": {
+                    "type": "string",
+                    "description": "Trigger word the installed LoRA actually uses. Copied from the probe; never guessed from the model filename."
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": ["runtime", "version"],
+            "additionalProperties": false
+          },
+          "health": {
+            "type": "string",
+            "enum": ["ok", "degraded", "missing"],
+            "description": "Result of the node's own probe at declaration time. `missing` lets a node keep a capability listed (and its binding visible for diagnosis) while stating it cannot currently serve it. A scheduler must not treat a non-ok capability as a match."
+          },
+          "limits": {
+            "type": "object",
+            "description": "Upper bounds the node is willing to accept for this capability. Deliberately a free-form object for now, but every key present must be one the platform understands; a limit the platform ignores is worse than no limit, because the task believes it is bounded.",
+            "properties": {
+              "max_input_mb": {
+                "type": "integer",
+                "description": "Largest single input this node accepts, MiB. Positivity is NOT machine-enforced (numeric bounds are outside the enforced subset)."
+              },
+              "max_concurrency": {
+                "type": "integer",
+                "description": "Concurrent shards this node will accept for this capability."
+              }
+            }
+          }
+        },
+        "required": ["capability", "impl", "health"],
+        "additionalProperties": false
+      }
+    },
+    "native_binaries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "EXACT NAME: `native_binaries`, plural, full word. This is the platform's own field (core/worker.py:63). It was sent by clients as `native_bins` for two months; storage/repo.py:1811-1814 dropped the misspelled block silently, with no error and no log, while registration still reported success. This contract exists partly to make that naming collision impossible to reintroduce — see the mutation test in contracts/tests/contract.spec.ts."
+    }
+  },
+  "required": ["contract", "provides", "native_binaries"]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@deepseek-ai/dsh-qianshou-desktop",
+  "version": "0.2.2",
+  "private": true,
+  "type": "module",
+  "main": "main.mjs",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "install:mac": "node scripts/install-mac.mjs",
+    "package:mac": "tsx scripts/package-mac.ts",
+    "package:windows": "node scripts/package-windows.ts"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "channel": "preview"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "qianshou.h3.v1-installed-fixture.provenance.v1",
+  "file": "workbench_node.py",
+  "source": "Read-only snapshot of the active Windows 8790 H3 API workbench module",
+  "capturedDate": "2026-09-27",
+  "purpose": "Generate and verify an incremental V2 adapter patch against the actual installed V1 source",
+  "sizeBytes": 32637,
+  "rawSha256": "0650d18bc9060efda379185944ef6841a0dcae5ce0ed3cec24076fefd512a2f2",
+  "normalization": "Reject isolated CR, replace CRLF with LF, then SHA256 the resulting bytes",
+  "normalizedSha256": "0650d18bc9060efda379185944ef6841a0dcae5ce0ed3cec24076fefd512a2f2",
+  "installerInstalledNodeHash": "0650d18bc9060efda379185944ef6841a0dcae5ce0ed3cec24076fefd512a2f2",
+  "checks": {
+    "active8790Source": true,
+    "sourceUnchangedAcrossCopy": true,
+    "fixtureBytesEqualSource": true,
+    "pythonSyntaxParsed": true,
+    "noCredentialsPrivateConfigOrLocalAbsolutePathsFound": true
+  },
+  "scope": "Source fixture only; not a deployable workbench or a V2 runtime attestation"
+}

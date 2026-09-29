@@ -1,0 +1,27 @@
+.frame {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 12px;
+  align-items: center;
+  justify-content: center;
+  white-space: normal;
+}
+
+.video {
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - 120px);
+  aspect-ratio: 16 / 9;
+  background: #111;
+  border-radius: 8px;
+}
+
+.status {
+  margin: 0;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}

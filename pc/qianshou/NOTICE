@@ -1,0 +1,9 @@
+Qianshou PC independent additions
+Copyright 2026 Qianshou contributors
+
+The original Qianshou source and configuration in this directory are licensed
+under Apache License 2.0 (see LICENSE). The DeepSeek Harness base outside this
+directory retains its MIT notice and license. The license texts in
+voice/licenses/ identify third-party projects and are not relicensed here.
+Optional model weights and downloaded runtime binaries are not part of this
+grant.

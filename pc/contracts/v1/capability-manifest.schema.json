@@ -1,0 +1,82 @@
+{
+  "title": "qianshou/capability-manifest/v1",
+  "description": "A signed, time-bounded snapshot of what one plugin or node claims it can execute. Installation is not availability; health, heartbeat and owner policy are separate fields.",
+  "type": "object",
+  "properties": {
+    "contract": { "type": "string", "const": "qianshou/capability-manifest/v1" },
+    "manifest_id": { "type": "string" },
+    "plugin_id": { "type": "string" },
+    "plugin_version": { "type": "string" },
+    "revision": { "type": "integer" },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability_id": { "type": "string" },
+          "version": { "type": "string" },
+          "input_schema_ref": { "type": "string" },
+          "output_schema_ref": { "type": "string" },
+          "input_kinds": { "type": "array", "items": { "type": "string" } },
+          "output_kinds": { "type": "array", "items": { "type": "string" } },
+          "streaming": { "type": "boolean" },
+          "cancellation": { "type": "boolean" }
+        },
+        "required": ["capability_id", "version", "input_schema_ref", "output_schema_ref", "input_kinds", "output_kinds", "streaming", "cancellation"],
+        "additionalProperties": false
+      }
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "location": { "type": "string", "enum": ["local", "remote", "hybrid"] },
+        "platforms": { "type": "array", "items": { "type": "string" } },
+        "architectures": { "type": "array", "items": { "type": "string" } },
+        "models": { "type": "array", "items": { "type": "string" } },
+        "min_vram_mb": { "type": "integer" },
+        "min_memory_mb": { "type": "integer" }
+      },
+      "required": ["location", "platforms", "architectures", "models"],
+      "additionalProperties": false
+    },
+    "risk_level": { "type": "string", "enum": ["read-only", "workspace-write", "app-control", "external-side-effect"] },
+    "permissions": { "type": "array", "items": { "type": "string" } },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "data_residency": { "type": "string", "enum": ["local", "region", "any"] },
+        "network_egress": { "type": "string", "enum": ["denied", "declared", "allowed"] },
+        "retention": { "type": "string", "enum": ["none", "task", "days"] }
+      },
+      "required": ["data_residency", "network_egress", "retention"],
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "max_concurrency": { "type": "integer" },
+        "max_input_bytes": { "type": "integer" },
+        "max_output_bytes": { "type": "integer" }
+      },
+      "required": ["max_concurrency", "max_input_bytes", "max_output_bytes"],
+      "additionalProperties": false
+    },
+    "health": { "type": "string", "enum": ["installed", "available", "busy", "degraded", "paused", "quarantined", "expired"] },
+    "heartbeat_seq": { "type": "integer" },
+    "ttl_s": { "type": "integer" },
+    "observed_at": { "type": "string" },
+    "digest": { "type": "string" },
+    "signature": {
+      "type": "object",
+      "properties": {
+        "algorithm": { "type": "string", "const": "ed25519" },
+        "key_id": { "type": "string" },
+        "value": { "type": "string" }
+      },
+      "required": ["algorithm", "key_id", "value"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["contract", "manifest_id", "plugin_id", "plugin_version", "revision", "capabilities", "execution", "risk_level", "permissions", "privacy", "limits", "health", "heartbeat_seq", "ttl_s", "observed_at", "digest", "signature"],
+  "additionalProperties": false
+}

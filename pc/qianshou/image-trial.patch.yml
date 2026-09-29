@@ -1,0 +1,12 @@
+# Explicit development overlay. Append only to an isolated test profile.
+# The private gateway token is read from the Host process environment.
+- id: qianshou-compute-core
+  config:
+    baseUrl: https://qianshousuanli.com
+    inputStorageHostname: qianshou-1463872884.cos.ap-shanghai.myqcloud.com
+    researchImage:
+      gatewayOrigin: https://app.qianshousuanli.com
+    imageTrial:
+      gatewayOrigin: http://127.0.0.1:18991
+      tokenEnv: QIANSHOU_PRIVATE_IMAGE_TOKEN
+      timeoutMs: 420000

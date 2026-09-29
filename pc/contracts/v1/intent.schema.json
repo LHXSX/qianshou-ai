@@ -1,0 +1,94 @@
+{
+  "title": "qianshou/intent/v1",
+  "description": "The normalized, owner-authorized planning input. It describes a goal and constraints without selecting a node or creating a lease.",
+  "type": "object",
+  "properties": {
+    "contract": { "type": "string", "const": "qianshou/intent/v1" },
+    "intent_id": { "type": "string" },
+    "request_id": { "type": "string" },
+    "account_id": { "type": "string" },
+    "goal": { "type": "string" },
+    "domain": { "type": "string" },
+    "modalities": { "type": "array", "items": { "type": "string" } },
+    "requires": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability_id": { "type": "string" },
+          "min_version": { "type": "string" },
+          "optional": { "type": "boolean" }
+        },
+        "required": ["capability_id", "min_version", "optional"],
+        "additionalProperties": false
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": { "type": "string", "enum": ["inline", "artifact", "session"] },
+          "ref": { "type": "string" },
+          "sha256": { "type": "string" },
+          "media_type": { "type": "string" }
+        },
+        "required": ["kind", "ref", "media_type"],
+        "additionalProperties": false
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "kind": { "type": "string" },
+        "format": { "type": "string" }
+      },
+      "required": ["kind", "format"],
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "amount_minor": { "type": "integer" },
+        "currency": { "type": "string" }
+      },
+      "required": ["amount_minor", "currency"],
+      "additionalProperties": false
+    },
+    "deadline_s": { "type": "integer" },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "level": { "type": "string", "enum": ["strict", "standard", "open"] },
+        "allow_remote": { "type": "boolean" },
+        "data_residency": { "type": "string", "enum": ["local", "region", "any"] }
+      },
+      "required": ["level", "allow_remote", "data_residency"],
+      "additionalProperties": false
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "prefer_local": { "type": "boolean" },
+        "node_ids": { "type": "array", "items": { "type": "string" } },
+        "platforms": { "type": "array", "items": { "type": "string" } },
+        "max_price_minor": { "type": "integer" }
+      },
+      "required": ["prefer_local", "node_ids", "platforms"],
+      "additionalProperties": false
+    },
+    "fallback": {
+      "type": "object",
+      "properties": {
+        "allow_replan": { "type": "boolean" },
+        "allow_degraded": { "type": "boolean" },
+        "max_attempts": { "type": "integer" }
+      },
+      "required": ["allow_replan", "allow_degraded", "max_attempts"],
+      "additionalProperties": false
+    },
+    "confirmation": { "type": "string", "enum": ["required", "preapproved"] }
+  },
+  "required": ["contract", "intent_id", "request_id", "account_id", "goal", "domain", "modalities", "requires", "inputs", "output", "budget", "deadline_s", "privacy", "preferences", "fallback", "confirmation"],
+  "additionalProperties": false
+}

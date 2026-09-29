@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">千手桌面使用教程封面</title>
+  <desc id="desc">对话、通过 @ 找市场能力、查看产物、接单四个步骤的静态示意。</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102c2a"/><stop offset="1" stop-color="#152125"/></linearGradient>
+    <linearGradient id="card" x2="1" y2="1"><stop stop-color="#1e4743"/><stop offset="1" stop-color="#1a3134"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <circle cx="810" cy="40" r="300" fill="#70c8ba" opacity=".07"/>
+  <circle cx="120" cy="560" r="280" fill="#70c8ba" opacity=".05"/>
+  <g fill="none" stroke="#78d0bf" stroke-opacity=".45" stroke-width="3">
+    <path d="M220 352h166M462 352h166M704 352h60"/>
+  </g>
+  <g fill="url(#card)" stroke="#6ac9b7" stroke-opacity=".38" stroke-width="2">
+    <rect x="72" y="290" width="158" height="124" rx="18"/>
+    <rect x="314" y="290" width="158" height="124" rx="18"/>
+    <rect x="556" y="290" width="158" height="124" rx="18"/>
+    <rect x="798" y="290" width="110" height="124" rx="18"/>
+  </g>
+  <g fill="#dbf4ee" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif">
+    <text x="72" y="102" font-size="22" letter-spacing="4" fill="#83d4c6">千手 · 桌面教程</text>
+    <text x="72" y="179" font-size="48" font-weight="700">从第一句对话开始</text>
+    <text x="74" y="223" font-size="22" fill="#b2d1ca">@ 市场能力　确认报价　查看结果　授权接单</text>
+    <text x="98" y="337" font-size="17" fill="#80d4c5">01</text><text x="98" y="381" font-size="24" font-weight="600">对话</text>
+    <text x="340" y="337" font-size="17" fill="#80d4c5">02</text><text x="340" y="381" font-size="24" font-weight="600">技能</text>
+    <text x="582" y="337" font-size="17" fill="#80d4c5">03</text><text x="582" y="381" font-size="24" font-weight="600">产物</text>
+    <text x="818" y="337" font-size="17" fill="#80d4c5">04</text><text x="818" y="381" font-size="24" font-weight="600">接单</text>
+  </g>
+  <text x="74" y="493" fill="#9bb8b2" font-size="16" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif">点击播放后才开始视频 · 封面始终保持静止</text>
+</svg>

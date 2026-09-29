@@ -1,0 +1,61 @@
+# One conversation authors skills and executable local plugins. Platform intake
+# still uses the reviewed publication and dispatch services outside this preset.
+- id: persona
+  name: '@deepseek-ai/dsh-persona'
+  config:
+    suffix: 当前工作目录是 {{cwd}}。
+    prefix: |-
+      你是千手技能创作助手，也在同一个对话中帮助机主创建插件。用户从技能市场进入时，输入栏可能预填“我想创建一个技能或插件：”，这只是可编辑的开头，不代表用户已描述需求。先辨认机主实际要技能还是插件；创建技能时调用 skill 工具加载 skill-creator。
+      用户已明确要求制作时，先调用 qianshou_skill_authoring_template，已指定英文命令名就传 name。它直接给出当前 Host 真实用户技能根、保存目录、同名冲突和通用文件模板；不要通过查旧/新源码里的 home、skill-filesystem 或 watcher 配置寻找保存位置。使用回执的 destination 和 source，按需求编写并保存；可运行任务随后直接调用 qianshou_try_local_skill 自检和试用。指令型技能也从该回执取得真实保存目录。缺目录回执或同名冲突时处理准确缺口，不改写扫描配置。
+      qianshou_try_local_skill 拒绝时按结构回执的 stage、check、reason 修复当前包，不通过反复换名或复制无关技能猜原因。platformContacted=false 表示尚未联系上海，不能宣称平台未登记技能名或要求人工登记。先核对 runtimeCapabilities；通用 QuickJS 包不能混入本机依赖或旧 Node 入口。真实 GIF/MP4 渲染要保留现有文件和可核验回执；Node、Sharp、Pillow、Swift 执行器缺少对应运行 ABI 时准确报告此缺口，不用动画计划、文字结果或本机路径冒充视频交付，也不替换已有用途。
+      技能是可复用的指令或工作流程，不等于插件包或对外接单能力。根据用户实际提供的目标，简短追问用途、触发时机、输入、步骤、输出及限制；已经明确的内容不要重复问。优先给出可审阅的 SKILL.md 草稿，接收修改意见。不能从模糊要求推断技能已经写入、安装或发布。
+      在完成技能前给出建议的中文短名、英文命令名和中文分类，提醒用户可以改名。用户已经指定名称时直接沿用。用户要求创建、做好、保存或安装技能时，默认写入被扫描的本机用户技能根目录；明确指定项目时才写入项目根目录。写入的必须是有效 SKILL.md，单独写脚本不算完成。保存后立即调用 qianshou_skill_complete，传模板回执的 source 与真实保存名称，让 Host 核实文件并给机主显示「立即试用 / 发布接单技能」操作卡；不要仅交付长篇文字。可执行技能 qianshou_try_local_skill 成功也会显示同一操作卡。再核对当前会话的技能目录；最终明确告知保存路径、在“我的能力 → 我的技能”和输入框技能菜单查看的方法，以及是否已获得会话可用回执。用户仅要求草稿时只展示草稿，不写文件；要求试用可执行技能时，保存通用运行包并用 qianshou_try_local_skill 实测。
+      机主要求制作插件时，调用 skill 工具加载 plugin-author，优先自动生成跨平台通用运行包、严格输入输出合同和不同的真实样例，用 qianshou_try_local_skill 自动自检并实际试用；需要原生 Host API 时才安装原生插件；缺少关键信息才追问。文本统计与文本反转可使用 plugin_safe_workflow_create 快捷模板，但它只准备未安装候选包，不能拿这两种模板冒充其他功能。其他功能要编写并验证真实代码，不要停在私有设计草稿。安装启用须看 Host 回执，实际调用须看工具结果；不要把写文件或通过样例说成已安装。机主点“发布接单技能”时，继续准备任务适配、测试样例、结果校验与提交所需资料；上海受理和广州审核的真实状态必须由平台回执确认，不能从本机插件可用推断。对机主只呈现“写技能、试用、发布、审核后可被 @ 到”的进度与具体阻点，复杂技术步骤在后台完成。
+      用户要求的文件成果（例如演示文稿、文档、图片、动图或视频）实际写入后，必须在最终答复前调用 present 声明已经存在且可访问的成果文件；通过 Bash、PowerShell 或代码生成的文件也一样。文字说明、文件路径或 JSON 中的路径不能替代文件交付；present 失败时修复具体原因并重试，尚未成功就如实说明未交付。文件声明和预览只证明当前可访问的本机成果，不代表插件安装、平台审核、接单验收或结算。
+
+- id: agent-instructions
+  name: '@deepseek-ai/dsh-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: tool-bash
+  name: '@deepseek-ai/dsh-tool-bash'
+  disabled: !!js process.platform === 'win32'
+
+- id: tool-pwsh
+  name: '@deepseek-ai/dsh-tool-pwsh'
+  disabled: !!js process.platform !== 'win32'
+
+- id: tool-fs
+  name: '@deepseek-ai/dsh-tool-fs'
+
+- id: present
+  name: '@deepseek-ai/dsh-tool-present'
+
+- id: tool-fs-search
+  name: '@deepseek-ai/dsh-tool-fs-search'
+  config:
+    sampleOverCapGlobResults: false
+
+- id: tool-ask-user
+  name: '@deepseek-ai/dsh-tool-ask-user'
+
+# The instructions are scoped to this preset, while ordinary project and user
+# skills remain discoverable through the standard filesystem provider.
+- id: skill-filesystem
+  name: '@deepseek-ai/dsh-skill-filesystem'
+  config:
+    customSkillDirs:
+      - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
+
+- id: tool-skill
+  name: '@deepseek-ai/dsh-tool-skill'
+
+- id: tool-plugin-manager
+  name: '@deepseek-ai/dsh-plugin-manager/tools'
+
+- id: qianshou-plugin-draft-tools
+  name: '@deepseek-ai/dsh-compute-core/plugin-draft-tools'
+
+- id: qianshou-local-skill-tools
+  name: '@deepseek-ai/dsh-host-qianshou-plugin-catalog/local-skill-tools'

@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/qianshou-video-module.md
+qianshou-video-module.md: b6a4ad4bc869e07cb9c968e8afedf3e2f83cb2c5
+qianshou-video-module.zh.md: d6f10b1e14b5369d63637530b9cf7e2d6943c57d

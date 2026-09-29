@@ -1,0 +1,5 @@
+{
+  "extends": "../../../../../tsconfig.base.json",
+  "compilerOptions": { "composite": false, "incremental": false, "noEmit": true },
+  "include": ["../../src/edge-worker/**/*.ts", "./*.ts"]
+}

@@ -1,0 +1,61 @@
+.stage {
+  display: inline-flex;
+  flex: none;
+  position: relative;
+  width: 56px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.sprite {
+  display: block;
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  top: -8px;
+  left: 0;
+  background-image: url('/assets/qianshou-white-cat-running-e3e16221.png');
+  background-repeat: no-repeat;
+  background-size: 400% 200%;
+  background-position: 0% 0%;
+  animation: qianshou-mascot-frames .8s steps(1, end) infinite;
+}
+
+.stage[data-qianshou-mascot-mode='helper'],
+.stage[data-qianshou-mascot-mode='call'] {
+  width: 80px;
+}
+
+.stage[data-qianshou-mascot-mode='helper'] .sprite,
+.stage[data-qianshou-mascot-mode='call'] .sprite {
+  width: 68px;
+  height: 68px;
+  top: -17px;
+  left: 6px;
+}
+
+.stage[data-qianshou-mascot-mode='helper'] .sprite {
+  background-image: url('/assets/qianshou-helper-chase-90b1e1f7.png');
+}
+
+.stage[data-qianshou-mascot-mode='call'] .sprite {
+  background-image: url('/assets/qianshou-bichon-chase-54533ea4.png');
+}
+
+@keyframes qianshou-mascot-frames {
+  0%, 100% { background-position: 0% 0%; }
+  12.5% { background-position: 33.333333% 0%; }
+  25% { background-position: 66.666667% 0%; }
+  37.5% { background-position: 100% 0%; }
+  50% { background-position: 0% 100%; }
+  62.5% { background-position: 33.333333% 100%; }
+  75% { background-position: 66.666667% 100%; }
+  87.5% { background-position: 100% 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite {
+    animation: none;
+    background-position: 0% 0%;
+  }
+}

@@ -1,0 +1,1 @@
+{"rowCount":2,"columnCount":3,"delimiter":",","columns":[{"index":0,"name":"商品","nonEmptyCount":2,"emptyCount":0,"kind":"text"},{"index":1,"name":"数量","nonEmptyCount":2,"emptyCount":0,"kind":"number"},{"index":2,"name":"金额","nonEmptyCount":2,"emptyCount":0,"kind":"number"}],"sampleRows":[["苹果","2","3.50"],["香蕉","1","4.00"]]}

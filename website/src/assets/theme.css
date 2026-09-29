@@ -1,0 +1,276 @@
+/* ============================================================
+   EdgeCompute · Cyber Neon Theme  (global)
+   设计 token + 全局 base + Element Plus 覆盖
+   ------------------------------------------------------------ */
+
+:root {
+  /* —— color tokens —— */
+  --bg-0: #02050d;            /* 最深底 */
+  --bg-1: #060b1a;            /* section 底 */
+  --bg-2: #0a1330;            /* card 底 */
+  --bg-glass: rgba(8, 14, 36, 0.55);
+  --bg-glass-strong: rgba(8, 14, 36, 0.78);
+
+  --neon-cyan: #4cf3ff;
+  --neon-cyan-strong: #00e7ff;
+  --neon-magenta: #ff3df0;
+  --neon-purple: #8a5bff;
+  --neon-gold: #f5c062;
+
+  --text-0: #e9f3ff;          /* 主文字 */
+  --text-1: #aac3e3;          /* 次文字 */
+  --text-2: #6f88ad;          /* 弱文字 */
+
+  --border-soft: rgba(124, 180, 255, 0.14);
+  --border-strong: rgba(76, 243, 255, 0.45);
+
+  /* —— glow —— */
+  --glow-cyan: 0 0 24px rgba(76, 243, 255, 0.55), 0 0 60px rgba(76, 243, 255, 0.18);
+  --glow-magenta: 0 0 24px rgba(255, 61, 240, 0.55), 0 0 70px rgba(255, 61, 240, 0.16);
+  --glow-soft: 0 0 18px rgba(76, 243, 255, 0.25);
+
+  --grad-neon: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 55%, var(--neon-magenta) 100%);
+  --grad-hero: linear-gradient(120deg, rgba(2, 5, 13, 0.92) 0%, rgba(2, 5, 13, 0.55) 45%, rgba(2, 5, 13, 0.05) 100%);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+}
+
+/* ============================================================
+   全局基底
+   ============================================================ */
+html, body, #app {
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Microsoft YaHei", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background:
+    radial-gradient(1200px 700px at 80% -10%, rgba(138, 91, 255, 0.18), transparent 60%),
+    radial-gradient(900px 600px at -10% 30%, rgba(76, 243, 255, 0.12), transparent 60%),
+    radial-gradient(900px 700px at 50% 110%, rgba(255, 61, 240, 0.10), transparent 60%),
+    var(--bg-0);
+  background-attachment: fixed;
+}
+
+/* 网格 + 扫描线层 */
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(76, 243, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(76, 243, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
+}
+
+body::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.018) 0,
+    rgba(255, 255, 255, 0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+#app { position: relative; z-index: 2; }
+
+/* —— 选择文字高亮 —— */
+::selection { background: rgba(76, 243, 255, 0.35); color: #fff; }
+
+/* —— 滚动条 —— */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple));
+  border-radius: 10px;
+  box-shadow: var(--glow-soft);
+}
+
+/* ============================================================
+   工具类
+   ============================================================ */
+.neon-text {
+  background: var(--grad-neon);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.neon-border {
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
+
+.neon-card {
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.neon-card.glow {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ============================================================
+   Element Plus 覆盖 — 让所有用 el-* 的页面自动跟主题
+   ============================================================ */
+
+/* el-button —— */
+.el-button {
+  border-radius: 8px !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-soft);
+  color: var(--text-0);
+  transition: all .25s ease;
+}
+.el-button:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: var(--glow-soft);
+}
+.el-button--primary {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%) !important;
+  border: none !important;
+  color: #03101e !important;
+  box-shadow: var(--glow-cyan);
+}
+.el-button--primary:hover {
+  filter: brightness(1.12) saturate(1.15);
+  box-shadow: var(--glow-cyan), 0 0 0 2px rgba(76, 243, 255, 0.18);
+}
+.el-button--danger {
+  background: linear-gradient(135deg, var(--neon-magenta), #b91c8a) !important;
+  border: none !important; color: #fff !important;
+  box-shadow: var(--glow-magenta);
+}
+
+/* el-card —— */
+.el-card {
+  background: var(--bg-glass-strong) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: var(--radius-md) !important;
+  backdrop-filter: blur(14px);
+  color: var(--text-0);
+}
+.el-card__header {
+  border-bottom: 1px solid var(--border-soft) !important;
+  color: var(--text-0);
+}
+
+/* el-input —— */
+.el-input__wrapper {
+  background: rgba(8, 14, 36, 0.6) !important;
+  box-shadow: 0 0 0 1px var(--border-soft) inset !important;
+  border-radius: 8px !important;
+}
+.el-input__wrapper.is-focus,
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--neon-cyan) inset, var(--glow-soft) !important;
+}
+.el-input__inner { color: var(--text-0) !important; }
+.el-input__inner::placeholder { color: var(--text-2) !important; }
+
+/* el-form-item label —— */
+.el-form-item__label { color: var(--text-1) !important; }
+
+/* el-checkbox —— */
+.el-checkbox__label { color: var(--text-1) !important; }
+.el-checkbox__inner {
+  background: rgba(8, 14, 36, 0.6) !important;
+  border-color: var(--border-soft) !important;
+}
+.el-checkbox.is-checked .el-checkbox__inner {
+  background: var(--neon-cyan) !important;
+  border-color: var(--neon-cyan) !important;
+  box-shadow: var(--glow-soft);
+}
+.el-checkbox.is-checked .el-checkbox__label { color: var(--neon-cyan) !important; }
+
+/* el-menu —— side nav */
+.el-menu {
+  background: transparent !important;
+  border: none !important;
+}
+.el-menu-item, .el-sub-menu__title {
+  color: var(--text-1) !important;
+  border-radius: 8px;
+  margin: 4px 8px;
+}
+.el-menu-item:hover, .el-sub-menu__title:hover {
+  background: rgba(76, 243, 255, 0.08) !important;
+  color: var(--neon-cyan) !important;
+}
+.el-menu-item.is-active {
+  background: linear-gradient(90deg, rgba(76, 243, 255, 0.18), rgba(138, 91, 255, 0.18)) !important;
+  color: var(--neon-cyan) !important;
+  box-shadow: inset 3px 0 0 var(--neon-cyan);
+}
+
+/* el-breadcrumb —— */
+.el-breadcrumb__inner { color: var(--text-1) !important; }
+.el-breadcrumb__inner.is-link { color: var(--neon-cyan) !important; }
+
+/* el-table —— */
+.el-table {
+  background: transparent !important;
+  color: var(--text-0) !important;
+  --el-table-border-color: var(--border-soft);
+  --el-table-header-bg-color: rgba(8, 14, 36, 0.7);
+  --el-table-row-hover-bg-color: rgba(76, 243, 255, 0.06);
+  --el-table-tr-bg-color: transparent;
+}
+.el-table th.el-table__cell { background: rgba(8, 14, 36, 0.7) !important; color: var(--neon-cyan) !important; font-weight: 600; }
+.el-table td.el-table__cell { background: transparent !important; }
+
+/* el-tag —— */
+.el-tag {
+  background: rgba(76, 243, 255, 0.12) !important;
+  border-color: rgba(76, 243, 255, 0.4) !important;
+  color: var(--neon-cyan) !important;
+}
+
+/* el-message —— */
+.el-message {
+  background: var(--bg-glass-strong) !important;
+  border: 1px solid var(--border-strong) !important;
+  backdrop-filter: blur(12px);
+  color: var(--text-0) !important;
+}
+
+/* el-pagination —— */
+.el-pagination button, .el-pager li {
+  background: transparent !important;
+  color: var(--text-1) !important;
+}
+.el-pager li.is-active {
+  background: var(--neon-cyan) !important;
+  color: #02050d !important;
+  border-radius: 6px;
+}
+
+/* el-dialog —— */
+.el-dialog {
+  background: var(--bg-glass-strong) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--glow-cyan);
+}
+.el-dialog__title { color: var(--neon-cyan) !important; }
+
+/* a —— */
+a { color: var(--neon-cyan); }
+a:hover { text-shadow: 0 0 8px rgba(76, 243, 255, 0.6); }

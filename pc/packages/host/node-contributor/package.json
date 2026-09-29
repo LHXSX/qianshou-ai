@@ -1,0 +1,60 @@
+{
+  "name": "@deepseek-ai/dsh-host-node-contributor",
+  "description": "Provider-neutral local contribution controller for Qianshou compute nodes",
+  "version": "0.1.5-rc.2",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./h3-owner-setup-types": {
+      "types": "./lib/types/h3-owner-setup-types.d.ts",
+      "default": "./lib/h3-owner-setup-types.js"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.d.ts",
+    "runtime/h3/*.py",
+    "runtime/h3/*.json",
+    "runtime/h3-v2/*.py",
+    "lib/h3-owner-setup-types.js",
+    "runtime/comfy-pilot/comfy-pilot.mjs",
+    "runtime/comfy-pilot/qwen-image21-template.json"
+  ],
+  "scripts": {
+    "bundle": "tsdown"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-compute-core": "workspace:^",
+    "@deepseek-ai/dsh-host-dispatch-adapter": "workspace:^",
+    "@deepseek-ai/dsh-host-billing-contract": "workspace:^",
+    "@deepseek-ai/dsh-host-platform-foundation": "workspace:^",
+    "@deepseek-ai/dsh-agent": "workspace:^",
+    "@deepseek-ai/dsh-llm": "workspace:^",
+    "@deepseek-ai/dsh-session": "workspace:^",
+    "@deepseek-ai/schemastery": "workspace:^",
+    "@deepseek-ai/dsh-brand": "workspace:^"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "workspace:^"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-agent": "workspace:^",
+    "@deepseek-ai/dsh-llm": "workspace:^",
+    "@deepseek-ai/dsh-session": "workspace:^",
+    "@deepseek-ai/dsh-client-connection": "workspace:^",
+    "@deepseek-ai/dsh-compute-core": "workspace:^",
+    "@deepseek-ai/dsh-host-dispatch-adapter": "workspace:^",
+    "@deepseek-ai/dsh-host-billing-contract": "workspace:^",
+    "@deepseek-ai/dsh-host-platform-foundation": "workspace:^"
+  }
+}

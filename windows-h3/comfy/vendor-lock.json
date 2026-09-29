@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "scope": "qs_new4/E_light4_sage only",
+  "vendors": {
+    "comfyui": {
+      "origin": "https://github.com/Comfy-Org/ComfyUI",
+      "commit": "9a9fdb10ed144ce760d9682cb247526ea23cc525",
+      "tree": "358f5a22102dda5625072bc9d6c3bbe8c474766c",
+      "version": "0.30.0",
+      "license": "GPL-3.0",
+      "licenseSha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "destination": ".",
+      "patch": "patches/comfyui-0.30.0.patch",
+      "patchSha256": "6b35163140561c11925de703ac9b14d434fc926e8c8123b33da50a23a327c6c8"
+    },
+    "kjnodes": {
+      "origin": "https://github.com/kijai/ComfyUI-KJNodes.git",
+      "commit": "b7646ad70a7daa7aeb919ca542274758d26ba2df",
+      "tree": "372138053416bbb8abf9d6f932da8540dad263e4",
+      "version": "1.3.9",
+      "license": "GPL-3.0",
+      "licenseSha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "destination": "custom_nodes/ComfyUI-KJNodes",
+      "patch": "patches/kjnodes-1.3.9.patch",
+      "patchSha256": "7704e5d56ed2bc3195349ebd8e3d6de268bcbdcecdf7c10f1fe70fc0b0c4fda8"
+    },
+    "layerstyle": {
+      "origin": "https://github.com/chflame163/ComfyUI_LayerStyle.git",
+      "commit": "d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935",
+      "tree": "71e802f4590393aed7d1c49e0b95177dd1b1e7a9",
+      "version": "2.0.38",
+      "license": "MIT",
+      "licenseSha256": "5db9f53ef698ae099810ef003ef0668f644ebf4ffc041d5a2fffdaafc81569b0",
+      "destination": "custom_nodes/ComfyUI_LayerStyle"
+    },
+    "videohelpersuite": {
+      "origin": "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git",
+      "commit": "2984ec4c4b93292421888f38db74a5e8802a8ff8",
+      "tree": "64b8844d7e472fd9c64b1b6b12ae819d2e44a601",
+      "version": "1.7.9",
+      "license": "GPL-3.0",
+      "licenseSha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "destination": "custom_nodes/ComfyUI-VideoHelperSuite"
+    }
+  },
+  "targetSha256": {
+    "comfy/minimax_lora_guard.py": "3517ebca28c49d0dd0d78aa4973d1db7771b2db3bbc95d7dee09822f8b3f45d1",
+    "comfy/ops.py": "8e36b2b5ecb2405c6885cae40bbd91bf8b5883683f5350b0c01366195d26a062",
+    "comfy/sd.py": "6a8e5aa0153f3cf2aa487d2b2c8862c894231c56ad88edb267aaa3b006f71c12",
+    "comfy/weight_adapter/bypass.py": "25b2e2a7bc824f3026464263bb31c5964e3ebcf4fe690fed267780e6af3a6012",
+    "comfy_extras/nodes_minimax_h3.py": "5d87e97e2c010d732f30f684f94b85e83e1464760ce65aa9c6c8e7dd5c0a22b4",
+    "custom_nodes/ComfyUI-KJNodes/nodes/model_optimization_nodes.py": "bd895495143afa3cf4bf806bb62b96b55613e75ec57a0b4a84f985a720b77683",
+    "custom_nodes/h3_benchmark_sampler/COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "custom_nodes/h3_benchmark_sampler/LICENSE": "a47f0c61a1d085700264005ce6efb3bd7d82a44df4d9b58d95824b2c4bc307c1",
+    "custom_nodes/h3_benchmark_sampler/__init__.py": "0918f3288fb5dae21ce003bf02988772db375d8f61c8d10cd8f209cbd068c79f",
+    "custom_nodes/h3_benchmark_sampler/core.py": "04ef163f5c4fdbf289fb9277063967c705ea678ad9e680c28f32c71c6f3decdc",
+    "custom_nodes/h3_benchmark_sampler/sampling.py": "b3c9649c00d0f89437a4d9433c6f7dd996e530a8a981eed91437c73c9bfe712a",
+    "custom_nodes/qs_h3_source_attestor/__init__.py": "e383adf22c10a7619dd9b0b9068592b5a6a29e2d745c8de768a4d3a7cf3605e9",
+    "custom_nodes/qs_h3_source_attestor/attestor.py": "2a34de301e99fbc75782761b79e7ca7f451b4a964e194ad34eaac8f982fd328d",
+    "server.py": "4706411c6d241f9842bc5bce482f6cfa4725f40f72b569e9ee9bf5da1f9d2cf5"
+  }
+}

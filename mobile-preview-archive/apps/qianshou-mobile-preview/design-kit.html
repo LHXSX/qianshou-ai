@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>千手手机端 · 页面地图</title>
+  <style>
+    :root { --ink:#1c1730; --muted:#6d6780; --line:#ece7f4; --bg:#f6f3ff; --card:#fff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "PingFang SC", sans-serif; color: var(--ink); background: var(--bg); }
+    main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+    h1 { font-size: 28px; letter-spacing: -.03em; margin: 0 0 8px; }
+    .lede { color: var(--muted); line-height: 1.7; margin: 0 0 32px; }
+    h2 { font-size: 16px; margin: 32px 0 12px; }
+    .map { display: grid; gap: 12px; padding: 20px; background: var(--card); border-radius: 16px; }
+    .row { display: grid; grid-template-columns: 120px 1fr; gap: 16px; font-size: 14px; line-height: 1.6; }
+    .row b { color: #6d4cff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    figure { margin: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+    figure img { width: 100%; display: block; }
+    figcaption { padding: 12px 14px 14px; font-size: 13px; }
+    figcaption strong { display: block; margin-bottom: 4px; }
+    figcaption span { color: var(--muted); }
+    .note { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>千手手机端 · 该有哪些页</h1>
+    <p class="lede">先看主流智能体 App 怎么拆页，再决定千手抄什么。豆包是超级 App（对话+市场+创作+云盘+我的）。Kimi / ChatGPT 是对话铺满、历史进侧栏。千手的差异是电脑在干活，不是再做一遍豆包。</p>
+
+    <div class="map">
+      <div class="row"><b>未登录</b><span>开屏 → 登录 ⇄ 注册 → 必要时 TOTP。登录前进不去壳，没有游客模式。</span></div>
+      <div class="row"><b>对话</b><span>主页。消息流 + 任务卡插在对话里。左上打开会话列表。底部是对话组件，不是营销输入框。</span></div>
+      <div class="row"><b>电脑</b><span>同账号 Windows / Mac。没有主机就写「无远程主机」，对话仍走云端。点一台电脑，是进它的原会话，不把两段历史揉在一起。</span></div>
+      <div class="row"><b>我的</b><span>个人中心。第一入口是订阅中心。下面才是资料、安全、登录设备、连接状态、退出。</span></div>
+      <div class="row"><b>订阅中心</b><span>从「我的」进入的全屏。套餐、模型额度、任务额度。读不到就写暂不可读。购买按钮在支付验收前保持「待接入」，不许编价格。</span></div>
+    </div>
+
+    <h2>对话组件（常驻，不算一页）</h2>
+    <p class="note">叠在对话页底部，键盘弹出时收起底栏。结构固定四层：快捷能力（图 / 视频 / 表，可收）→ 输入条（语音 · 文本 · 发送）→ 一句说明「发送后由千手理解，不会自动扣款」→ 系统键盘。有字才点亮发送。语音要先同意，识别结果进输入框，不自动发出。</p>
+
+    <h2>界面</h2>
+    <div class="grid">
+      <figure><img src="design-kit/qs-ui-splash.png" alt="开屏"><figcaption><strong>开屏</strong><span>品牌进门，自动去登录</span></figcaption></figure>
+      <figure><img src="design-kit/qs-ui-login.png" alt="登录"><figcaption><strong>登录</strong><span>上海账号。手机号 / 微信只提示接入中</span></figcaption></figure>
+      <figure><img src="design-kit/qs-ui-register.png" alt="注册"><figcaption><strong>注册</strong><span>完成后回到登录，不自动登入</span></figcaption></figure>
+      <figure><img src="design-kit/qs-app-chat.png" alt="对话"><figcaption><strong>对话</strong><span>消息 + 任务卡 + 底栏三格</span></figcaption></figure>
+      <figure><img src="design-kit/qs-app-composer.png" alt="对话组件"><figcaption><strong>对话组件</strong><span>键盘起、底栏收、发送点亮</span></figcaption></figure>
+      <figure><img src="design-kit/qs-app-computers.png" alt="电脑"><figcaption><strong>电脑</strong><span>无远程主机的诚实空态</span></figcaption></figure>
+      <figure><img src="design-kit/qs-app-me.png" alt="个人中心"><figcaption><strong>个人中心</strong><span>订阅中心是第一入口</span></figcaption></figure>
+      <figure><img src="design-kit/qs-app-subscribe.png" alt="订阅中心"><figcaption><strong>订阅中心</strong><span>额度读不到就不写数字</span></figcaption></figure>
+    </div>
+  </main>
+</body>
+</html>

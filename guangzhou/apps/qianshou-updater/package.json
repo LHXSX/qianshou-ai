@@ -1,0 +1,13 @@
+{
+  "name": "qianshou-updater",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Signed update discovery and staging shared by the desktop shell and the companion application.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

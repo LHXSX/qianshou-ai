@@ -1,0 +1,91 @@
+/* Account and computer navigation stay subordinate to the conversation. */
+.sidebar [data-testid^="mobile-history-row-"] { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.sidebar [data-testid^="mobile-history-row-"] > button:first-child { flex: 1; min-width: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.sidebar [data-testid^="mobile-history-row-"] > button:last-child:not(:first-child) { width: 44px; min-height: 44px; flex-shrink: 0; padding: 8px 2px; font-size: 12px; color: var(--concept-muted, #71717a); }
+.sidebar [data-testid="mobile-delete-confirmation"] { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 16px; margin: 8px 0; border: 1px solid var(--concept-line, #e5e7eb); border-radius: 16px; background: var(--concept-surface, #fff); }
+.sidebar [data-testid="mobile-delete-title"], .sidebar [data-testid="mobile-delete-detail"], .sidebar [data-testid="mobile-delete-pending"] { grid-column: 1 / -1; font-size: 13px; line-height: 1.6; }
+.sidebar [data-testid="mobile-delete-title"] { font-weight: 650; font-size: 15px; }
+.sidebar [data-testid="mobile-delete-confirm"] { color: #bf4258; }
+.quota-notice { padding: 18px; border-radius: 16px; background: #f5f2fc; text-align: left; margin: 12px 0; }
+.quota-notice strong { font-size: 15px; color: var(--concept-ink, #202331); }
+.quota-notice p { color: var(--concept-muted, #71717a); font-size: 13px; line-height: 1.6; margin: 8px 0 12px; }
+.quota-notice-action { min-height: 44px; padding: 10px 16px; background: #7257d8; border: 0; border-radius: 12px; font-size: 14px; font-weight: 600; color: #fff; }
+section.account-dialog.account-dialog-login:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-content: safe center;
+  gap: 16px;
+}
+.sidebar .sidebar-footer { padding: 12px 10px max(12px, env(safe-area-inset-bottom)); gap: 4px; }
+.sidebar .sidebar-account { min-width: 0; min-height: 64px; padding: 10px; border: 0; border-radius: 16px; background: transparent; }
+.sidebar .sidebar-account:hover, .sidebar .sidebar-settings:hover { background: var(--concept-surface, #fff); }
+.sidebar .sidebar-account-avatar { width: 40px; height: 40px; min-width: 40px; border-radius: 13px; color: #fff; background: #6554d9; font-size: 17px; font-weight: 750; box-shadow: none; }
+.sidebar .sidebar-account-meta { display: grid; gap: 4px; min-width: 0; text-align: left; }
+.sidebar .sidebar-account-name { font-size: 15px; line-height: 1.3; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sidebar .sidebar-account-id { color: var(--concept-muted, #71717a); font-size: 11px; line-height: 1.3; }
+.sidebar .sidebar-settings { width: 40px; height: 40px; border: 0; border-radius: 12px; flex-shrink: 0; }
+.sidebar .pc-contents { display: grid; gap: 4px; }
+.sidebar .pc-contents[hidden] { display: none; }
+.sidebar [data-testid="mobile-sidebar"] .pc-device-row { display: flex; width: 100%; gap: 10px; align-items: center; padding: 11px 8px; min-height: 60px; border: 0; border-radius: 12px; background: transparent; text-align: left; }
+.sidebar [data-testid="mobile-sidebar"] .pc-device-row:disabled { opacity: 1; cursor: default; color: var(--concept-muted, #71717a); }
+.pc-device-icon { width: 25px; height: 18px; border: 1.5px solid currentColor; border-radius: 4px; position: relative; flex-shrink: 0; margin: 0 3px 4px; }
+.pc-device-icon::after { content: ''; position: absolute; width: 11px; height: 1.5px; background: currentColor; bottom: -5px; left: 5.5px; }
+.pc-device-info { display: grid; gap: 4px; min-width: 0; flex: 1; }
+.pc-device-info strong { font-size: 13px; line-height: 1.3; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.pc-device-info small { font-size: 11px; color: var(--concept-muted, #71717a); line-height: 1.3; }
+.pc-device-presence { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--concept-muted, #71717a); white-space: nowrap; }
+.pc-device-presence i { width: 6px; height: 6px; background: #9a9ca3; border-radius: 50%; }
+.pc-device-presence.is-online { color: #178550; }
+.pc-device-presence.is-online i { background: #18a765; }
+.conversation.is-pc-session .context-bar { border-bottom: 1px solid var(--concept-line, #e5e7eb); }
+.pc-session-origin { color: var(--concept-muted, #71717a); font-size: 12px; line-height: 1.4; }
+.capability-unavailable { display: grid; gap: 14px; margin: 18px 0; max-width: 100%; overflow-wrap: anywhere; }
+.capability-request { margin: 0; padding: 0; text-align: right; font-size: 16px; }
+.capability-explanation { margin: 0; padding: 0; font-size: 16px; line-height: 1.75; color: var(--concept-ink, #202331); }
+.composer-voice-panel { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 10px 12px; margin: 0; border: 0; border-radius: 20px; background: transparent; box-shadow: none; flex: 1 1 100%; }
+.composer-voice-panel[hidden] { display: none; }
+.voice-preview { flex: 1; min-width: 120px; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; color: var(--concept-ink, #202331); max-height: 100px; overflow-y: auto; }
+.voice-auto-label { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--concept-muted, #71717a); white-space: nowrap; }
+.voice-auto-label input { width: 16px; height: 16px; margin: 0; accent-color: #7560db; }
+.voice-cancel { min-height: 36px; padding: 6px 8px; background: transparent; border: 0; border-radius: 8px; color: #716584; font-size: 13px; }
+.voice-hold-surface {
+  flex: 1 1 100%; min-height: 46px; border: 1px solid var(--concept-line, #e8e7ef);
+  border-radius: 16px; background: var(--concept-surface, #fff); color: var(--concept-ink, #202331);
+  font-size: 15px; touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; outline: none;
+}
+.voice-hold-surface:focus-visible { outline: 3px solid color-mix(in srgb, var(--concept-primary, #7560db) 38%, transparent); outline-offset: 3px; }
+.voice-keyboard-toggle { width: 36px; height: 36px; min-width: 36px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--concept-muted, #71717a); }
+.voice-keyboard-toggle svg { width: 19px; height: 19px; }
+.voice-wave { display: flex; gap: 3px; align-items: center; height: 26px; }
+.voice-wave i { display: block; width: 3px; height: 7px; border-radius: 5px; background: #7560db; }
+.is-listening .voice-wave i { animation: voice-breathe .7s ease-in-out infinite alternate; }
+.voice-wave i:nth-child(2) { animation-delay: -.2s; } .voice-wave i:nth-child(3) { animation-delay: -.5s; } .voice-wave i:nth-child(4) { animation-delay: -.3s; }
+.composer .voice-button[data-testid="mobile-voice"] { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; width: 44px; height: 44px; }
+.composer .voice-button[data-testid="mobile-voice"][aria-pressed="true"] { background: #7560db12; border-radius: 50%; transform: scale(1.05); }
+.composer-voice-panel.is-cancelling { border-color: #d66375; background: #fff4f5; }
+.is-cancelling .voice-wave i { background: #cb5067; }
+/* One surface owns both input modes; controls never sit outside the composer. */
+.composer.composer-unified { position: relative; display: flex; flex-direction: column; align-items: stretch; flex-wrap: nowrap; gap: 0; padding: 10px 10px 6px; border: 1px solid var(--concept-line, #e8e7ef); border-radius: 22px; background: var(--concept-bg, #f5f5f8); box-shadow: none; }
+.composer.composer-unified:focus-within { border-color: color-mix(in srgb, var(--concept-primary) 28%, var(--concept-line)); box-shadow: none; }
+.composer.composer-unified textarea { order: 0; flex: none; width: 100%; min-height: 44px; max-height: 112px; padding: 5px 6px; border-radius: 0; background: transparent; line-height: 1.5; font-size: 16px; }
+.composer-unified .composer-toolbar { order: 2; display: flex; align-items: center; justify-content: flex-end; gap: 4px; min-height: 38px; width: 100%; }
+.composer-unified .composer-toolbar > button { order: 0; flex: 0 0 36px; width: 36px; min-width: 36px; height: 36px; padding: 0; border: 0; background: transparent; }
+.composer-unified .composer-toolbar .composer-add { border: 0 !important; width: 36px !important; min-width: 36px !important; height: 36px !important; }
+.composer-unified .composer-add svg { width: 19px; height: 19px; }
+.composer-unified .composer-toolbar .voice-button[data-testid="mobile-voice"] { width: 36px; height: 36px; min-height: 36px; }
+.composer-unified .composer-toolbar [data-testid="mobile-send"] { color: #fff; background: var(--concept-primary); width: 34px; min-width: 34px; height: 34px; font-size: 23px; }
+.composer-unified .composer-quick-menu { flex: 1; min-width: 0; flex-wrap: nowrap; overflow-x: auto; padding: 0; margin-right: 2px; gap: 5px; }
+.composer-unified .composer-quick-menu .suggestion { flex: 0 0 auto; white-space: nowrap; min-width: 0; width: auto; height: 28px; padding: 3px 8px; border: 1px solid var(--concept-line); border-radius: 14px; background: transparent; font-size: 11px; line-height: 20px; }
+.composer-unified .composer-voice-panel { order: 0; flex: none; width: 100%; padding: 0; border-radius: 12px; gap: 8px; }
+.composer-unified .voice-hold-surface { order: -1; flex: 1 0 100%; width: 100%; min-height: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; font-size: 16px; font-weight: 500; -webkit-touch-callout: none; -webkit-user-select: none; }
+.composer-unified .voice-auto-label { flex: 1; }
+.composer-unified .voice-cancel { width: auto; min-width: 44px; border-radius: 8px; }
+.composer-unified .voice-wave { justify-content: center; width: 100%; height: 32px; }
+.app-updates > p { margin: 10px 16px; font-size: 13px; line-height: 1.6; color: var(--concept-muted, #71717a); }
+.app-update-action { padding: 4px 16px 14px; }
+.app-update-action button, .app-update-action a { border: 0; padding: 10px 14px; background: var(--concept-primary, #6352d9); color: #fff; border-radius: 12px; font-size: 14px; text-decoration: none; }
+@keyframes voice-breathe { to { height: 21px; opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .is-listening .voice-wave i { animation: none; height: 14px; } }

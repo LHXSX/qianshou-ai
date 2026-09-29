@@ -1,0 +1,32 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import css from './GuideBody.module.css';
+/**
+ * The compass: a ring with the needle's rhombus pointing north-east, on
+ * `currentColor` so each rendering picks its own ink.
+ * @param props - rendered size and class.
+ * @returns the compass glyph.
+ */
+export function CompassGlyph({ size = 16, className }) {
+    return (_jsxs("svg", { width: size, height: size, viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", className: className, children: [_jsx("circle", { cx: "8", cy: "8", r: "6", stroke: "currentColor", strokeWidth: "1.4" }), _jsx("path", { d: "M 10.9 5.1 L 9.1 9.1 L 5.1 10.9 L 6.9 6.9 Z", fill: "currentColor" })] }));
+}
+/**
+ * The cube: an isometric box — hexagonal silhouette, the top face's two edges,
+ * and the front seam — in straight strokes with softly rounded joins, on
+ * `currentColor`. The guide body draws it in a capsule whose type registered
+ * no glyph of its own.
+ * @param props - rendered size and class.
+ * @returns the cube glyph.
+ */
+export function CubeGlyph({ size = 16, className }) {
+    return (_jsxs("svg", { width: size, height: size, viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true", className: className, children: [_jsx("path", { d: "M 8 2.5 L 12.9 5.2 V 10.8 L 8 13.5 L 3.1 10.8 V 5.2 Z", stroke: "currentColor", strokeWidth: "1.1", strokeLinejoin: "round" }), _jsx("path", { d: "M 3.1 5.2 L 8 7.9 L 12.9 5.2 M 8 7.9 V 13.5", stroke: "currentColor", strokeWidth: "1.1", strokeLinejoin: "round", strokeLinecap: "round" })] }));
+}
+/**
+ * The title as the chip and a floating panel's header show it.
+ * @param props - the tab information hook.
+ * @returns the compass followed by the tab's title text.
+ */
+export function GuideTitle({ useTabInfo }) {
+    const { tab } = useTabInfo();
+    return (_jsxs(_Fragment, { children: [_jsx(CompassGlyph, { className: css.titleIcon }), tab.title] }));
+}
+//# sourceMappingURL=GuideTitle.js.map

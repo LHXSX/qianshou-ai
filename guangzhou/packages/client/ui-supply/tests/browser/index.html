@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>供给管理 · 窄屏渲染验证</title>
+    <!-- Minimal alias tokens so the page renders visibly; layout rules under
+         test (grid tracks, min-width, wrapping) do not depend on them. -->
+    <style>
+      :root {
+        --dsw-alias-label-primary: #111418; --dsw-alias-label-secondary: #4a5058;
+        --dsw-alias-label-tertiary: #767d86; --dsw-alias-label-error: #c02626;
+        --dsw-alias-brand-primary: #2563eb; --dsw-alias-bg-layer-1: #ffffff;
+        --dsw-alias-bg-layer-2: #f7f8fa; --dsw-alias-bg-layer-3: #ffffff;
+        --dsw-alias-border-l3: #e3e5e8; --dsw-alias-border-l4: #d3d6da;
+        --dsw-alias-state-warn-label: #a25700; --dsw-alias-state-success-primary: #1a7f4b;
+      }
+      body { margin: 0; font-family: system-ui, -apple-system, "PingFang SC", sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./harness.mjs"></script>
+  </body>
+</html>

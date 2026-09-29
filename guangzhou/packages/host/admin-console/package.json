@@ -1,0 +1,19 @@
+{
+  "name": "@deepseek-ai/dsh-host-admin-console",
+  "version": "0.1.5-rc.2",
+  "description": "Qianshou AI operations console: standalone admin service with RBAC, audit trail and IP allowlist",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "src/server.ts",
+  "exports": {
+    ".": "./src/server.ts",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "start": "node src/main.ts serve",
+    "typecheck": "tsc -p tsconfig.json",
+    "test:modules": "node --test tests/operational-modules.node-test.ts"
+  }
+}

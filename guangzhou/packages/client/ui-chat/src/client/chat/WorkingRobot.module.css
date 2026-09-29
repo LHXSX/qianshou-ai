@@ -1,0 +1,108 @@
+.robot {
+  display: block;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-right: 6px;
+  overflow: hidden;
+  color: var(--dsw-alias-brand-primary);
+  /* ── 呼吸灯 ──────────────────────────────────────────────────────────
+     用户要求"在运行思考的时候需要有呼吸灯"。
+
+     为什么用**光晕的强度**而不是位移或缩放来做：`ui-aesthetics` 的交互状态纪律
+     第一条是"优先选那些保持几何与布局稳定的状态变化，只调整强调、对比或
+     局部反馈"。呼吸灯正是这种表达——它是**光度**的周期变化，
+     `filter: drop-shadow` 与 `opacity` 都不参与布局计算，
+     所以无论怎么呼吸，周围任何东西都不会动一格。
+
+     节奏取 1.6s 而不是更快的 660ms：现有的机器人弹跳是 660ms，
+     两者叠加时若同频会显得躁；1.6s 的呼吸是两个弹跳周期多一点的整数倍关系
+     （约 2.4 倍），读起来是"有个东西在稳定地活着"，而不是"在抖"。
+     光晕半径用 `em`（相对字号）而不是 px，这样跟随界面字号设置一起放大。 */
+  animation: working-robot-breathe 1.6s ease-in-out infinite;
+}
+
+@keyframes working-robot-breathe {
+  0%, 100% {
+    opacity: 0.82;
+    filter: drop-shadow(0 0 0 color-mix(in srgb, currentColor 0%, transparent));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 0.32em color-mix(in srgb, currentColor 45%, transparent));
+  }
+}
+
+.body {
+  animation: working-robot-bounce 660ms ease-in-out infinite;
+}
+
+.shell {
+  fill: var(--dsw-alias-bg-base);
+}
+
+.antenna {
+  fill: currentColor;
+}
+
+.eyes {
+  stroke-width: 2;
+}
+
+.frontArm,
+.backArm {
+  transform-origin: 18px 15px;
+  animation: working-robot-arms 660ms ease-in-out infinite;
+}
+
+.frontLeg,
+.backLeg {
+  transform-origin: 17px 21px;
+  animation: working-robot-legs 660ms ease-in-out infinite;
+}
+
+.backArm,
+.backLeg {
+  opacity: 0.5;
+  animation-delay: -330ms;
+}
+
+@keyframes working-robot-bounce {
+  0%, 50%, 100% { transform: translateY(0); }
+  25%, 75% { transform: translateY(-1px); }
+}
+
+@keyframes working-robot-arms {
+  0%, 100% { transform: rotate(-22deg); }
+  50% { transform: rotate(22deg); }
+}
+
+@keyframes working-robot-legs {
+  0%, 100% { transform: rotate(-24deg); }
+  50% { transform: rotate(24deg); }
+}
+
+/* 呼吸灯的"低动态"版本**定义在顶层**。
+   第一版我把 `@keyframes` 嵌在 `@media` 里，虽然 CSS Nesting 允许，
+   但它在压缩/降级后能否被可靠解析依赖工具链，属于不必要的风险——
+   顶层定义 + 媒体查询里换 `animation-name` 是零风险写法。 */
+@keyframes working-robot-breathe-calm {
+  0%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 0.22em color-mix(in srgb, currentColor 30%, transparent));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* 呼吸灯在"减少动态效果"下**保留**：它是状态指示（"正在运行"），不是装饰——
+     完全去掉会让"运行中"与"已停止"看起来一样。所以换成幅度更小、
+     周期更长的版本，仍然"亮着"，但不闪。
+     这与机器人的弹跳不同：弹跳是纯装饰，可以整体关掉。 */
+  .robot {
+    animation-name: working-robot-breathe-calm;
+    animation-duration: 4s;
+  }
+  .robot * {
+    animation: none;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "qianshou.h3-owner.v2",
+  "pythonPath": "D:\\H3\\venv\\Scripts\\python.exe",
+  "ffmpegPath": "D:\\tools\\ffmpeg\\bin\\ffmpeg.exe",
+  "ffprobePath": "D:\\tools\\ffmpeg\\bin\\ffprobe.exe",
+  "entryPath": "D:\\qianshou-node\\h3-v2\\video_generate.py",
+  "runtimePath": "D:\\qianshou-node\\h3-v2\\h3_runtime.py",
+  "firstFramePath": "D:\\qianshou-node\\h3\\first.png",
+  "workflowPath": "D:\\H3\\workflows\\qs_new4.json",
+  "modelPath": "D:\\H3\\models\\h3.safetensors",
+  "workflow": "qs_new4",
+  "adapterBase": "http://127.0.0.1:8790",
+  "selfTestReceiptPath": "D:\\qianshou-node\\h3-v2\\private\\self-test-v2.json",
+  "outputRoot": "D:\\H3\\output\\MiniMax_H3\\LocalAPI"
+}

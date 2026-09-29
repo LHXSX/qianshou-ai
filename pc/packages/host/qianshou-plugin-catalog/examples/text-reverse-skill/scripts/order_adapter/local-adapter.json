@@ -1,0 +1,1 @@
+{"capabilityId":"text.transform","category":"text","contractVersion":"v1","inputKinds":["inline"],"outputKind":"inline_json","platformDispatchable":true,"schema":"qianshou.local-adapter-candidate.v2","selfTests":[{"expected":"samples/reverse.expected.json","input":"samples/reverse.input.json"}],"taskType":"text_reverse_v1"}

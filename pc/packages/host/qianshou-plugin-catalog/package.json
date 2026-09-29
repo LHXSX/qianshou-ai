@@ -1,0 +1,83 @@
+{
+  "version": "0.1.6-alpha.2",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "license": "MIT",
+  "name": "@deepseek-ai/dsh-host-qianshou-plugin-catalog",
+  "description": "Qianshou plugin market for both PC clients, plus bounded public bundle discovery",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./official-seed-csv-tools": {
+      "types": "./lib/types/official-seed-csv-tools.d.ts",
+      "default": "./lib/official-seed-csv-tools.js"
+    },
+    "./reviewed-seed-market-tools": {
+      "types": "./lib/types/reviewed-seed-market-tools.d.ts",
+      "default": "./lib/reviewed-seed-market-tools.js"
+    },
+    "./types": {
+      "types": "./lib/types/types.d.ts",
+      "default": "./lib/types/types.js"
+    },
+    "./typert": {
+      "types": "./lib/typert.host.d.ts",
+      "default": "./lib/typert.host.js"
+    },
+    "./remote": {
+      "types": "./lib/typert.remote-client.d.ts",
+      "default": "./lib/typert.remote-client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./local-skill-tools": {
+      "types": "./lib/types/local-skill-tools.d.ts",
+      "default": "./lib/local-skill-tools.js"
+    }
+  },
+  "dependencies": {
+    "zod": "^4.4.3",
+    "@deepseek-ai/schemastery": "workspace:^",
+    "@deepseek-ai/dsh-compute-core": "workspace:^",
+    "@deepseek-ai/dsh-tools": "workspace:^",
+    "@deepseek-ai/dsh-atomic-write": "workspace:^",
+    "@deepseek-ai/dsh-win32-process": "workspace:^",
+    "@jitl/quickjs-wasmfile-release-sync": "0.32.0",
+    "quickjs-emscripten": "0.32.0",
+    "@deepseek-ai/dsh-host-node-contributor": "workspace:^",
+    "@deepseek-ai/dsh-host-qianshou-skill-import": "workspace:^"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-typert-protocol": "workspace:^"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/cordis-plugin-timer": "workspace:^",
+    "@deepseek-ai/dsh-app-boot": "workspace:^",
+    "@deepseek-ai/dsh-hmr": "workspace:^",
+    "@deepseek-ai/dsh-llm": "workspace:^",
+    "@deepseek-ai/dsh-plugin-manager": "workspace:^",
+    "@deepseek-ai/dsh-system-prompt": "workspace:^",
+    "@deepseek-ai/dsh-tools": "workspace:^",
+    "@deepseek-ai/dsh-typert-protocol": "workspace:^"
+  },
+  "files": [
+    "lib/*.js",
+    "lib/index.js",
+    "lib/official-seed-csv-tools.js",
+    "lib/reviewed-seed-market-tools.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts",
+    "lib/typert.host.js",
+    "lib/typert.host.d.ts",
+    "lib/typert.remote-client.js",
+    "lib/typert.remote-client.d.ts",
+    "seed/csv-profile/qianshou.csv-profile-1.0.0.qspkg",
+    "lib/local-skill-tools.js"
+  ]
+}

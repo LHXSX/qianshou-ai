@@ -1,0 +1,212 @@
+{
+  "title": "qianshou/task/v1",
+  "description": "What the platform asks a node to do (section 3). The task states SEMANTIC requirements only; which implementation satisfies them is the node's business. See contracts/README.md §2.3. FIELD PROVENANCE: task_id/task_type/input{kind}/requires/budget/deadline_s/idempotency_key/pin{worker_ids,policy} come from the phase brief; the budget sub-shape ({amount_minor,currency}) and the closed-root choice are design judgments (README §7), the money unit following docs/handoff/01-规划与产品方案/02-能力任务与计费协议草案.md ('integer minor accounting unit'). DELIBERATELY CLOSED ROOT: the platform is the only writer of a dispatch, so an unknown key here is a platform bug and must fail loudly rather than be forwarded to 156 heterogeneous nodes.",
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "qianshou/task/v1",
+      "description": "Contract discriminator."
+    },
+    "task_id": {
+      "type": "string",
+      "description": "Platform-assigned task identity. Distinct from workload_id/shard_id, which address the billed unit; a task may fan out into many shards."
+    },
+    "task_type": {
+      "type": "string",
+      "description": "SEMANTIC task name — a member of the registered capability namespace (e.g. `media.transcode`), NOT a legacy executor name like `ffmpeg` and not a package name. This field replaces the platform's `required_software` string matching, which today admits only 5 client-advertised names against 14 platform-required ones and makes 19 of 25 task types permanently unreachable for this client (audit §1.1)."
+    },
+    "input": {
+      "description": "How the payload arrives. Exactly one of the three shapes must match — expressed as oneOf because the enforced subset has no discriminated-union keyword. `inline` for small payloads, `ref` for fetched artifacts, `stream` for a live channel.",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "inline",
+              "description": "Payload carried inside this document."
+            },
+            "value": {
+              "description": "The payload itself. Unconstrained JSON on purpose: its shape is the task_type's business, declared by the registry entry, not by this envelope."
+            }
+          },
+          "required": ["kind", "value"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "ref",
+              "description": "Payload fetched separately by the node."
+            },
+            "uri": {
+              "type": "string",
+              "description": "Where the node fetches it. A node must not be given a reference it is not authorised to read; authorisation is an identity/scope question, not a task question."
+            },
+            "sha256": {
+              "type": "string",
+              "description": "Optional content digest the node verifies after download. Per the existing protocol draft, a hash proves transfer consistency, not content correctness."
+            }
+          },
+          "required": ["kind", "uri"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "stream",
+              "description": "Payload arrives over a live channel."
+            },
+            "stream_id": {
+              "type": "string",
+              "description": "Channel identity, resolved out of band. The protocol's per-frame size limit is a separate concern (audit §1.8)."
+            }
+          },
+          "required": ["kind", "stream_id"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "requires": {
+      "type": "array",
+      "description": "SEMANTIC capability requirements. Each element names a capability and the minimum contract generation it needs. Replaces the legacy `required_software` package-name set, which is a hard filter that silently zeroes the candidate pool (planner.py:717-731) — the legacy set is AND-semantics (every listed package must be present); see README §6 for the AND/OR question this draft deliberately leaves open.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability": {
+            "type": "string",
+            "description": "Registry member, e.g. `media.transcode`. An unregistered requirement can never be matched, so the contract test rejects it before dispatch."
+          },
+          "min_version": {
+            "type": "string",
+            "description": "Minimum VERSION OF THE CAPABILITY CONTRACT (the semantic name's generation), not of any implementation. This is what lets the implementation change underneath without renegotiating tasks — decision one."
+          },
+          "min_vram_mb": {
+            "type": "integer",
+            "description": "Accelerator floor for capabilities such as `accelerator.gpu`, in MiB. Example value 8192 from the brief. Whether a node with exactly this much memory qualifies is a code-level comparison the schema does not decide."
+          }
+        },
+        "required": ["capability"],
+        "additionalProperties": false
+      }
+    },
+    "budget": {
+      "type": "object",
+      "description": "Spending ceiling the platform commits for this task.",
+      "properties": {
+        "amount_minor": {
+          "type": "integer",
+          "description": "Integer minor units (fen for CNY). Integer only: the existing ledger keeps amounts as integer minor units and the protocol draft forbids per-call rounding to cents. Positivity is NOT machine-enforced."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code. Free-form string in v1; the core currently settles CNY. A currency enum waits until the core publishes one."
+        }
+      },
+      "required": ["amount_minor", "currency"],
+      "additionalProperties": false
+    },
+    "deadline_s": {
+      "type": "integer",
+      "description": "Seconds from dispatch after which the platform may reclaim the shard. Positivity is NOT machine-enforced. A deadline the node cannot observe is worse than none, so it must travel with the dispatch, not live only in the platform's planner."
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Business idempotency identifier for the dispatch. A node that sees the same key twice must not start work twice, and the ledger's uniqueness key is (workload, shard) — NOT a measured property of this field (README §6, unverified)."
+    },
+    "pin": {
+      "type": "object",
+      "description": "Hard placement constraint. POLICY IS MANDATORY AND v1 ADMITS EXACTLY ONE VALUE: fail_closed. This directly answers today's defect where a hard pin was silently ignored on first dispatch (3 bad placements in 516, one of which moved money from 167 to 122). Choosing between paying the wrong node and not dispatching at all is not a choice: refuse the dispatch instead. A caller that genuinely wants 'pinned first, otherwise anywhere' must express that by NOT setting pin; adding fail_open would be a contract version bump because it reopens the failure mode.",
+      "properties": {
+        "worker_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Worker identities allowed to execute this task. Must be non-empty when pin is present; non-emptiness is NOT machine-enforced (no minItems in the enforced subset), so the reader MUST reject an empty array rather than reading it as 'no constraint'."
+        },
+        "policy": {
+          "type": "string",
+          "enum": ["fail_closed"],
+          "description": "Only fail_closed is admitted in v1: if no listed worker is available the dispatch fails. It must never be silently downgraded to 'any worker'."
+        }
+      },
+      "required": ["worker_ids", "policy"],
+      "additionalProperties": false
+    },
+    "fan_out": {
+      "type": "object",
+      "description": "One primitive for the three fan-out kinds (triage / batch / anchor). They differ only in `bind` (what differs across the N pieces) and `shared` (what must stay identical), not in workflow shape: one input → N pieces → one join. Optional: a task without fan_out is a single shard. See contracts/README.md §2.3.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["triage", "batch", "anchor"],
+          "description": "triage = split mixed media by semantic capability; batch = the same task_type × N inputs; anchor = N fragments sharing one confirmed consistency reference."
+        },
+        "bind": {
+          "type": "string",
+          "description": "What differs across the N pieces: media type (triage), item identity (batch), fragment identity (anchor)."
+        },
+        "shared": {
+          "type": "string",
+          "description": "What must stay identical: the evidence pack (triage), the task spec (batch), the anchor id (anchor)."
+        }
+      },
+      "required": ["kind", "bind", "shared"],
+      "additionalProperties": false
+    },
+    "join": {
+      "type": "object",
+      "description": "How the N pieces converge. Batch join must prove all N arrived before settlement; a partial set must not be billed as a full delivery. The verifier named here is what accepts or rejects the joined set — an unregistered id is a dispatch-time refusal, not a schema concern.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["collect", "reduce"],
+          "description": "collect = keep each piece labelled (triage needs the medium on the way back); reduce = one aggregate."
+        },
+        "arity": {
+          "type": "integer",
+          "description": "Expected piece count N. Completeness is a code-level comparison against this number; positivity is NOT machine-enforced."
+        },
+        "verifier": {
+          "type": "string",
+          "description": "Verifier id that must accept the joined set."
+        }
+      },
+      "required": ["kind", "arity", "verifier"],
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "description": "Shared consistency reference for fan_out.kind=anchor. Dispatch MUST refuse any status other than confirmed (an unconfirmed anchor must not appear on a dispatch path). The schema still accepts draft so an unconfirmed anchor can be stored; the contract test locks the dispatch rule because the enforced subset has no if/then.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Anchor identity the N fragments share."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "confirmed"],
+          "description": "draft = not yet human-approved; confirmed = allowed on a dispatch path."
+        },
+        "confirmed_by": {
+          "type": "string",
+          "description": "Who confirmed. Required in spirit when status=confirmed; not machine-enforced (no if/then in the subset)."
+        },
+        "confirmed_at": {
+          "type": "integer",
+          "description": "Unix milliseconds of the confirmation."
+        }
+      },
+      "required": ["id", "status"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["contract", "task_id", "task_type", "input", "requires", "budget", "deadline_s", "idempotency_key"],
+  "additionalProperties": false
+}

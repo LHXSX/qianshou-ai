@@ -1,0 +1,70 @@
+{
+  "title": "qianshou/offer/v1",
+  "description": "A node owner's time-bounded offer for one manifest capability. An offer is discoverable supply, not an execution lease.",
+  "type": "object",
+  "properties": {
+    "contract": { "type": "string", "const": "qianshou/offer/v1" },
+    "offer_id": { "type": "string" },
+    "node_id": { "type": "string" },
+    "owner_id": { "type": "string" },
+    "manifest_id": { "type": "string" },
+    "manifest_revision": { "type": "integer" },
+    "capability_id": { "type": "string" },
+    "capability_version": { "type": "string" },
+    "visibility": { "type": "string", "enum": ["private", "invite", "public"] },
+    "acceptance": { "type": "string", "enum": ["off", "manual", "auto"] },
+    "status": { "type": "string", "enum": ["available", "busy", "degraded", "paused", "expired"] },
+    "price": {
+      "type": "object",
+      "properties": {
+        "amount_minor": { "type": "integer" },
+        "currency": { "type": "string" },
+        "unit": { "type": "string" }
+      },
+      "required": ["amount_minor", "currency", "unit"],
+      "additionalProperties": false
+    },
+    "availability": {
+      "type": "object",
+      "properties": {
+        "heartbeat_seq": { "type": "integer" },
+        "expires_at": { "type": "string" },
+        "queue_depth": { "type": "integer" },
+        "max_concurrency": { "type": "integer" }
+      },
+      "required": ["heartbeat_seq", "expires_at", "queue_depth", "max_concurrency"],
+      "additionalProperties": false
+    },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "data_residency": { "type": "string", "enum": ["local", "region", "any"] },
+        "network_egress": { "type": "string", "enum": ["denied", "declared", "allowed"] }
+      },
+      "required": ["data_residency", "network_egress"],
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "max_input_bytes": { "type": "integer" },
+        "max_output_bytes": { "type": "integer" },
+        "max_duration_s": { "type": "integer" }
+      },
+      "required": ["max_input_bytes", "max_output_bytes", "max_duration_s"],
+      "additionalProperties": false
+    },
+    "signature": {
+      "type": "object",
+      "properties": {
+        "algorithm": { "type": "string", "const": "ed25519" },
+        "key_id": { "type": "string" },
+        "value": { "type": "string" }
+      },
+      "required": ["algorithm", "key_id", "value"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["contract", "offer_id", "node_id", "owner_id", "manifest_id", "manifest_revision", "capability_id", "capability_version", "visibility", "acceptance", "status", "price", "availability", "privacy", "limits", "signature"],
+  "additionalProperties": false
+}

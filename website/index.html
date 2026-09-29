@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 关键：浏览器永远拉最新 index.html，让 Vite 哈希化的 JS/CSS 自动失效 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="description" content="千手 PC 从自然对话出发，帮助你使用这台电脑的真实能力，制作和试用私有插件。插件市场、购买出售与跨设备接单正在分阶段接入和验收。" />
+    <meta name="keywords" content="千手 PC,千手插件生态,个人智能体,自然对话,本机能力,机主授权,Mac,Windows" />
+    <link rel="canonical" href="https://qsnode.com/" />
+    <meta property="og:title" content="千手 PC · 从对话开始，让能力生长" />
+    <meta property="og:description" content="自然对话、本机能力与插件草稿。分享能力由机主决定；交易和接单状态以实际审核与回执为准。" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>千手 PC · 从对话开始，让能力生长</title>
+    <style>
+      .startup-screen{min-height:100vh;display:grid;place-content:center;justify-items:center;gap:16px;padding:32px;background:#e7edf3;color:#172b48;font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;text-align:center}
+      .startup-brand{display:flex;align-items:center;gap:10px;font-size:22px;letter-spacing:.04em}
+      .startup-mark{display:block;width:38px;height:38px}
+      .startup-screen p{margin:0;color:#51667d}
+      .startup-progress{width:176px;height:3px;border-radius:3px;background:#c6d3e1;overflow:hidden}
+      .startup-progress::after{content:"";display:block;width:45%;height:100%;border-radius:3px;background:#117c73;animation:startup-move 1.8s ease-in-out infinite alternate}
+      .startup-help{opacity:0;animation:startup-help 0s 12s forwards;font-size:13px}
+      .startup-help a{color:#12695f;text-underline-offset:3px}
+      @keyframes startup-move{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
+      @keyframes startup-help{to{opacity:1}}
+      @media(prefers-reduced-motion:reduce){.startup-progress::after{animation:none;transform:none}}
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="startup-screen" role="status" aria-live="polite">
+        <div class="startup-brand"><img class="startup-mark" src="/favicon.svg" alt="" aria-hidden="true"/><strong>千手</strong></div>
+        <p>正在打开千手官网…</p>
+        <div class="startup-progress" aria-hidden="true"></div>
+        <p class="startup-help">等待较久？请<a href="/?reload=1#/">重新加载</a>，或检查网络连接。</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+- id: session-persistence-jsonl
+  name: './delayed-persistence.ts'
+  config:
+    root: './.sessions'
+    compression: none

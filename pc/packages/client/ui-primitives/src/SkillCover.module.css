@@ -1,0 +1,10 @@
+.cover {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  background-color: var(--dsw-alias-bg-layer-2);
+  background-repeat: no-repeat;
+  background-size: 300% auto;
+  pointer-events: none;
+}

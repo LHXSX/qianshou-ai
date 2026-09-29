@@ -1,0 +1,60 @@
+{
+  "extends": "../../../tsconfig.base.client.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../ui-renderer"
+    },
+    {
+      "path": "../ui-sidebar"
+    },
+    {
+      "path": "../ui-conversation"
+    },
+    {
+      "path": "../locale"
+    },
+    {
+      "path": "../ui-theme"
+    },
+    {
+      "path": "../ui-slots"
+    },
+    {
+      "path": "../ui-session"
+    },
+    {
+      "path": "../ui-sidebar-right"
+    },
+    {
+      "path": "../ui-subagent"
+    },
+    {
+      "path": "../store"
+    },
+    {
+      "path": "../ui-primitives"
+    },
+    {
+      "path": "../ui-tool"
+    },
+    {
+      "path": "../ui-qianshou-account"
+    },
+    {
+      "path": "../../util/crypto"
+    },
+    {
+      "path": "../../host/qianshou-plugin-catalog/tsconfig.types.json"
+    }
+  ]
+}

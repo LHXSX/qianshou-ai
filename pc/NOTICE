@@ -1,0 +1,17 @@
+Qianshou PC distribution — copyright and license boundaries
+
+DeepSeek Harness original code is copyright its respective DeepSeek authors and
+remains under the MIT license in LICENSE. Qianshou contributors retain copyright
+in their own additions to the Harness-derived packages. Where a package retains
+MIT metadata, those additions are offered under MIT only to the extent their
+contributors own the rights to grant it. This does not claim authorship of
+unchanged or adapted DeepSeek code.
+
+The original Qianshou material specifically identified in qianshou/NOTICE is
+offered under Apache License 2.0, subject to the limits stated there. Vendored
+source, native packages, npm/Python dependencies, model weights, and media keep
+their own terms; consult THIRD_PARTY_NOTICES.md and nested license files.
+
+This notice does not establish provenance for every changed or newly added file.
+Before a public release, confirm the ownership and third-party notices for
+components whose origin is not established by the available source history.

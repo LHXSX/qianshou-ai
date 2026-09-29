@@ -1,0 +1,85 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.root:not([data-expanded]) {
+  contain: size layout;
+  height: calc(24px + var(--dsh-content-font-delta, 0px));
+}
+
+.row {
+  border-radius: 6px;
+  transition: background-color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+.row:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: -2px;
+}
+
+.leading {
+  flex-shrink: 0;
+}
+
+.root[data-state='running'] .leading {
+  color: var(--dsw-alias-brand-primary);
+}
+
+.chevron {
+  color: var(--dsw-alias-label-secondary);
+}
+
+.title {
+  font-weight: 500;
+}
+
+.separator {
+  flex: none;
+  width: 2px;
+  height: 2px;
+  margin: 0 8px;
+  border-radius: 1px;
+  background: var(--dsw-alias-label-caption);
+}
+
+/* Think text reads the secondary tier — one step under the body size
+   (setting −1 at ≤14, setting −2 above), shared with every flow-row title
+   and summary. */
+.summary {
+  min-width: 0;
+  overflow: hidden;
+  flex: 1 1 auto;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: var(--dsh-content-font-size-secondary, 13px);
+  line-height: calc(20px + var(--dsh-content-font-delta-secondary, 0px));
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.thinkBody {
+  max-height: min(280px, 45vh);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  margin: 6px 0 8px 7px;
+  padding: 4px 12px 4px calc(14px + var(--dsh-content-font-delta, 0px));
+  border-left: 0.5px solid var(--dsw-alias-border-l2);
+  color: var(--dsw-alias-label-secondary);
+  font-size: var(--dsh-content-font-size-secondary, 13px);
+  line-height: calc(20px + var(--dsh-content-font-delta-secondary, 0px));
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.thinkBody:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row { transition: none; }
+}

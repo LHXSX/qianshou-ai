@@ -1,0 +1,18 @@
+# Explicit, unbilled research overlay. Append only to an isolated development profile.
+# Establish the operator-owned SSH forward before enabling; no renderer credentials.
+# Loader config patches replace the whole config. This combined research overlay
+# retains the PC core and shared image route used to generate a missing first frame.
+# Copy any deployment-specific compute settings here before applying this overlay.
+- id: qianshou-compute-core
+  config:
+    baseUrl: https://qianshousuanli.com
+    inputStorageHostname: qianshou-1463872884.cos.ap-shanghai.myqcloud.com
+    researchImage:
+      gatewayOrigin: https://app.qianshousuanli.com
+    imageTrial:
+      gatewayOrigin: http://127.0.0.1:18991
+      tokenEnv: QIANSHOU_PRIVATE_IMAGE_TOKEN
+      timeoutMs: 420000
+    videoTrial:
+      gatewayOrigin: http://127.0.0.1:18852
+      timeoutMs: 1800000

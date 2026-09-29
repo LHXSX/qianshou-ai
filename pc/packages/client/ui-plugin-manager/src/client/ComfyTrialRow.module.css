@@ -1,0 +1,29 @@
+.card {
+  --accent: var(--dsw-alias-state-business-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 460px;
+  padding: 15px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 15px;
+  background: var(--dsw-alias-background-layer1);
+  color: var(--dsw-alias-label-primary);
+  box-shadow: 0 5px 18px color-mix(in srgb, var(--dsw-alias-label-primary) 6%, transparent);
+}
+.card[data-state='failed'] { border-color: color-mix(in srgb, var(--dsw-alias-state-error-primary) 35%, transparent); }
+.head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.icon { display: grid; flex: none; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); font-size: 16px; font-weight: 650; }
+.titleGroup { display: flex; flex: 1; flex-direction: column; gap: 3px; min-width: 0; }
+.titleGroup strong { font-size: 14px; font-weight: 650; }
+.titleGroup span { color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 1.45; }
+.privateBadge { flex: none; padding: 5px 8px; border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 999px; corner-shape: round; color: var(--accent); font-size: 11px; white-space: nowrap; }
+.result { display: flex; flex-direction: column; gap: 10px; }
+.meta { display: flex; flex-wrap: wrap; gap: 7px; }
+.meta span { padding: 5px 8px; border-radius: 7px; background: color-mix(in srgb, var(--dsw-alias-label-secondary) 8%, transparent); color: var(--dsw-alias-label-secondary); font-size: 11px; font-variant-numeric: tabular-nums; }
+.preview { display: block; max-width: min(100%, 320px); max-height: 320px; object-fit: contain; border: 1px solid color-mix(in srgb, var(--dsw-alias-label-secondary) 16%, transparent); border-radius: 9px; background: color-mix(in srgb, var(--dsw-alias-label-secondary) 5%, transparent); }
+.previewNote { margin: 0; color: var(--dsw-alias-label-secondary); font-size: 12px; }
+.foot { margin: 0; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--dsw-alias-label-secondary) 16%, transparent); color: var(--dsw-alias-label-secondary); font-size: 11px; line-height: 1.5; }
+.inspect { align-self: flex-start; padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: 12px; cursor: pointer; }
+.inspect:hover { text-decoration: underline; }
+.inspect:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

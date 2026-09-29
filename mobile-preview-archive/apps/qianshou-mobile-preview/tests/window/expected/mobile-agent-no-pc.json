@@ -1,0 +1,130 @@
+{
+  "type": "view",
+  "testId": "mobile-workspace",
+  "children": [
+    {
+      "type": "text",
+      "testId": "mobile-title",
+      "text": "千手 AI"
+    },
+    {
+      "type": "view",
+      "testId": "mobile-sidebar",
+      "children": [
+        {
+          "type": "view",
+          "testId": "mobile-new-agent",
+          "children": [
+            {
+              "type": "text",
+              "testId": "mobile-new-agent-label",
+              "text": "新建智能体会话"
+            }
+          ]
+        },
+        {
+          "type": "view",
+          "testId": "mobile-pc-drawer",
+          "children": [
+            {
+              "type": "text",
+              "testId": "mobile-pc-drawer-title",
+              "text": "我的电脑"
+            },
+            {
+              "type": "text",
+              "testId": "mobile-pc-directory-state",
+              "text": "无远程主机"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "testId": "mobile-sessions-title",
+          "text": "手机会话"
+        },
+        {
+          "type": "view",
+          "testId": "mobile-conversation-0",
+          "children": [
+            {
+              "type": "text",
+              "testId": "mobile-conversation-0-label",
+              "text": "会话 1"
+            }
+          ]
+        },
+        {
+          "type": "view",
+          "testId": "mobile-refresh",
+          "children": [
+            {
+              "type": "text",
+              "testId": "mobile-refresh-label",
+              "text": "刷新"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "testId": "mobile-target",
+      "text": "移动端智能体"
+    },
+    {
+      "type": "text",
+      "testId": "mobile-status",
+      "text": "可以继续交流"
+    },
+    {
+      "type": "view",
+      "testId": "mobile-transcript",
+      "children": [
+        {
+          "type": "text",
+          "testId": "mobile-turn-a",
+          "text": "Session cloud-1"
+        }
+      ]
+    },
+    {
+      "type": "view",
+      "testId": "mobile-admissions",
+      "children": []
+    },
+    {
+      "type": "view",
+      "testId": "mobile-request-draft",
+      "children": [
+        {
+          "type": "text",
+          "testId": "mobile-request-draft-title",
+          "text": "需求准备"
+        },
+        {
+          "type": "text",
+          "testId": "mobile-request-draft-description",
+          "text": "智能体将继续确认所需信息"
+        }
+      ]
+    },
+    {
+      "type": "input",
+      "testId": "mobile-input",
+      "value": "",
+      "placeholder": "和千手聊一聊"
+    },
+    {
+      "type": "view",
+      "testId": "mobile-send",
+      "children": [
+        {
+          "type": "text",
+          "testId": "mobile-send-label",
+          "text": "发送"
+        }
+      ]
+    }
+  ]
+}

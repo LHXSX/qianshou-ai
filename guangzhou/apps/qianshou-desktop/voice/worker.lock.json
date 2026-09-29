@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "file": "worker.py",
+  "sha256": "81c89ace6c289b68f95cb2afa76377bb7914feef8611e7b93801a4f4713f9d74",
+  "description": "Qianshou local JSONL CustomVoice worker; fixed seed and 1.5x pitch-preserving speech."
+}

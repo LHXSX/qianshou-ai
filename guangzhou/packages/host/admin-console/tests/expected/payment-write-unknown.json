@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "code": "payment_outcome_unknown",
+  "message": "未能确认上海的执行结果。请先核查上海订单或账本，勿重复充值或再次提交。"
+}

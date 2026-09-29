@@ -1,0 +1,14 @@
+.overview { --local-line: color-mix(in srgb, var(--dsw-alias-label-secondary) 28%, transparent); display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.filters { display: flex; flex-direction: column; gap: 13px; padding: 20px; border: 1px solid var(--local-line); border-radius: 16px; background: var(--dsw-alias-background-layer1); }
+.filterRow { display: flex; flex-wrap: wrap; gap: 8px; }
+.note { color: var(--dsw-alias-label-secondary); font-size: 13px; line-height: 20px; margin: 0; overflow-wrap: anywhere; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+.facts span { font-size: 12px; line-height: 18px; color: var(--dsw-alias-label-secondary); }
+.group { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 22px; border: 1px solid var(--local-line); border-radius: 17px; background: var(--dsw-alias-background-layer1); box-shadow: 0 5px 18px color-mix(in srgb, var(--dsw-alias-label-primary) 5%, transparent); }
+.packageCard { margin: 0; border: 1px solid var(--local-line); border-radius: 13px; background: var(--dsw-alias-background-layer1); }
+.packageCard + .packageCard { margin-top: 10px; }
+.packageCard:hover { border-color: color-mix(in srgb, var(--dsw-alias-state-business-primary) 48%, transparent); }
+.packageCard > div { padding: 14px 16px; }
+.packageCard button { font-size: 15px; }
+.empty { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 0.5px solid var(--dsw-alias-border-l3); padding-bottom: 10px; }

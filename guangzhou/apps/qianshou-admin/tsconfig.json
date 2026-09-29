@@ -1,0 +1,31 @@
+{
+  // 本工程刻意不 extends 仓库根 tsconfig.base.json：
+  // 管理台是独立部署的浏览器应用，既不属于 host 面也不属于 client 包图，
+  // 不参与根 tsconfig.host.json / tsconfig.client.json 的构建。
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "types": ["vite/client"],
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "sourceMap": true,
+    // 不使用已废弃的 baseUrl：TS 6+ 下 paths 相对本文件解析。
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "mock/**/*.ts", "__tests__/**/*.ts", "vitest.config.ts"]
+}

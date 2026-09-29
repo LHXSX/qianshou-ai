@@ -1,0 +1,171 @@
+diff --git a/comfy/ops.py b/comfy/ops.py
+index 077a4235..6d0011d0 100644
+--- a/comfy/ops.py
++++ b/comfy/ops.py
+@@ -972,6 +972,10 @@ def linear_input_act(linear, x, input_act):
+     where the intermediate is several times the hidden size.
+ 
+     """
++    # Fused kernels bypass forward, where active adapters add their residual.
++    if getattr(linear, "_comfy_bypass_active", False):
++        return linear(INPUT_ACT_EAGER[input_act](x))
++
+     weight = linear.weight
+     if (comfy.model_management.in_training
+             or not isinstance(weight, QuantizedTensor)
+diff --git a/comfy/sd.py b/comfy/sd.py
+index 8d670106..b9db3fff 100644
+--- a/comfy/sd.py
++++ b/comfy/sd.py
+@@ -86,6 +86,7 @@ import comfy.text_encoders.joyimage
+ import comfy.model_patcher
+ import comfy.lora
+ import comfy.lora_convert
++from comfy.minimax_lora_guard import guard_minimax_curve_lora
+ import comfy.hooks
+ import comfy.t2i_adapter.adapter
+ import comfy.taesd.taesd
+@@ -103,6 +104,7 @@ def load_lora_for_models(model, clip, lora, strength_model, strength_clip, lora_
+ 
+     lora = comfy.lora_convert.convert_lora(lora)
+     loaded = comfy.lora.load_lora(lora, key_map)
++    guard_minimax_curve_lora(model, loaded, strength_model)
+     if model is not None:
+         new_modelpatcher = model.clone()
+         k = new_modelpatcher.add_patches(loaded, strength_model)
+@@ -152,6 +154,7 @@ def load_bypass_lora_for_models(model, clip, lora, strength_model, strength_clip
+     loaded = comfy.lora.load_lora(lora, key_map)
+ 
+     logging.debug(f"[BypassLoRA] loaded has {len(loaded)} entries")
++    guard_minimax_curve_lora(model, loaded, strength_model)
+ 
+     # Separate adapters (for bypass) from other patches (for regular patching)
+     bypass_patches = {}  # WeightAdapterBase instances -> bypass mode
+diff --git a/comfy/weight_adapter/bypass.py b/comfy/weight_adapter/bypass.py
+index b9d5ec7d..d6d1b868 100644
+--- a/comfy/weight_adapter/bypass.py
++++ b/comfy/weight_adapter/bypass.py
+@@ -125,6 +125,8 @@ class BypassForwardHook:
+         self.adapter = adapter
+         self.multiplier = multiplier
+         self.original_forward = None
++        self._had_bypass_marker = False
++        self._original_bypass_marker = None
+ 
+         # Determine layer type and conv params from module class (works for quantized layers)
+         module_info = get_module_type_info(module)
+@@ -198,8 +200,11 @@ class BypassForwardHook:
+ 
+         self._move_adapter_weights_to_device(device, dtype)
+ 
++        self._had_bypass_marker = "_comfy_bypass_active" in vars(self.module)
++        self._original_bypass_marker = vars(self.module).get("_comfy_bypass_active")
+         self.original_forward = self.module.forward
+         self.module.forward = self._bypass_forward
++        self.module._comfy_bypass_active = True
+         logging.debug(
+             f"[BypassHook] Injected bypass forward for {type(self.module).__name__} (adapter={type(self.adapter).__name__})"
+         )
+@@ -255,7 +260,14 @@ class BypassForwardHook:
+             return  # Not injected
+ 
+         self.module.forward = self.original_forward
++        # Restore the prior marker, including absence, for offload and reinjection.
++        if self._had_bypass_marker:
++            self.module._comfy_bypass_active = self._original_bypass_marker
++        else:
++            delattr(self.module, "_comfy_bypass_active")
+         self.original_forward = None
++        self._had_bypass_marker = False
++        self._original_bypass_marker = None
+         logging.debug(
+             f"[BypassHook] Ejected bypass forward for {type(self.module).__name__}"
+         )
+diff --git a/comfy_extras/nodes_minimax_h3.py b/comfy_extras/nodes_minimax_h3.py
+index 22bc91cd..6180bd08 100644
+--- a/comfy_extras/nodes_minimax_h3.py
++++ b/comfy_extras/nodes_minimax_h3.py
+@@ -116,13 +116,17 @@ class MiniMaxH3ImageToVideo(io.ComfyNode):
+                 io.Int.Input("length", default=124, min=5, max=3600, step=17, tooltip="Frame count at 24 fps, snapped up to the model's 17k+5 grid (124 = ~5s; trained range is ~124-362, longer is untested)"),
+                 io.Image.Input("first_frame", optional=True),
+                 io.Image.Input("last_frame", optional=True),
++                io.Image.Input("identity_1", optional=True, tooltip="CLIP character still. Not a keyframe."),
++                io.Image.Input("identity_2", optional=True, tooltip="CLIP costume still. Not a keyframe."),
++                io.Image.Input("identity_3", optional=True, tooltip="CLIP full-body still. Not a keyframe."),
+             ],
+             outputs=[io.Conditioning.Output(display_name="positive"), io.Latent.Output()],
+         )
+ 
+     @classmethod
+     def execute(cls, clip, vae, prompt, width, height, length,
+-                first_frame=None, last_frame=None) -> io.NodeOutput:
++                first_frame=None, last_frame=None,
++                identity_1=None, identity_2=None, identity_3=None) -> io.NodeOutput:
+         latent, frame_count = _empty_av_latent(width, height, length)
+ 
+         images = []
+@@ -137,6 +141,11 @@ class MiniMaxH3ImageToVideo(io.ComfyNode):
+             img = _resize(last_frame[:1], width, height, "center")
+             images.append(img)
+             keyframes.append({"resolved_frame_index": frame_count - 1, "image": img})
++        # CLIP-only bible stills. Must not enter keyframes or the shot collapses to a face close-up.
++        for ident in (identity_1, identity_2, identity_3):
++            if ident is None:
++                continue
++            images.append(_resize(ident[:1], width, height, "disabled"))
+ 
+         tokens = clip.tokenize(prompt, images=images)
+         cond = clip.encode_from_tokens_scheduled(tokens)
+diff --git a/server.py b/server.py
+--- a/server.py
++++ b/server.py
+@@ -215,6 +215,17 @@
+ class PromptServer():
+     def __init__(self, loop):
+         PromptServer.instance = self
++        self.qs_h3_prompt_guard_required_v1 = True
++        qs_h3_prompt_guard = None
++
++        def register_qs_h3_prompt_guard(guard):
++            nonlocal qs_h3_prompt_guard
++            if qs_h3_prompt_guard is not None or not callable(guard):
++                raise RuntimeError("canonical H3 queue guard cannot be replaced")
++            qs_h3_prompt_guard = guard
++
++        self.qs_h3_register_prompt_guard = register_qs_h3_prompt_guard
++        self.qs_h3_prompt_guard_is = lambda guard: qs_h3_prompt_guard is guard
+ 
+         self.user_manager = UserManager()
+         self.model_file_manager = ModelFileManager()
+@@ -1073,7 +1084,11 @@
+         async def post_prompt(request):
+             logging.info("got prompt")
+             json_data =  await request.json()
++            qs_h3_process_token = (json_data.pop("qs_h3_expected_process_token", None)
++                                   if isinstance(json_data, dict) else None)
+             json_data = self.trigger_on_prompt(json_data)
++            if isinstance(json_data, dict):
++                json_data.pop("qs_h3_expected_process_token", None)
+ 
+             if "number" in json_data:
+                 number = float(json_data['number'])
+@@ -1128,6 +1143,19 @@
+                         if sensitive_val in extra_data:
+                             sensitive[sensitive_val] = extra_data.pop(sensitive_val)
+                     extra_data["create_time"] = int(time.time() * 1000)  # timestamp in milliseconds
++                    extra_data.pop("qs_h3_expected_process_token", None)
++                    try:
++                        # The one-time registered closure is not an instance attribute.
++                        if qs_h3_prompt_guard is None:
++                            raise RuntimeError("canonical H3 queue guard is unavailable")
++                        # No await may separate this in-process re-attestation and put.
++                        qs_h3_prompt_guard(qs_h3_process_token)
++                    except Exception:
++                        error = {"type": "qs_h3_source_identity_changed",
++                                 "message": "Canonical H3 source identity changed before queue admission",
++                                 "details": "The fixed runtime must be re-attested",
++                                 "extra_info": {}}
++                        return web.json_response({"error": error, "node_errors": {}}, status=409)
+                     self.prompt_queue.put((number, prompt_id, prompt, extra_data, outputs_to_execute, sensitive))
+                     response = {"prompt_id": prompt_id, "number": number, "node_errors": valid[3]}
+                     return web.json_response(response)

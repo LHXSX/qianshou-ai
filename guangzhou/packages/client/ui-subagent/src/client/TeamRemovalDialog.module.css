@@ -1,0 +1,7 @@
+.dialog { width: 420px; max-width: calc(100vw - 32px); }
+.description, .hint, .notice, .error { margin: 0; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.hint, .notice, .error { margin-top: 12px; }
+.description { color: var(--dsw-alias-label-primary); }
+.hint { color: var(--dsw-alias-label-secondary); }
+.notice { color: var(--dsw-alias-label-tertiary); }
+.error { color: var(--dsw-alias-state-error-primary); }

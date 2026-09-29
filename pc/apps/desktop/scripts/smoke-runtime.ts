@@ -1,0 +1,104 @@
+/** Boot the materialized target runtime without access to a user's Harness profile. */
+
+import { copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { DesktopHostProcess } from '../src/host-process.ts'
+import { createPluginProfile, installQianshouProfileDefaults } from '../src/project-manager.ts'
+import { desktopHostProfileEnvironment } from '../src/client-profile.ts'
+import { withShippedContracts } from '../src/shipped-contracts.ts'
+import type { DesktopRuntimeDescriptor } from '../src/runtime-tree.ts'
+
+/**
+ * Prove the final resource tree boots and serves its matching Web frontend.
+ * @param root - Materialized dsh resources.
+ * @param node - Prepared target Electron executable.
+ * @param runtime - Verified resource descriptor.
+ * @param product - Shipped Qianshou defaults and contracts used for isolated cold and retained-home starts.
+ */
+export async function smokeDesktopRuntime(root: string, node: string, runtime: DesktopRuntimeDescriptor,
+  product?: { readonly assetsRoot: string; readonly contractsRoot: string }): Promise<void> {
+  const home = mkdtempSync(join(tmpdir(), 'dsh-desktop-smoke-'))
+  const profile = join(home, 'profiles', 'desktop')
+  let host: DesktopHostProcess | undefined
+  try {
+    const resources = join(home, 'resources')
+    if (product !== undefined) {
+      const assets = join(resources, 'qianshou')
+      mkdirSync(assets, { recursive: true })
+      for (const file of ['settings.yaml', 'cordis.patch.yml']) copyFileSync(join(product.assetsRoot, file), join(assets, file))
+      cpSync(join(product.assetsRoot, 'presets'), join(assets, 'presets'), { recursive: true })
+      cpSync(join(product.assetsRoot, 'presets', 'qianshou-ceo'), join(resources, 'qianshou-presets', 'qianshou-ceo'), { recursive: true })
+      cpSync(join(product.assetsRoot, 'presets', 'qianshou-skill-creator'), join(resources, 'qianshou-presets', 'qianshou-skill-creator'), { recursive: true })
+      cpSync(join(product.assetsRoot, 'presets', 'qianshou-call'), join(resources, 'qianshou-presets', 'qianshou-call'), { recursive: true })
+      cpSync(product.contractsRoot, join(resources, 'contracts', 'v1'), { recursive: true })
+      mkdirSync(profile, { recursive: true })
+      installQianshouProfileDefaults(profile, assets)
+    }
+    createPluginProfile(profile)
+    const pluginName = 'desktop-runtime-smoke-plugin'
+    const plugin = join(profile, 'node_modules', pluginName)
+    mkdirSync(plugin, { recursive: true })
+    const cordis = runtime.sharedPackages.find(entry => entry.name === '@deepseek-ai/cordis')
+    if (cordis === undefined) throw new Error('desktop runtime: missing shared Cordis package')
+    writeFileSync(join(plugin, 'package.json'), JSON.stringify({
+      name: pluginName, version: '1.0.0', type: 'module', exports: './index.js',
+      peerDependencies: { '@deepseek-ai/cordis': cordis.version }, dsh: { bundle: { patch: './bundle.yml' } },
+    }))
+    writeFileSync(join(plugin, 'index.js'), `
+import { Context } from '@deepseek-ai/cordis'
+export function apply(ctx) {
+  if (!(ctx instanceof Context)) throw new Error('desktop runtime: external plugin loaded another Cordis instance')
+  ctx.effect(() => ctx.webServer.register({ kind: 'exact', path: '/desktop-smoke',
+    handler(_request, response) { response.end('plugin route ready') } }))
+}
+`)
+    writeFileSync(join(plugin, 'bundle.yml'), '- insert:\n    - id: desktop-runtime-smoke-plugin\n      name: desktop-runtime-smoke-plugin\n      inject: [webServer]\n')
+    const manifest = JSON.parse(readFileSync(join(profile, 'package.json'), 'utf8')) as {
+      dependencies: Record<string, string>
+      dsh: { profile: { bundles: string[] } }
+    }
+    manifest.dependencies[pluginName] = '1.0.0'
+    manifest.dsh.profile.bundles.push(pluginName)
+    writeFileSync(join(profile, 'package.json'), JSON.stringify(manifest))
+    const patch = product === undefined ? '' : readFileSync(join(profile, 'cordis.patch.yml'), 'utf8')
+    writeFileSync(join(profile, 'cordis.patch.yml'), `${patch}\n- id: webserver\n  config:\n    host: 127.0.0.1\n    port: 0\n`)
+    const isolated: NodeJS.ProcessEnv = Object.fromEntries(Object.entries(process.env)
+      .filter(([name]) => !/(?:KEY|SECRET|TOKEN|PASSWORD)/iu.test(name)))
+    isolated.DSH_HOME = home
+    // Exercise this payload's contracts even when the release operator has a checkout override.
+    delete isolated.QIANSHOU_CONTRACTS_DIR
+    const environment = product === undefined ? isolated
+      : withShippedContracts(desktopHostProfileEnvironment(isolated, 'qianshou', resources), resources)
+    host = new DesktopHostProcess(node, root, profile, undefined, environment, undefined, undefined, 'runtime')
+    const ready = await host.start()
+    const login = await fetch(ready.url, { redirect: 'manual' })
+    const cookie = login.headers.getSetCookie().map(value => value.split(';')[0]).join('; ')
+    const response = await fetch(new URL('/', ready.url), { headers: { cookie } })
+    if (response.status !== 200 || !(await response.text()).includes('<html')) {
+      throw new Error('desktop runtime: packaged frontend smoke failed')
+    }
+    const pluginResponse = await fetch(new URL('/desktop-smoke', ready.url), { headers: { cookie } })
+    if (await pluginResponse.text() !== 'plugin route ready') throw new Error('desktop runtime: plugin HTTP route failed')
+    if (product !== undefined) {
+      await host.stop()
+      host = undefined
+      // Preserve an older product choice and roster overlay while proving the
+      // new immutable preset root still mounts both current modes.
+      const settings = `${readFileSync(join(home, 'settings.yaml'), 'utf8')}\nagent-presets:\n  default: qianshou-plugin-creator\n  modeSelectionEnabled: true\n`
+      const retainedPatch = `${readFileSync(join(profile, 'cordis.patch.yml'), 'utf8')}\n- id: agent-presets\n  config:\n    default: standard\n    includeShippedRoot: true\n    includeUserRoot: true\n    roots: []\n`
+      writeFileSync(join(home, 'settings.yaml'), settings)
+      writeFileSync(join(profile, 'cordis.patch.yml'), retainedPatch)
+      installQianshouProfileDefaults(profile, join(resources, 'qianshou'))
+      host = new DesktopHostProcess(node, root, profile, undefined, environment, undefined, undefined, 'runtime')
+      await host.start()
+      if (readFileSync(join(home, 'settings.yaml'), 'utf8') !== settings
+        || readFileSync(join(profile, 'cordis.patch.yml'), 'utf8') !== retainedPatch) {
+        throw new Error('desktop runtime: product upgrade overwrote retained user settings')
+      }
+    }
+  } finally {
+    await host?.stop()
+    rmSync(home, { recursive: true, force: true })
+  }
+}

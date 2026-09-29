@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.base.client.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types",
+    "tsBuildInfoFile": "lib/tsconfig.owner-setup-types.tsbuildinfo"
+  },
+  "files": [
+    "src/h3-owner-setup-types.ts",
+    "src/h3-canonical-owner-setup-types.ts"
+  ],
+  "references": [
+    {
+      "path": "../../util/brand"
+    }
+  ]
+}

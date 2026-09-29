@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v8 Platform · Demo</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  background: #0a0e1a;
+  color: #e2e8f0;
+  padding: 20px;
+  min-height: 100vh;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle { color: #94a3b8; margin-bottom: 20px; font-size: 14px; }
+
+.status-bar {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 14px;
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+}
+.status-bar .api-base {
+  font-family: monospace;
+  color: #38bdf8;
+}
+.status-bar .who {
+  margin-left: auto;
+  color: #c7d2fe;
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: #161b29;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.card h2 {
+  font-size: 16px;
+  color: #f1f5f9;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card h2 .badge {
+  background: rgba(99, 102, 241, 0.2);
+  color: #c7d2fe;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: normal;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+input, textarea, select {
+  width: 100%;
+  background: #0a0e1a;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+}
+input:focus, textarea:focus { outline: none; border-color: #6366f1; }
+textarea { resize: vertical; min-height: 70px; font-family: monospace; }
+
+button {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 12px;
+  margin-right: 6px;
+  transition: opacity 0.2s;
+}
+button:hover { opacity: 0.85; }
+button.secondary {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+}
+button.danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.output {
+  background: #0a0e1a;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 12px;
+  font-family: "SF Mono", Monaco, monospace;
+  font-size: 12px;
+  color: #94a3b8;
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow-y: auto;
+  word-break: break-all;
+}
+.output.success { border-color: rgba(34, 197, 94, 0.3); color: #bbf7d0; }
+.output.error { border-color: rgba(239, 68, 68, 0.3); color: #fecaca; }
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🚀 v8 Platform · Demo</h1>
+  <div class="subtitle">直接点按钮玩 v8 · 不用 Swagger · 不用 curl</div>
+
+  <div class="status-bar">
+    <div class="status-dot"></div>
+    <span>v8 backend</span>
+    <span class="api-base" id="apiBase">http://127.0.0.1:8800</span>
+    <span class="who" id="whoBadge">未登录</span>
+  </div>
+
+  <div class="grid">
+    <div>
+      <!-- 注册 -->
+      <div class="card">
+        <h2>① 注册 <span class="badge">POST /auth/register</span></h2>
+        <label>用户名</label>
+        <input id="reg_username" value="alice" autocomplete="off">
+        <label>密码</label>
+        <input id="reg_password" type="password" value="Test-2026!">
+        <label>邮箱 (可选)</label>
+        <input id="reg_email" value="alice@x.com" autocomplete="off">
+        <button onclick="doRegister()">注册</button>
+        <div class="output" id="reg_out">点击按钮注册</div>
+      </div>
+
+      <!-- 登录 -->
+      <div class="card">
+        <h2>② 登录 <span class="badge">POST /auth/login</span></h2>
+        <label>用户名 或 邮箱</label>
+        <input id="login_username" value="alice" autocomplete="off">
+        <label>密码</label>
+        <input id="login_password" type="password" value="Test-2026!">
+        <button onclick="doLogin()">登录</button>
+        <button class="secondary" onclick="doLogout()">登出</button>
+        <div class="output" id="login_out">点击按钮登录</div>
+      </div>
+
+      <!-- /me -->
+      <div class="card">
+        <h2>③ 我是谁 <span class="badge">GET /auth/me</span></h2>
+        <button onclick="doMe()">查我</button>
+        <button onclick="doBalance()">查余额</button>
+        <div class="output" id="me_out">点击按钮查询</div>
+      </div>
+    </div>
+
+    <div>
+      <!-- 提交任务 -->
+      <div class="card">
+        <h2>④ 提交任务 <span class="badge">POST /workloads</span></h2>
+        <label>任务名</label>
+        <input id="wl_name" value="test base64">
+        <div class="row">
+          <div>
+            <label>task_type</label>
+            <input id="wl_type" value="base64_encode">
+          </div>
+          <div>
+            <label>budget</label>
+            <input id="wl_budget" type="number" value="10">
+          </div>
+        </div>
+        <label>inline_input</label>
+        <textarea id="wl_input">hello world</textarea>
+        <button onclick="doSubmit()">提交</button>
+        <button class="secondary" onclick="doListWorkloads()">列我的任务</button>
+        <div class="output" id="wl_out">点击按钮提交</div>
+      </div>
+
+      <!-- Ledger -->
+      <div class="card">
+        <h2>⑤ 账本流水 <span class="badge">GET /economy/ledger</span></h2>
+        <button onclick="doLedger()">查我的 ledger</button>
+        <button class="secondary" onclick="doDailyReport()">日报 (admin)</button>
+        <div class="output" id="ledger_out">点击按钮查询</div>
+      </div>
+
+      <!-- Admin -->
+      <div class="card">
+        <h2>⑥ Admin (需 admin role) <span class="badge">/admin/*</span></h2>
+        <label>给指定用户充值</label>
+        <div class="row">
+          <input id="dep_user" type="number" placeholder="account_id" value="1">
+          <input id="dep_amount" type="number" placeholder="amount" value="100">
+        </div>
+        <button onclick="doDeposit()">充值 (admin)</button>
+        <button class="secondary" onclick="doListAccounts()">列所有账号</button>
+        <button class="secondary" onclick="doDashboard()">Dashboard</button>
+        <div class="output" id="admin_out">点击按钮调 admin</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = window.location.protocol === 'file:' ? 'http://127.0.0.1:8800' : '';
+document.getElementById('apiBase').textContent = API_BASE || window.location.origin;
+
+let token = localStorage.getItem('v8_token') || '';
+let me = JSON.parse(localStorage.getItem('v8_me') || 'null');
+updateWhoBadge();
+
+function updateWhoBadge() {
+  const badge = document.getElementById('whoBadge');
+  badge.textContent = me ? `${me.username} (${me.role})` : '未登录';
+  badge.style.color = me ? '#bbf7d0' : '#fbbf24';
+}
+
+async function api(method, path, body, useAuth = true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (useAuth && token) headers['Authorization'] = `Bearer ${token}`;
+  const res = await fetch(API_BASE + path, {
+    method, headers,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json().catch(() => ({}));
+  return { status: res.status, ok: res.ok, data };
+}
+
+function show(elemId, result, label = '') {
+  const elem = document.getElementById(elemId);
+  elem.className = 'output ' + (result.ok ? 'success' : 'error');
+  elem.textContent = `[${result.status}] ${label}\n` + JSON.stringify(result.data, null, 2);
+}
+
+async function doRegister() {
+  const r = await api('POST', '/api/v8/auth/register', {
+    username: reg_username.value,
+    password: reg_password.value,
+    email: reg_email.value || undefined,
+  }, false);
+  show('reg_out', r, '注册');
+}
+
+async function doLogin() {
+  const r = await api('POST', '/api/v8/auth/login', {
+    username: login_username.value,
+    password: login_password.value,
+  }, false);
+  if (r.ok) {
+    token = r.data.tokens.access_token;
+    me = r.data.account;
+    localStorage.setItem('v8_token', token);
+    localStorage.setItem('v8_me', JSON.stringify(me));
+    updateWhoBadge();
+  }
+  show('login_out', r, '登录');
+}
+
+function doLogout() {
+  token = ''; me = null;
+  localStorage.removeItem('v8_token');
+  localStorage.removeItem('v8_me');
+  updateWhoBadge();
+  show('login_out', { status: 0, ok: true, data: { message: '已登出' }}, '登出');
+}
+
+async function doMe() {
+  show('me_out', await api('GET', '/api/v8/auth/me'), '/me');
+}
+
+async function doBalance() {
+  show('me_out', await api('GET', '/api/v8/economy/balance'), 'balance');
+}
+
+async function doSubmit() {
+  const r = await api('POST', '/api/v8/workloads', {
+    name: wl_name.value,
+    budget: parseFloat(wl_budget.value),
+    spec: {
+      task_type: wl_type.value,
+      runtime: 'python3',
+      code_url: 'https://example.com/x.py',
+      inline_input: wl_input.value,
+      max_shards: 1,
+      timeout_s: 60,
+    },
+  });
+  show('wl_out', r, '提交任务');
+}
+
+async function doListWorkloads() {
+  show('wl_out', await api('GET', '/api/v8/workloads'), '我的任务');
+}
+
+async function doLedger() {
+  show('ledger_out', await api('GET', '/api/v8/economy/ledger'), 'ledger');
+}
+
+async function doDailyReport() {
+  show('ledger_out', await api('GET', '/api/v8/economy/daily-report'), 'daily report (admin)');
+}
+
+async function doDeposit() {
+  const r = await api('POST', '/api/v8/economy/admin/deposit', {
+    account_id: parseInt(dep_user.value),
+    amount: parseFloat(dep_amount.value),
+    note: 'demo 充值',
+  });
+  show('admin_out', r, '充值');
+}
+
+async function doListAccounts() {
+  show('admin_out', await api('GET', '/api/v8/admin/accounts'), '列账号');
+}
+
+async function doDashboard() {
+  show('admin_out', await api('GET', '/api/v8/ops/dashboard'), 'dashboard');
+}
+</script>
+
+</body>
+</html>

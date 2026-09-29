@@ -1,0 +1,30 @@
+/* Reapply the shared tokens after the deferred Element Plus stylesheet loads. */
+:root {
+  --el-color-primary: #1668dc;
+  --el-color-primary-light-3: #438beb;
+  --el-color-primary-dark-2: #135ac1;
+  --el-color-primary-light-9: #edf4ff;
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f6f8fb;
+  --el-bg-color-overlay: #f0f5fc;
+  --el-fill-color-blank: #ffffff;
+  --el-fill-color: #f0f5fc;
+  --el-fill-color-light: #f0f5fc;
+  --el-fill-color-lighter: #f5f7fa;
+  --el-text-color-primary: #172b48;
+  --el-text-color-regular: #435770;
+  --el-text-color-secondary: #64748b;
+  --el-text-color-placeholder: #7b8ca5;
+  --el-border-color: #cbd6e5;
+  --el-border-color-light: #dfe6ef;
+  --el-border-color-lighter: #e7edf5;
+  --el-mask-color: rgba(246, 248, 251, .88);
+  --el-font-family: var(--qs-font);
+  --el-border-radius-base: 8px;
+}
+.el-button--primary {
+  --el-button-text-color: #ffffff;
+  --el-button-hover-text-color: #ffffff;
+  --el-button-active-text-color: #ffffff;
+}
+.el-message { z-index: 4000 !important; }

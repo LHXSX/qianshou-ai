@@ -1,0 +1,16 @@
+{
+  "name": "@deepseek-ai/dsh-host-connections",
+  "description": "Qianshou user-authorized read-only SSH and GitHub connection registry",
+  "version": "0.1.5-rc.2", "private": true, "type": "module", "license": "MIT",
+  "main": "lib/index.js", "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
+    "./types": { "types": "./lib/types/types.d.ts" },
+    "./tools": { "types": "./lib/types/tools.d.ts", "default": "./lib/tools.js" },
+    "./src/*": "./src/*", "./package.json": "./package.json"
+  },
+  "files": ["lib"],
+  "dependencies": { "@deepseek-ai/dsh-brand": "workspace:^", "@deepseek-ai/dsh-atomic-write": "workspace:^", "@deepseek-ai/schemastery": "workspace:^", "zod": "^4.4.3" },
+  "peerDependencies": { "@deepseek-ai/cordis": "workspace:^", "@deepseek-ai/dsh-tools": "workspace:^", "@deepseek-ai/dsh-subprocess": "workspace:^", "@deepseek-ai/dsh-credentials": "workspace:^", "@deepseek-ai/dsh-agent-presets": "workspace:^", "@deepseek-ai/dsh-agent": "workspace:^", "@deepseek-ai/dsh-client-connection": "workspace:^" },
+  "devDependencies": { "@deepseek-ai/cordis": "workspace:^", "@deepseek-ai/dsh-tools": "workspace:^", "@deepseek-ai/dsh-subprocess": "workspace:^", "@deepseek-ai/dsh-subprocess-local": "workspace:^", "@deepseek-ai/dsh-credentials": "workspace:^", "@deepseek-ai/dsh-agent-presets": "workspace:^", "@deepseek-ai/dsh-agent": "workspace:^", "@deepseek-ai/dsh-client-connection": "workspace:^", "@deepseek-ai/cordis-plugin-loader": "workspace:^", "@deepseek-ai/cordis-plugin-include": "workspace:^", "@deepseek-ai/dsh-system-prompt": "workspace:^", "@deepseek-ai/dsh-llm": "workspace:^", "@deepseek-ai/dsh-agent-loop": "workspace:^", "@deepseek-ai/dsh-agent-loop-testkit": "workspace:^", "@deepseek-ai/dsh-session": "workspace:^" }
+}

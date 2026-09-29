@@ -1,0 +1,456 @@
+.triggerRow {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: calc(100% + 4px);
+  margin: 4px -2px;
+}
+
+.triggerRow.railRow {
+  width: 36px;
+  margin: 8px 0 10px;
+}
+
+.triggerRow.accountUpdateRow {
+  width: 100%;
+  margin: 0 0 3px;
+}
+
+.triggerRow.accountUpdateRow:empty { display: none; }
+
+.accountUpdateRow.railRow {
+  display: none;
+}
+
+.trigger {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: 42px;
+  margin: 0;
+  padding: 0 10px 0 8px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  color: var(--dsw-alias-label-primary);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.trigger:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+/* Rail trigger: the same 36x36 box and 12px rounding as the other rail
+   controls. */
+.trigger.rail {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+}
+
+.triggerLabel {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Full-viewport layer (figma Mask 501:29946 #000@24%): mask tokens match the
+   Modal primitive (--dsw-alias-bg-mask-1 + --dsw-mask-blur). */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mask {
+  position: absolute;
+  inset: 0;
+  background: var(--dsw-alias-bg-mask-1);
+  backdrop-filter: var(--dsw-mask-blur);
+}
+
+/* Fixed panel height prevents jumps between short and long sections.
+   The content column owns the sole vertical scrollport. */
+.panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+  width: min(960px, calc(100vw - 64px));
+  height: min(720px, calc(100vh - 64px));
+  min-height: 0;
+  border: 0;
+  --dsw-elevation-stroke-color: var(--dsw-alias-border-l2);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--dsw-alias-bg-layer-2);
+  box-shadow: var(--dsw-elevation-prominent);
+  /* Elevated surface: the scrollbar thumb takes the l2 elevation tokens.
+     Declared on the panel rather than the scrolling `.options` child so the
+     elevation choice sits with the surface; the custom properties inherit
+     down to whichever descendant scrolls (see ui-theme
+     styles/scrollbar.css for the rebinding contract). */
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+}
+
+/* Section groups stay visible together at desktop width. */
+.nav {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  gap: 24px;
+  padding: 28px 12px 24px 16px;
+  box-sizing: border-box;
+  border-right: 0.5px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-2);
+}
+
+/* Settings title stays in the rail; the content header names the active page. */
+.navTitle {
+  padding: 0 12px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+}
+
+.navGroup,
+.navGroupRows {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.navGroupRows { gap: 3px; }
+
+.navGroupTitle {
+  padding: 0 12px 6px;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: .04em;
+}
+
+.navCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 12px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
+  color: var(--dsw-alias-label-primary);
+  text-align: left;
+}
+
+.navCell:hover {
+  background: var(--dsw-specific-sidebar-nav-item-hover);
+}
+
+.navCell.active {
+  background: var(--dsw-specific-sidebar-nav-item-active);
+  font-weight: 600;
+}
+
+.navCell:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: -2px;
+}
+
+.navIcon {
+  flex: none;
+}
+
+.navLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.content {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--dsw-alias-bg-layer-2);
+}
+
+.header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding: 14px 20px 12px 32px;
+  box-sizing: border-box;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.pageContext {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.pageContext p {
+  margin: 0;
+  overflow: hidden;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pagePath {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.pagePath strong {
+  overflow: hidden;
+  color: var(--dsw-alias-label-primary);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 28px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--dsw-alias-label-primary);
+}
+
+.close:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: -2px;
+}
+
+/* All section content scrolls here; the heading and nav remain fixed. */
+.options {
+  flex: 1;
+  min-height: 0;
+  padding: 28px 32px 32px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.generalSection {
+  max-width: 688px;
+  color: var(--dsw-alias-label-primary);
+}
+
+.generalHeading {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.generalHeading h2,
+.generalHeading p { margin: 0; }
+
+.generalHeading h2 {
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 30px;
+  letter-spacing: -.01em;
+}
+
+.generalHeading p {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.generalRows {
+  border-top: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.generalRows :global([data-slot='settings.general.item']) > * {
+  box-sizing: border-box;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.generalRows :global([data-slot='settings.general.item']) > :last-child {
+  border-bottom: 0;
+}
+
+/* The theme preference uses the same compact control height as other rows. */
+.generalRows :global([data-slot='settings.general.item'] button[aria-pressed]) {
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  flex-basis: 150px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+@media (max-width: 760px), (max-height: 640px) {
+  .panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav {
+    flex: none;
+    gap: 10px;
+    padding: 14px 16px 8px;
+    border-right: 0;
+    border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+  }
+
+  .navTitle { padding: 0 4px; }
+
+  .navList {
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .navGroup,
+  .navGroupRows { flex-direction: row; }
+
+  .navGroupTitle { display: none; }
+
+  .navCell {
+    flex: none;
+    white-space: nowrap;
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+
+  .content { flex: 1; }
+  .header { min-height: 62px; padding: 10px 16px; }
+  .options { padding: 20px 24px 28px; }
+}
+
+@media (max-width: 560px) {
+  .panel {
+    width: 100vw;
+    height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .header { flex-wrap: wrap; gap: 8px; }
+  .pageContext p { display: none; }
+  .actions { order: 3; width: 100%; justify-content: flex-start; margin-left: 0; }
+  .options { padding: 18px 16px 24px; }
+  .generalHeading h2 { font-size: 20px; line-height: 28px; }
+}
+
+/* Visually-hidden text seat (close button accessible name from slot content). */
+.hiddenLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Qianshou's product shell shares the skill center's spacing and typography;
+   feature-owned content and the official profile keep their existing layout. */
+.panel[data-settings-product='qianshou'] {
+  grid-template-columns: 224px minmax(0, 1fr);
+  width: min(1040px, calc(100vw - 64px));
+  height: min(760px, calc(100vh - 64px));
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: 20px;
+}
+
+.panel[data-settings-product='qianshou'] .nav { padding: 24px 12px; gap: 24px; }
+.panel[data-settings-product='qianshou'] .navTitle { font-size: 20px; line-height: 28px; }
+.panel[data-settings-product='qianshou'] .navList { overflow-y: auto; overscroll-behavior: contain; }
+.panel[data-settings-product='qianshou'] .navGroupRows { gap: 8px; }
+.panel[data-settings-product='qianshou'] .navGroupTitle { font-size: 12px; line-height: 18px; }
+.panel[data-settings-product='qianshou'] .navCell { min-height: 40px; border-radius: 8px; }
+.panel[data-settings-product='qianshou'] .navCell.active {
+  color: var(--dsw-alias-state-business-primary);
+  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 10%, var(--dsw-alias-bg-layer-2));
+}
+.panel[data-settings-product='qianshou'] .header { min-height: 88px; padding: 20px 24px; gap: 16px; }
+.panel[data-settings-product='qianshou'] .pageContext { gap: 4px; }
+.panel[data-settings-product='qianshou'] .pageContext p { font-size: 13px; line-height: 20px; }
+.pageHeading { margin: 0; overflow: hidden; font-size: 24px; line-height: 32px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.panel[data-settings-product='qianshou'] .close { width: 40px; height: 40px; border-radius: 8px; }
+.panel[data-settings-product='qianshou'] .options { padding: 24px; background: var(--dsw-alias-bg-layer-1); font-size: 13px; line-height: 20px; }
+.panel[data-settings-product='qianshou'] .generalHeading h2 { display: none; }
+
+@media (max-width: 760px), (max-height: 640px) {
+  .panel[data-settings-product='qianshou'] .nav { padding: 16px 16px 8px; gap: 12px; }
+  .panel[data-settings-product='qianshou'] .navList { overflow-x: auto; overflow-y: hidden; }
+  .panel[data-settings-product='qianshou'] .header { min-height: 80px; padding: 16px; }
+  .panel[data-settings-product='qianshou'] .options { padding: 24px 16px; }
+}
+
+@media (max-width: 560px) {
+  .panel[data-settings-product='qianshou'] { width: 100vw; height: 100vh; border: 0; border-radius: 0; }
+  .panel[data-settings-product='qianshou'] .pageHeading { font-size: 22px; line-height: 30px; }
+}

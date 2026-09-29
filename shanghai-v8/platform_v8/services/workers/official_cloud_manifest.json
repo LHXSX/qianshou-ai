@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "schemaVersion": 1,
+  "capabilities": [
+    {
+      "id": "qianshou:official-image-generation-v1",
+      "schemaVersion": 1,
+      "source": "official",
+      "providerKind": "official-cloud",
+      "taskType": "image.generate",
+      "capabilityId": "image.generate",
+      "name": "官方出图",
+      "category": "图片",
+      "description": "根据文字生成图片；服务恢复并通过报价、派单和媒体验收后开放。",
+      "inputSchema": {
+        "type": "object",
+        "required": ["prompt"],
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {"type": "string", "minLength": 1, "maxLength": 8000}
+        }
+      },
+      "inputKind": "prompt",
+      "outputKind": "image",
+      "quote": {"entrypoint": "platform-quote", "currency": "CNY", "minorUnit": "fen", "confirmationRequired": true},
+      "execution": {"mode": "platform-dispatched", "region": "guangzhou", "providerBinding": "server-only"},
+      "artifact": {"kind": "verified-media", "mimeTypes": ["image/png"], "display": "inline", "access": "authenticated"},
+      "requiredChecks": ["providerHealthy", "quoteConfigured", "dispatchRegistered", "artifactVerified", "samplePassed"],
+      "available": false,
+      "missing": ["providerHealthy", "quoteConfigured", "dispatchRegistered", "artifactVerified", "samplePassed"]
+    }
+  ]
+}

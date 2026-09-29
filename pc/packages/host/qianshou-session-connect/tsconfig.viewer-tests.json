@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.viewer.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "lib/viewer-test-types",
+    "tsBuildInfoFile": "lib/tsconfig.viewer-tests.tsbuildinfo",
+    "noEmit": true
+  },
+  "include": [
+    "src/viewer",
+    "src/types.ts",
+    "tests/viewer-grant-replacement.client.spec.ts"
+  ],
+  "references": [
+    {
+      "path": "../../core/session"
+    }
+  ]
+}

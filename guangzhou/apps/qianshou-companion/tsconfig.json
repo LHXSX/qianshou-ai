@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../../packages/host/remote-devices" },
+    { "path": "../../packages/util/brand" }
+  ]
+}

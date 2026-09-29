@@ -1,0 +1,93 @@
+/* Appearance row (figma 'Frame 2117131228': title + cube row, column gap 8,
+ * pad 16/0, hairline separator; the section column strips it when last). */
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--dsw-alias-label-primary);
+}
+
+.cubeRow {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Appearance cube (figma '.Selector Cube' 276x82 r16, pad 20/32, centered
+ * icon-over-label column, gap 4); flexed down from the figma width so all
+ * three sit on one row in the 800 panel, wrapping when narrower. */
+.themeCube {
+  box-sizing: border-box;
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 20px 32px;
+  border: 0.5px solid var(--dsw-alias-border-l4);
+  border-radius: 20px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--dsw-alias-label-primary);
+  cursor: pointer;
+}
+
+.themeCube:hover:not(.selected) {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+/* Selected cube: #F5F6F7 fill + #ADB2B8 border (static token — the bluish-400
+ * step has no alias-layer name). */
+.selected {
+  background: var(--dsw-alias-bg-module-platform);
+  border-color: var(--dsw-static-neutral-bluish-400);
+}
+
+.heading { display: flex; flex-direction: column; gap: 3px; }
+.subtitle, .skinDescription, .systemHint { color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 18px; }
+.skinGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 5px; }
+.skin {
+  min-width: 0; padding: 8px; display: flex; flex-direction: column; gap: 5px; text-align: left;
+  border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 16px;
+  background: var(--dsw-alias-bg-base); color: var(--dsw-alias-label-primary); font: inherit; cursor: pointer;
+  transition: border-color var(--ds-transition-duration-fast), background-color var(--ds-transition-duration-fast), transform var(--ds-transition-duration-fast);
+}
+.skin:hover { background: var(--dsw-alias-interactive-bg-hover); border-color: var(--dsw-alias-brand-primary); transform: translateY(-2px); }
+.skin:active { transform: translateY(0); background: var(--dsw-alias-interactive-bg-active); }
+.skinSelected { border-color: var(--dsw-alias-brand-primary); background: var(--dsw-alias-state-business-tertiary); }
+.skin:focus-visible, .systemChoice:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 3px; }
+.skinLabel { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 3px 3px 0; font-size: 13px; line-height: 20px; font-weight: 600; }
+.skinDescription { padding: 0 3px 4px; font-size: 11px; line-height: 17px; }
+.check { min-width: 16px; color: var(--dsw-alias-brand-primary); }
+.preview { display: flex; height: 91px; overflow: hidden; border-radius: 10px; background: var(--dsw-alias-bg-base); border: 0.5px solid var(--dsw-alias-border-l2); }
+.previewSidebar { width: 22%; padding: 13px 5px; display: flex; flex-direction: column; gap: 6px; background: var(--dsw-specific-sidebar-fill); }
+.previewSidebar i { display: block; height: 4px; border-radius: 2px; background: var(--dsw-alias-border-l4); }
+.previewSidebar i:first-child { background: var(--dsw-alias-brand-primary); margin-bottom: 5px; }
+.previewWorkspace { display: flex; flex: 1; flex-direction: column; gap: 8px; min-width: 0; padding: 13px 9px 8px; }
+.previewLine { height: 4px; width: 46%; border-radius: 2px; background: var(--dsw-alias-label-secondary); }
+.previewBubbles { display: flex; gap: 4px; flex: 1; }
+.previewBubbles i { flex: 1; border-radius: 4px; background: var(--dsw-alias-brand-primary); }
+.previewBubbles i:nth-child(2) { background: var(--dsw-alias-accent-secondary); }
+.previewBubbles i:nth-child(3) { background: var(--dsw-alias-accent-tertiary); }
+.previewInput { height: 17px; padding: 3px; display: flex; justify-content: flex-end; border-radius: 4px; background: var(--dsw-specific-input-major); border: 0.5px solid var(--dsw-alias-border-l3); }
+.previewInput i { width: 11px; border-radius: 3px; background: var(--dsw-alias-brand-primary); }
+.systemChoice { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 11px 13px; text-align: left; color: var(--dsw-alias-label-primary); background: var(--dsw-alias-bg-base); border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 12px; font: inherit; font-size: 12px; line-height: 18px; cursor: pointer; }
+.systemChoice:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.systemChoice:active { background: var(--dsw-alias-interactive-bg-active); }
+.systemChoice.skinSelected { border-color: var(--dsw-alias-brand-primary); background: var(--dsw-alias-state-business-tertiary); }
+.systemHint { margin-left: auto; }
+@media (max-width: 640px) { .skinGrid { grid-template-columns: 1fr; } .skin { display: grid; grid-template-columns: 100px 1fr; column-gap: 12px; } .preview { grid-row: span 2; } .skinLabel { align-self: end; } .systemHint { margin-left: 24px; } }
+@media (prefers-reduced-motion: reduce) { .skin, .skin:hover, .skin:active { transform: none; transition: none; } }

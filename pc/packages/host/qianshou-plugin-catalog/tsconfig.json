@@ -1,0 +1,46 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../../../vendor/schemastery"
+    },
+    {
+      "path": "../../typert/protocol"
+    },
+    {
+      "path": "../compute-core"
+    },
+    {
+      "path": "../../core/tools"
+    },
+    {
+      "path": "../../util/atomic-write"
+    },
+    {
+      "path": "../../subprocess/win32-process"
+    },
+    {
+      "path": "../node-contributor"
+    },
+    {
+      "path": "../qianshou-skill-import"
+    },
+    {
+      "path": "./tsconfig.types.json"
+    }
+  ],
+  "exclude": [
+    "src/types.ts",
+    "src/local-skill-trial.ts"
+  ]
+}

@@ -1,0 +1,5 @@
+.wrap { min-width: 0; }
+.media { max-width: 480px; margin: 8px 0 12px 26px; padding: 10px; border: 1px solid var(--border-color, #d9dee1); border-radius: 14px; background: var(--card-bg, rgba(127, 174, 168, .07)); }
+.heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: inherit; font-size: 12px; font-weight: 600; }
+.heading span:last-child { font-weight: 400; opacity: .65; }
+.video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 8px; background: #142b30; }

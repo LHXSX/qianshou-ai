@@ -1,0 +1,71 @@
+/* 模型路由控制台的样式：沿用设置页里既有的 DSW 令牌，不引入新色。
+   信息层级靠边框与文本等级区分：目录卡片、历史行、后端表、追加表单四块。 */
+
+.panel { box-sizing: border-box; padding: 4px 2px 32px; color: var(--dsw-alias-label-primary); }
+.header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 22px; }
+.eyebrow { color: var(--dsw-alias-brand-primary); font-weight: 600; font-size: 12px; line-height: 1.5; }
+.header h1 { font-size: 24px; line-height: 1.35; margin: 9px 0; }
+.header p { margin: 0; max-width: 720px; font-size: 13px; line-height: 1.75; color: var(--dsw-alias-label-secondary); }
+.panel h2 { font-size: 17px; line-height: 1.5; margin: 0 0 10px; }
+.subheading { font-size: 13px; line-height: 1.5; margin: 18px 0 6px; color: var(--dsw-alias-label-secondary); }
+.hint { font-size: 12px; line-height: 1.7; color: var(--dsw-alias-label-tertiary); margin: 0; overflow-wrap: anywhere; }
+
+.block { border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 14px; padding: 20px; margin-bottom: 20px; background: var(--dsw-alias-bg-layer-2); min-width: 0; }
+.empty { padding: 16px 2px 6px; }
+.empty strong { font-size: 13px; line-height: 1.6; color: var(--dsw-alias-label-secondary); }
+.empty p { font-size: 12px; line-height: 1.7; color: var(--dsw-alias-label-tertiary); margin: 6px 0 0; }
+
+.nameGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 16px; margin-top: 16px; }
+.nameCard { padding: 18px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 12px; background: var(--dsw-alias-bg-layer-3); min-width: 0; }
+.nameHeading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.facts { display: grid; gap: 8px; margin: 14px 0 0; }
+.facts div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 12px; line-height: 1.65; }
+.facts dt { color: var(--dsw-alias-label-tertiary); }
+.facts dd { margin: 0; color: var(--dsw-alias-label-secondary); display: flex; flex-wrap: wrap; gap: 6px; overflow-wrap: anywhere; text-align: right; }
+
+.bindingList { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 10px; }
+.binding { padding: 14px; border-left: 0.5px solid var(--dsw-alias-border-l4); border-radius: 8px; background: var(--dsw-alias-bg-layer-2); min-width: 0; }
+.binding[data-phase="active"] { border-left-color: var(--dsw-alias-brand-primary); }
+.binding[data-phase="retired"] { opacity: .72; }
+.bindingHeading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.range { font-size: 12px; line-height: 1.6; color: var(--dsw-alias-label-secondary); overflow-wrap: anywhere; }
+.bindingKeys { font-size: 12px; line-height: 1.7; color: var(--dsw-alias-label-secondary); margin: 10px 0 0; overflow-wrap: anywhere; }
+.bindingKeys code, .table code, .orderRow code { font-size: 12px; padding: 1px 5px; border-radius: 4px; background: var(--dsw-alias-bg-layer-3); }
+
+.table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 12px; line-height: 1.7; }
+.table th { text-align: left; font-weight: 500; color: var(--dsw-alias-label-tertiary); padding: 6px 10px 6px 0; border-bottom: 0.5px solid var(--dsw-alias-border-l3); }
+.table td { padding: 8px 10px 8px 0; color: var(--dsw-alias-label-secondary); border-bottom: 0.5px solid var(--dsw-alias-border-l3); }
+
+.form { margin-top: 14px; }
+.fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 16px; min-width: 0; }
+.field { display: grid; gap: 7px; min-width: 0; font-size: 12px; line-height: 1.6; color: var(--dsw-alias-label-secondary); }
+.fieldLabel { font-size: 12px; line-height: 1.6; color: var(--dsw-alias-label-secondary); }
+.field select, .field textarea { box-sizing: border-box; width: 100%; min-width: 0; padding: 9px 10px; background: var(--dsw-alias-bg-layer-3); color: var(--dsw-alias-label-primary); border: 0.5px solid var(--dsw-alias-border-l4); border-radius: 8px; font: inherit; line-height: 1.6; }
+.field textarea { resize: vertical; }
+.field select:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 2px; }
+
+.orderBox, .timeBox { display: grid; gap: 10px; padding: 14px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 10px; background: var(--dsw-alias-bg-layer-3); min-width: 0; }
+.orderList { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.orderRow { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 8px; background: var(--dsw-alias-bg-layer-2); font-size: 12px; line-height: 1.6; }
+.orderIndex { width: 18px; height: 18px; flex: 0 0 auto; border-radius: 50%; corner-shape: round; background: var(--dsw-alias-bg-layer-3); color: var(--dsw-alias-label-tertiary); font-size: 11px; text-align: center; line-height: 18px; }
+.orderActions { margin-left: auto; display: flex; gap: 4px; }
+.orderActions button { width: 26px; height: 26px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 6px; background: var(--dsw-alias-bg-layer-2); color: var(--dsw-alias-label-secondary); cursor: pointer; font-size: 12px; line-height: 1; }
+.orderActions button:hover:not(:disabled) { border-color: var(--dsw-alias-brand-primary); color: var(--dsw-alias-label-primary); }
+.orderActions button:disabled { opacity: .4; cursor: default; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.preview { font-size: 12px; line-height: 1.75; color: var(--dsw-alias-label-secondary); margin: 0; overflow-wrap: anywhere; }
+
+.error { border: 0.5px solid var(--dsw-alias-label-error); border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; }
+.error strong { font-size: 13px; line-height: 1.6; color: var(--dsw-alias-label-error); }
+.error p { margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--dsw-alias-label-secondary); overflow-wrap: anywhere; }
+.invalid { font-size: 13px; line-height: 1.7; color: var(--dsw-alias-label-error); margin: 0; overflow-wrap: anywhere; }
+.added { font-size: 13px; line-height: 1.7; color: var(--dsw-alias-label-secondary); margin: 0; }
+.lastAppended { margin-top: 20px; padding-top: 16px; border-top: 0.5px solid var(--dsw-alias-border-l3); }
+
+@media (max-width: 560px) {
+  .header { flex-direction: column; gap: 14px; }
+  .header h1 { font-size: 20px; }
+  .block { padding: 16px; }
+}

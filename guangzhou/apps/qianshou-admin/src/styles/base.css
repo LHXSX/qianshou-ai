@@ -1,0 +1,84 @@
+/* 管理台基础样式：只放跨页面的排版与布局，不引入任何算力运营台的样式。 */
+
+:root {
+  --qs-admin-bg: #f5f7fa;
+  --qs-admin-sidebar-bg: #1f2d3d;
+  --qs-admin-sidebar-text: #c3ccd8;
+  --qs-admin-sidebar-active: #2f6fed;
+  --qs-admin-header-bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--qs-admin-bg);
+  color: #303133;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+}
+
+/* 页面通用骨架：标题 + 说明 + 内容卡片 */
+.qs-page {
+  padding: 20px 24px 32px;
+}
+
+.qs-page__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.qs-page__title {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.qs-page__desc {
+  margin: 0;
+  color: #606266;
+  line-height: 1.6;
+}
+
+.qs-card {
+  margin-bottom: 16px;
+}
+
+/* 表格里的等宽内容（接口名、权限键、CIDR、trace 前缀） */
+.qs-mono {
+  font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.qs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.qs-pager {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.qs-empty-hint {
+  color: #909399;
+  line-height: 1.7;
+}

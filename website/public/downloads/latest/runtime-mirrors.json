@@ -1,0 +1,363 @@
+{
+  "schema_version": "v1.2",
+  "updated_at": "2026-05-25T06:22:00Z",
+  "intro": "千手节点 / 企业端任务脚本运行所需的 runtime · 推荐系统级装一次 · 客户端会自动检测识别 · 调度任务时按你装了啥派活",
+  "tip": "全部一行命令 · 复制 → 终端粘贴 → 回车 · 不用点 .exe / .pkg / .zip 手动装",
+  "regions": {
+    "package_manager":      { "label": "包管理器 · 一行装", "color": "#8b5cf6" },
+    "domestic_recommended": { "label": "国内镜像首推",      "color": "#10b981" },
+    "domestic_backup":      { "label": "国内镜像备用",      "color": "#06b6d4" },
+    "international":        { "label": "国外官方",          "color": "#f59e0b" }
+  },
+  "categories": [
+    {
+      "id": "task-bundles",
+      "name": "Python 任务套件 (一键 pip · 装哪组接哪类任务)",
+      "icon": "package",
+      "tagline": "对照客户端「能力」页 · 按你想接的任务类型装对应组",
+      "version_hint": "前置: 先装下面的 Python 3.11 + uv 或 pip",
+      "why_needed": "我们平台 77 个真实任务脚本的依赖按类聚合 · 装一组就能接对应一类任务 · 不用一个个装",
+      "verify_cmd": "pip list",
+      "sources": [
+        {
+          "name": "图像基础组 (覆盖 7 个图像任务 · 必装)",
+          "region": "domestic_recommended",
+          "speed_hint": "~80 MB · 1 分钟内装完",
+          "platforms": {
+            "all": { "title": "Pillow + numpy · 覆盖 image_resize / compress / convert / thumbnail / info / caption / ocr 前置", "cmd": "pip install pillow numpy -i https://mirrors.aliyun.com/pypi/simple" }
+          }
+        },
+        {
+          "name": "PDF 组 (pdf_info / pdf_to_text / pdf_ocr)",
+          "region": "domestic_recommended",
+          "speed_hint": "~30 MB",
+          "platforms": {
+            "all": { "title": "PyMuPDF (fitz) + pdfplumber", "cmd": "pip install pymupdf pdfplumber -i https://mirrors.aliyun.com/pypi/simple" }
+          }
+        },
+        {
+          "name": "爬虫组 (crawl_url_fetch / extract / batch_fetch)",
+          "region": "domestic_recommended",
+          "speed_hint": "~10 MB",
+          "platforms": {
+            "all": { "title": "requests + selectolax + readability-lxml", "cmd": "pip install requests selectolax readability-lxml -i https://mirrors.aliyun.com/pypi/simple" }
+          }
+        },
+        {
+          "name": "OCR 组 (ocr_image / pdf_ocr · 中文识别)",
+          "region": "domestic_recommended",
+          "speed_hint": "~1.5 GB · paddlepaddle 体积大",
+          "platforms": {
+            "all": { "title": "PaddleOCR (CPU) + tesseract fallback", "cmd": "pip install paddlepaddle paddleocr pytesseract -i https://mirrors.aliyun.com/pypi/simple\n\n# Linux 还需系统 tesseract binary:\nsudo apt install -y tesseract-ocr tesseract-ocr-chi-sim   # Debian/Ubuntu\nbrew install tesseract tesseract-lang                     # macOS\nwinget install -e --id UB-Mannheim.TesseractOCR           # Windows" }
+          }
+        },
+        {
+          "name": "AI 高级组 (image_caption / whisper_transcribe · 收益最高)",
+          "region": "domestic_recommended",
+          "speed_hint": "~3 GB · 含 torch · 推荐睡前装",
+          "platforms": {
+            "all": { "title": "transformers + faster-whisper + torch (CPU)", "cmd": "pip install transformers faster-whisper torch -i https://mirrors.aliyun.com/pypi/simple\n\n# NVIDIA GPU 用户改装 CUDA 版 torch:\npip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121" }
+          }
+        },
+        {
+          "name": "PPT/Office 组 (ai_ppt_gen)",
+          "region": "domestic_recommended",
+          "speed_hint": "~5 MB",
+          "platforms": {
+            "all": { "title": "python-pptx", "cmd": "pip install python-pptx -i https://mirrors.aliyun.com/pypi/simple" }
+          }
+        },
+        {
+          "name": "一次性全装 (5 GB+ · 接所有 Python 任务)",
+          "region": "package_manager",
+          "speed_hint": "懒人方案 · 装一次干干净净",
+          "platforms": {
+            "all": { "title": "全部 13 个包 (按需自己加 GPU torch)", "cmd": "pip install pillow numpy pymupdf pdfplumber requests selectolax readability-lxml paddlepaddle paddleocr pytesseract transformers faster-whisper python-pptx -i https://mirrors.aliyun.com/pypi/simple\n\n# 有 NVIDIA 卡再装 GPU torch:\npip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "python",
+      "name": "Python 3.11",
+      "icon": "code",
+      "tagline": "任务脚本运行环境 · 必装",
+      "version_hint": "3.10+ · 推荐 3.11.9",
+      "why_needed": "几乎所有任务脚本都是 Python · 节点没装就接不到任务",
+      "verify_cmd": "python3 --version",
+      "sources": [
+        {
+          "name": "winget / brew / apt (一行装 · 最省心)",
+          "region": "package_manager",
+          "speed_hint": "一行命令 · 国内一般都通",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "winget install -e --id Python.Python.3.11" },
+            "macos":   { "title": "Terminal",   "cmd": "brew install python@3.11" },
+            "linux":   { "title": "Bash",       "cmd": "sudo apt update && sudo apt install -y python3.11 python3.11-venv  # Debian/Ubuntu\nsudo dnf install -y python3.11                                  # Fedora/RHEL" }
+          }
+        },
+        {
+          "name": "华为云镜像 · curl 一行拉装",
+          "region": "domestic_recommended",
+          "speed_hint": "≥10 MB/s · 全国 CDN",
+          "platforms": {
+            "windows": { "title": "PowerShell (静默装 + 加 PATH)", "cmd": "$u='https://mirrors.huaweicloud.com/python/3.11.9/python-3.11.9-amd64.exe'; $f=\"$env:TEMP\\py311.exe\"; iwr $u -OutFile $f; Start-Process $f -ArgumentList '/quiet','InstallAllUsers=0','PrependPath=1' -Wait", "url": "https://mirrors.huaweicloud.com/python/3.11.9/python-3.11.9-amd64.exe" },
+            "macos":   { "title": "Terminal (curl + installer)",    "cmd": "curl -fSL 'https://mirrors.huaweicloud.com/python/3.11.9/python-3.11.9-macos11.pkg' -o /tmp/py311.pkg && sudo installer -pkg /tmp/py311.pkg -target /", "url": "https://mirrors.huaweicloud.com/python/3.11.9/python-3.11.9-macos11.pkg" }
+          }
+        },
+        {
+          "name": "北京外国语大学镜像 (BFSU · 备用)",
+          "region": "domestic_backup",
+          "speed_hint": "教育网快 · 华为云抽风时用",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "$u='https://mirrors.bfsu.edu.cn/python/3.11.9/python-3.11.9-amd64.exe'; $f=\"$env:TEMP\\py311.exe\"; iwr $u -OutFile $f; Start-Process $f -ArgumentList '/quiet','InstallAllUsers=0','PrependPath=1' -Wait" },
+            "macos":   { "title": "Terminal",   "cmd": "curl -fSL 'https://mirrors.bfsu.edu.cn/python/3.11.9/python-3.11.9-macos11.pkg' -o /tmp/py311.pkg && sudo installer -pkg /tmp/py311.pkg -target /" }
+          }
+        },
+        {
+          "name": "python.org 官方 (国外)",
+          "region": "international",
+          "speed_hint": "国内 ~100KB/s · 走 VPN 快",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "$u='https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe'; $f=\"$env:TEMP\\py311.exe\"; iwr $u -OutFile $f; Start-Process $f -ArgumentList '/quiet','InstallAllUsers=0','PrependPath=1' -Wait" },
+            "macos":   { "title": "Terminal",   "cmd": "curl -fSL 'https://www.python.org/ftp/python/3.11.9/python-3.11.9-macos11.pkg' -o /tmp/py311.pkg && sudo installer -pkg /tmp/py311.pkg -target /" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ffmpeg",
+      "name": "ffmpeg + ffprobe",
+      "icon": "film",
+      "tagline": "音视频转码 / 抽帧 · video_info / video_repurpose 必装",
+      "version_hint": "6.x+",
+      "why_needed": "video_info / video_repurpose / OCR 预处理用 · 缺它跳过音视频任务",
+      "verify_cmd": "ffmpeg -version && ffprobe -version",
+      "sources": [
+        {
+          "name": "winget / brew / apt (一行装 · 最省心)",
+          "region": "package_manager",
+          "speed_hint": "一行搞定 · 自动加 PATH",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "winget install -e --id Gyan.FFmpeg" },
+            "macos":   { "title": "Terminal",   "cmd": "brew install ffmpeg" },
+            "linux":   { "title": "Bash",       "cmd": "sudo apt install -y ffmpeg          # Debian/Ubuntu\nsudo dnf install -y ffmpeg-free      # Fedora" }
+          }
+        },
+        {
+          "name": "BtbN GitHub 静态包 · curl 一行",
+          "region": "international",
+          "speed_hint": "国内可走 ghproxy · 含 NVENC / VAAPI",
+          "platforms": {
+            "windows": { "title": "PowerShell (拉到用户目录 + 加 PATH)", "cmd": "$u='https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip'; iwr $u -OutFile \"$env:TEMP\\ff.zip\"; Expand-Archive -Force \"$env:TEMP\\ff.zip\" \"$env:USERPROFILE\\ffmpeg\"; [Environment]::SetEnvironmentVariable('Path', $env:Path + ';' + (Get-ChildItem \"$env:USERPROFILE\\ffmpeg\\ffmpeg-*\\bin\" | Select -First 1).FullName, 'User')" },
+            "linux":   { "title": "Bash (拉静态包 + 装到 /usr/local/bin)", "cmd": "curl -fSL 'https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz' | tar xJ --strip-components=2 -C /tmp ffmpeg-master-latest-linux64-gpl/bin/ffmpeg ffmpeg-master-latest-linux64-gpl/bin/ffprobe && sudo mv /tmp/ffmpeg /tmp/ffprobe /usr/local/bin/ && sudo chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe" }
+          }
+        },
+        {
+          "name": "evermeet.cx (Mac 社区 · 含 NVENC)",
+          "region": "domestic_backup",
+          "speed_hint": "Mac 备用 · 不用 brew 也能装",
+          "platforms": {
+            "macos": { "title": "Terminal (curl + unzip + mv)", "cmd": "curl -fSL 'https://evermeet.cx/ffmpeg/getrelease/zip' -o /tmp/ff.zip && unzip -o /tmp/ff.zip -d /tmp && sudo mv /tmp/ffmpeg /usr/local/bin/ && sudo chmod +x /usr/local/bin/ffmpeg\ncurl -fSL 'https://evermeet.cx/ffmpeg/getrelease/ffprobe/zip' -o /tmp/fp.zip && unzip -o /tmp/fp.zip -d /tmp && sudo mv /tmp/ffprobe /usr/local/bin/" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "uv",
+      "name": "uv (现代 Python 包管理)",
+      "icon": "zap",
+      "tagline": "pip / venv 替代 · 装包快 10x",
+      "version_hint": "最新",
+      "why_needed": "客户端内置 runtime installer 用 uv 装 PyTorch / OCR / Whisper · 系统装一份兜底",
+      "verify_cmd": "uv --version",
+      "sources": [
+        {
+          "name": "Astral 官方一键脚本 (最快)",
+          "region": "international",
+          "speed_hint": "5 秒装好",
+          "platforms": {
+            "macos":   { "title": "Terminal",   "cmd": "curl -LsSf https://astral.sh/uv/install.sh | sh" },
+            "linux":   { "title": "Bash",       "cmd": "curl -LsSf https://astral.sh/uv/install.sh | sh" },
+            "windows": { "title": "PowerShell", "cmd": "powershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"" }
+          }
+        },
+        {
+          "name": "pip 装 (国内清华镜像)",
+          "region": "domestic_recommended",
+          "speed_hint": "任意 Python 都行",
+          "platforms": {
+            "all": { "title": "任意终端", "cmd": "pip install uv -i https://pypi.tuna.tsinghua.edu.cn/simple" }
+          }
+        },
+        {
+          "name": "winget / brew",
+          "region": "package_manager",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "winget install -e --id astral-sh.uv" },
+            "macos":   { "title": "Terminal",   "cmd": "brew install uv" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tesseract",
+      "name": "Tesseract OCR (系统 binary)",
+      "icon": "scan",
+      "tagline": "OCR 任务备用引擎 · pytesseract 调用它",
+      "version_hint": "5.x · 含中文 chi_sim 语言包",
+      "why_needed": "ocr_image / pdf_ocr 在 PaddleOCR 不可用时 fallback 到 tesseract",
+      "verify_cmd": "tesseract --version && tesseract --list-langs",
+      "sources": [
+        {
+          "name": "winget / brew / apt",
+          "region": "package_manager",
+          "speed_hint": "含中文语言包 ~50 MB",
+          "platforms": {
+            "windows": { "title": "PowerShell (UB Mannheim 维护版)", "cmd": "winget install -e --id UB-Mannheim.TesseractOCR" },
+            "macos":   { "title": "Terminal",   "cmd": "brew install tesseract tesseract-lang" },
+            "linux":   { "title": "Bash",       "cmd": "sudo apt install -y tesseract-ocr tesseract-ocr-chi-sim   # Debian/Ubuntu\nsudo dnf install -y tesseract tesseract-langpack-chi_sim  # Fedora" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "torch",
+      "name": "PyTorch (CPU / GPU)",
+      "icon": "flame",
+      "tagline": "AI 推理 · whisper / transformers / 视觉模型必需",
+      "version_hint": "2.4+",
+      "why_needed": "image_caption / whisper_transcribe 等 AI 任务 · GPU 比 CPU 快 10-100x",
+      "verify_cmd": "python3 -c \"import torch; print(torch.__version__, torch.cuda.is_available())\"",
+      "sources": [
+        {
+          "name": "阿里云 PyPI · CPU 版 (无 GPU)",
+          "region": "domestic_recommended",
+          "speed_hint": "200 MB · 国内首推",
+          "platforms": {
+            "all": { "title": "任意终端", "cmd": "pip install torch torchvision torchaudio -i https://mirrors.aliyun.com/pypi/simple" }
+          }
+        },
+        {
+          "name": "PyTorch 官方 · CUDA 12.1 版 (N 卡)",
+          "region": "international",
+          "speed_hint": "2 GB · 国内 ~500KB/s · 睡前跑",
+          "platforms": {
+            "all": { "title": "任意终端", "cmd": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121" }
+          }
+        },
+        {
+          "name": "清华 TUNA · CPU 版",
+          "region": "domestic_backup",
+          "platforms": {
+            "all": { "title": "任意终端", "cmd": "pip install torch torchvision torchaudio -i https://pypi.tuna.tsinghua.edu.cn/simple" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "node",
+      "name": "Node.js LTS",
+      "icon": "package",
+      "tagline": "前端 / JS 任务 / npm 工具链",
+      "version_hint": "20.x LTS",
+      "why_needed": "前端打包脚本 / Puppeteer / SDK 工具",
+      "verify_cmd": "node --version && npm --version",
+      "sources": [
+        {
+          "name": "winget / brew / apt",
+          "region": "package_manager",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "winget install -e --id OpenJS.NodeJS.LTS" },
+            "macos":   { "title": "Terminal",   "cmd": "brew install node@20" },
+            "linux":   { "title": "Bash (NodeSource)", "cmd": "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash - && sudo apt install -y nodejs" }
+          }
+        },
+        {
+          "name": "npmmirror (淘宝镜像)",
+          "region": "domestic_recommended",
+          "speed_hint": "国内最快",
+          "platforms": {
+            "windows": { "title": "PowerShell (msi 静默装)", "cmd": "$u='https://registry.npmmirror.com/-/binary/node/latest-v20.x/node-v20.18.0-x64.msi'; iwr $u -OutFile \"$env:TEMP\\node.msi\"; Start-Process msiexec.exe -ArgumentList '/i',\"$env:TEMP\\node.msi\",'/quiet','/norestart' -Wait" },
+            "macos":   { "title": "Terminal (pkg 静默装)",   "cmd": "curl -fSL 'https://registry.npmmirror.com/-/binary/node/latest-v20.x/node-v20.18.0.pkg' -o /tmp/node.pkg && sudo installer -pkg /tmp/node.pkg -target /" },
+            "linux":   { "title": "Bash (静态包到 /usr/local)", "cmd": "curl -fSL 'https://registry.npmmirror.com/-/binary/node/latest-v20.x/node-v20.18.0-linux-x64.tar.xz' | sudo tar xJ -C /usr/local --strip-components=1" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "icon": "git",
+      "tagline": "拉脚本仓库 · 部分技能 git clone",
+      "version_hint": "2.30+",
+      "verify_cmd": "git --version",
+      "sources": [
+        {
+          "name": "winget / brew / apt",
+          "region": "package_manager",
+          "platforms": {
+            "windows": { "title": "PowerShell", "cmd": "winget install -e --id Git.Git" },
+            "macos":   { "title": "Terminal (brew 或 Xcode CLI)", "cmd": "brew install git\n# 或: xcode-select --install" },
+            "linux":   { "title": "Bash", "cmd": "sudo apt install -y git    # Debian/Ubuntu\nsudo dnf install -y git    # Fedora" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama (本地 LLM · 可选)",
+      "icon": "cpu",
+      "tagline": "本地跑 LLM · 装了能接 llm_chat / llm_translate / llm_summarize 高级版",
+      "version_hint": "0.4+",
+      "why_needed": "节点可选 · 8GB+ 内存推荐 7B 模型",
+      "verify_cmd": "ollama --version && ollama list",
+      "sources": [
+        {
+          "name": "Ollama 官方一键脚本",
+          "region": "international",
+          "speed_hint": "Mac/Linux 一行装",
+          "platforms": {
+            "macos":   { "title": "Terminal", "cmd": "curl -fSL https://ollama.com/download/Ollama-darwin.zip -o /tmp/ollama.zip && unzip -o /tmp/ollama.zip -d /Applications/ && open '/Applications/Ollama.app'" },
+            "linux":   { "title": "Bash",     "cmd": "curl -fsSL https://ollama.com/install.sh | sh" },
+            "windows": { "title": "PowerShell (静默装)", "cmd": "$u='https://ollama.com/download/OllamaSetup.exe'; iwr $u -OutFile \"$env:TEMP\\OllamaSetup.exe\"; Start-Process \"$env:TEMP\\OllamaSetup.exe\" -ArgumentList '/S' -Wait" }
+          }
+        },
+        {
+          "name": "拉模型 (中国友好优先)",
+          "region": "domestic_recommended",
+          "speed_hint": "通义千问 / DeepSeek 国内 OK",
+          "platforms": {
+            "all": { "title": "装好 ollama 后", "cmd": "ollama pull qwen2.5:7b      # 通义千问 7B · 国内拉快\nollama pull deepseek-r1:7b  # DeepSeek R1\nollama pull llama3.2:3b     # 国外慢 · 必要时走代理" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cuda",
+      "name": "NVIDIA CUDA Toolkit",
+      "icon": "zap",
+      "tagline": "仅 NVIDIA GPU 用户 · A 卡 / Intel / Mac 跳过",
+      "version_hint": "12.x",
+      "why_needed": "仅 N 卡需要 · Mac M 芯片用 Metal (PyTorch 自动) · 不用装",
+      "verify_cmd": "nvidia-smi && nvcc --version",
+      "sources": [
+        {
+          "name": "winget (Windows 一行装 · 推荐)",
+          "region": "package_manager",
+          "speed_hint": "≥5GB · 走 winget 自动选最新",
+          "platforms": {
+            "windows": { "title": "PowerShell (管理员)", "cmd": "winget install -e --id Nvidia.CUDA" }
+          }
+        },
+        {
+          "name": "Linux 包管理 (NVIDIA apt repo)",
+          "region": "package_manager",
+          "platforms": {
+            "linux": { "title": "Bash (Ubuntu 22.04 示例)", "cmd": "# 1) 加 NVIDIA repo\nwget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb\nsudo dpkg -i cuda-keyring_1.1-1_all.deb\n# 2) 装\nsudo apt update && sudo apt install -y cuda-toolkit-12-4" }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# 本工程特有的忽略项（仓库根 .gitignore 只登记了 apps/web、apps/qianshou-mobile 等既有应用，
+# 新工程自己声明构建产物，避免把 dist 提交进仓库）。
+# vite.config.ts 的 build.outDir 默认是 'dist'，因此裸跑 vite build 就会在此生成。
+/dist/
+.vite/

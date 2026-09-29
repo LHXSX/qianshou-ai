@@ -1,0 +1,263 @@
+{
+  "name": "@deepseek-ai/dsh-compute-core",
+  "version": "0.1.5-rc.2",
+  "description": "Qianshou core connection and bounded local compute planning",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./supply": {
+      "types": "./lib/types/supply.d.ts",
+      "default": "./lib/supply.js"
+    },
+    "./tools": {
+      "types": "./lib/types/tools.d.ts",
+      "default": "./lib/tools.js"
+    },
+    "./plugin-draft-tools": {
+      "types": "./lib/types/plugin-draft-tools.d.ts",
+      "default": "./lib/plugin-draft-tools.js"
+    },
+    "./private-mac-video-tool": {
+      "types": "./lib/types/private-mac-video-tool.d.ts",
+      "default": "./lib/private-mac-video-tool.js"
+    },
+    "./comfy-video-public-contract": {
+      "types": "./lib/types/comfy-video-public-contract.d.ts",
+      "default": "./lib/comfy-video-public-contract.js"
+    },
+    "./comfy-local-probe": {
+      "types": "./lib/types/comfy-local-probe.d.ts",
+      "default": "./lib/comfy-local-probe.js"
+    },
+    "./comfy-video-sqlite-attempt-ledger": {
+      "types": "./lib/types/comfy-video-sqlite-attempt-ledger.d.ts",
+      "default": "./lib/comfy-video-sqlite-attempt-ledger.js"
+    },
+    "./edge-worker/artifact-read": {
+      "types": "./lib/types/edge-worker/artifact-read.d.ts",
+      "default": "./lib/edge-worker/artifact-read.js"
+    },
+    "./edge-worker/artifact-upload-file": {
+      "types": "./lib/types/edge-worker/artifact-upload-file.d.ts",
+      "default": "./lib/edge-worker/artifact-upload-file.js"
+    },
+    "./protocol": {
+      "types": "./lib/types/protocol.d.ts",
+      "default": "./lib/protocol.js"
+    },
+    "./validation": {
+      "types": "./lib/types/validation.d.ts",
+      "default": "./lib/validation.js"
+    },
+    "./executor": {
+      "types": "./lib/types/executor.d.ts",
+      "default": "./lib/executor.js"
+    },
+    "./model-adapter": {
+      "types": "./lib/types/model-adapter.d.ts",
+      "default": "./lib/model-adapter.js"
+    },
+    "./legal-document-plugin": {
+      "types": "./lib/types/legal-document-plugin.d.ts",
+      "default": "./lib/legal-document-plugin.js"
+    },
+    "./fanout": {
+      "types": "./lib/types/fanout/index.d.ts",
+      "default": "./lib/fanout/index.js"
+    },
+    "./task-state": {
+      "types": "./lib/types/task-state.d.ts",
+      "default": "./lib/task-state.js"
+    },
+    "./task-store": {
+      "types": "./lib/types/task-store.d.ts",
+      "default": "./lib/task-store.js"
+    },
+    "./submission-ledger": {
+      "types": "./lib/types/submission-ledger.d.ts",
+      "default": "./lib/submission-ledger.js"
+    },
+    "./envelope-security": {
+      "types": "./lib/types/envelope-security.d.ts",
+      "default": "./lib/envelope-security.js"
+    },
+    "./native-h3-binding": {
+      "types": "./lib/types/native-h3-binding.d.ts",
+      "default": "./lib/native-h3-binding.js"
+    },
+    "./native-h3-device-proof": {
+      "types": "./lib/types/native-h3-device-proof.d.ts",
+      "default": "./lib/native-h3-device-proof.js"
+    },
+    "./native-h3-review": {
+      "types": "./lib/types/native-h3-review.d.ts",
+      "default": "./lib/native-h3-review.js"
+    },
+    "./native-h3-presence": {
+      "types": "./lib/types/native-h3-presence.d.ts",
+      "default": "./lib/native-h3-presence.js"
+    },
+    "./native-h3-task-lease": {
+      "types": "./lib/types/native-h3-task-lease.d.ts",
+      "default": "./lib/native-h3-task-lease.js"
+    },
+    "./native-h3-v2-evidence": {
+      "types": "./lib/types/native-h3-v2-evidence.d.ts",
+      "default": "./lib/native-h3-v2-evidence.js"
+    },
+    "./contributor-policy": {
+      "types": "./lib/types/contributor-policy.d.ts",
+      "default": "./lib/contributor-policy.js"
+    },
+    "./resource-observer": {
+      "types": "./lib/types/resource-observer.d.ts",
+      "default": "./lib/resource-observer.js"
+    },
+    "./scheduler": {
+      "types": "./lib/types/scheduler.d.ts",
+      "default": "./lib/scheduler.js"
+    },
+    "./node-protocol": {
+      "types": "./lib/types/node-protocol.d.ts",
+      "default": "./lib/node-protocol.js"
+    },
+    "./node-session": {
+      "types": "./lib/types/node-session.d.ts",
+      "default": "./lib/node-session.js"
+    },
+    "./node-transport": {
+      "types": "./lib/types/node-transport.d.ts",
+      "default": "./lib/node-transport.js"
+    },
+    "./employee-task-coordinator": {
+      "types": "./lib/types/employee-task-coordinator.d.ts",
+      "default": "./lib/employee-task-coordinator.js"
+    },
+    "./capability-manifest": {
+      "types": "./lib/types/capability-manifest.d.ts",
+      "default": "./lib/capability-manifest.js"
+    },
+    "./routing-contract": {
+      "types": "./lib/types/routing-contract.d.ts",
+      "default": "./lib/routing-contract.js"
+    },
+    "./local-plugin-runtime": {
+      "types": "./lib/types/local-plugin-runtime.d.ts",
+      "default": "./lib/local-plugin-runtime.js"
+    },
+    "./local-execution-admission": {
+      "types": "./lib/types/local-execution-admission.d.ts",
+      "default": "./lib/local-execution-admission.js"
+    },
+    "./plugin-contract": {
+      "types": "./lib/types/plugin-contract.d.ts",
+      "default": "./lib/plugin-contract.js"
+    },
+    "./plugin-market": {
+      "types": "./lib/types/plugin-market.d.ts",
+      "default": "./lib/plugin-market.js"
+    },
+    "./router": {
+      "types": "./lib/types/router.d.ts",
+      "default": "./lib/router.js"
+    },
+    "./agent-router": {
+      "types": "./lib/types/agent-router.d.ts",
+      "default": "./lib/agent-router.js"
+    },
+    "./pc-task-surface": {
+      "types": "./lib/types/pc-task-surface.d.ts",
+      "default": "./lib/pc-task-surface.js"
+    },
+    "./router-adapter": {
+      "types": "./lib/types/router-adapter.d.ts",
+      "default": "./lib/router-adapter.js"
+    },
+    "./commerce-image-workflow": {
+      "types": "./lib/types/commerce-image-workflow.d.ts",
+      "default": "./lib/commerce-image-workflow.js"
+    },
+    "./resident-loop": {
+      "types": "./lib/types/resident-loop.d.ts",
+      "default": "./lib/resident-loop.js"
+    },
+    "./task-workspace": {
+      "types": "./lib/types/task-workspace.d.ts",
+      "default": "./lib/task-workspace.js"
+    },
+    "./task-output": {
+      "types": "./lib/types/task-output.d.ts",
+      "default": "./lib/task-output.js"
+    },
+    "./local-task-runner": {
+      "types": "./lib/types/local-task-runner.d.ts",
+      "default": "./lib/local-task-runner.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./result-assets": {
+      "types": "./lib/types/result-assets.d.ts",
+      "default": "./lib/result-assets.js"
+    },
+    "./resident": {
+      "types": "./lib/types/resident/index.d.ts",
+      "default": "./lib/resident/index.js"
+    },
+    "./transport/memory-session": {
+      "types": "./lib/types/transport/memory-session.d.ts",
+      "default": "./lib/transport/memory-session.js"
+    },
+    "./edge-worker": {
+      "types": "./lib/types/edge-worker/connection.d.ts",
+      "default": "./lib/edge-worker/connection.js"
+    },
+    "./edge-worker/file-task-contract": {
+      "types": "./lib/types/edge-worker/file-task-contract.d.ts",
+      "default": "./lib/edge-worker/file-task-contract.js"
+    },
+    "./edge-worker/polled-verification": {
+      "types": "./lib/types/edge-worker/polled-verification.d.ts",
+      "default": "./lib/edge-worker/polled-verification.js"
+    },
+    "./transport/edge-worker-session": {
+      "types": "./lib/types/transport/edge-worker-session.d.ts",
+      "default": "./lib/transport/edge-worker-session.js"
+    },
+    "./node-capability": {
+      "types": "./lib/types/node-capability.d.ts",
+      "default": "./lib/node-capability.js"
+    }
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "dependencies": {
+    "@deepseek-ai/dsh-agent": "workspace:^",
+    "@deepseek-ai/dsh-atomic-write": "workspace:^",
+    "@deepseek-ai/dsh-brand": "workspace:^",
+    "@deepseek-ai/schemastery": "workspace:^",
+    "fflate": "^0.8.2"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-tools": "workspace:^"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-attachment": "workspace:^",
+    "@deepseek-ai/dsh-client-connection": "workspace:^",
+    "@deepseek-ai/dsh-client-file-upload": "workspace:^",
+    "@deepseek-ai/dsh-host-qianshou-voice": "workspace:^",
+    "@deepseek-ai/dsh-session": "workspace:^",
+    "@deepseek-ai/dsh-session-persistence": "workspace:^",
+    "@deepseek-ai/dsh-tools": "workspace:^"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema": "qianshou.h3-adapter-install.v2",
+  "scope": "fixed-installed-v1-upgrade-only",
+  "sourcePolicy": "raw-fixed-lf; baseline adapter permits CRLF only before pinned LF stage",
+  "baselineAdapterSha256": "0650d18bc9060efda379185944ef6841a0dcae5ce0ed3cec24076fefd512a2f2",
+  "targetAdapterSha256": "9f39917c1980d1855c1a9a11e20f86eef434f4cd3706d184ecc998eb40d90e51",
+  "patchSha256": "58cb96e873b5e2af7efb986c96046271eaf5294e89525a1f16947bf155d321a2",
+  "sourceRoles": [
+    {
+      "role": "adapter",
+      "root": "api",
+      "path": "workbench/workbench_node.py",
+      "sha256": "0650d18bc9060efda379185944ef6841a0dcae5ce0ed3cec24076fefd512a2f2"
+    },
+    {
+      "role": "graphBuilder",
+      "root": "api",
+      "path": "workbench/graphs.py",
+      "sha256": "8656fe93fb2be83bbf68a867d3fae2420a86f00ab43ca9f0c997c76d79c8c858"
+    },
+    {
+      "role": "identity",
+      "root": "api",
+      "path": "workbench/recipe_identity.py",
+      "sha256": "b5b8d8e3966ab41b8cfbe1584106af3fc75e98dbd04e92f73c7dc24bf423ff3d"
+    },
+    {
+      "role": "identityV2",
+      "root": "api",
+      "path": "workbench/recipe_identity_v2.py",
+      "sha256": "df371e075d6d478d5f7612473d7f31c008b35c204a58c1953d500103dbd040d8"
+    },
+    {
+      "role": "runtimeAttestation",
+      "root": "api",
+      "path": "workbench/runtime_attestation.py",
+      "sha256": "8a62cd1e7d91f2985cffa91bff4a1bab9447d816be6473f155c0360152a88286"
+    },
+    {
+      "role": "comfyGraph",
+      "root": "api",
+      "path": "local_h3/comfy.py",
+      "sha256": "c8551d56d875ee7dde0e210e60a5441e11ce638745cbfddd8afb30f384a7576f"
+    },
+    {
+      "role": "gateway",
+      "root": "api",
+      "path": "local_h3/app.py",
+      "sha256": "4266bebd00359281878e3297dba79e6115deb88374a77fd10dacda3db65a2f51"
+    },
+    {
+      "role": "jobs",
+      "root": "api",
+      "path": "local_h3/jobs.py",
+      "sha256": "37bec7ac1b7408ff7c13d211f58a715e9ee5535bc0df60723a16c40e1b2767d1"
+    },
+    {
+      "role": "schemas",
+      "root": "api",
+      "path": "local_h3/schemas.py",
+      "sha256": "981ba2dee2679d75e0cef7f492a2d1b4a2a83498bc6144f971b978ed67a64aa7"
+    },
+    {
+      "role": "workflows",
+      "root": "api",
+      "path": "local_h3/workflows.py",
+      "sha256": "24981a021e5cfe4ca42e5a11736424d0b5f7d632f8ec207bd7ab5b4a9ee93900"
+    },
+    {
+      "role": "comfyMain",
+      "root": "comfy",
+      "path": "main.py",
+      "sha256": null
+    },
+    {
+      "role": "comfyFolderPaths",
+      "root": "comfy",
+      "path": "folder_paths.py",
+      "sha256": null
+    },
+    {
+      "role": "comfyExecution",
+      "root": "comfy",
+      "path": "execution.py",
+      "sha256": null
+    },
+    {
+      "role": "comfyCaching",
+      "root": "comfy",
+      "path": "comfy_execution/caching.py",
+      "sha256": null
+    },
+    {
+      "role": "comfyCliArgs",
+      "root": "comfy",
+      "path": "comfy/cli_args.py",
+      "sha256": null
+    },
+    {
+      "role": "dualClockNode",
+      "root": "comfy",
+      "path": "custom_nodes/h3_benchmark_sampler/__init__.py",
+      "sha256": null
+    },
+    {
+      "role": "dualClockSampling",
+      "root": "comfy",
+      "path": "custom_nodes/h3_benchmark_sampler/sampling.py",
+      "sha256": null
+    },
+    {
+      "role": "dualClockCore",
+      "root": "comfy",
+      "path": "custom_nodes/h3_benchmark_sampler/core.py",
+      "sha256": null
+    },
+    {
+      "role": "h3ComfyNodes",
+      "root": "comfy",
+      "path": "comfy_extras/nodes_minimax_h3.py",
+      "sha256": null
+    },
+    {
+      "role": "sageNode",
+      "root": "comfy",
+      "path": "custom_nodes/ComfyUI-KJNodes/nodes/model_optimization_nodes.py",
+      "sha256": null
+    }
+  ],
+  "canonicalComfyReference": {
+    "comfyCommit": "9a9fdb10ed144ce760d9682cb247526ea23cc525",
+    "kjNodesCommit": "b7646ad70a7daa7aeb919ca542274758d26ba2df",
+    "hashesCollected": false
+  },
+  "blockedReason": "Ten measured Comfy source role hashes not yet collected; installer must refuse before mutation. This is not a fresh-machine bootstrap manifest.",
+  "canonicalSoftwareClosure": {
+    "schema": "qianshou.h3-canonical-software-closure.v1",
+    "complete": false,
+    "files": [],
+    "missing": [
+      "actual required modified Comfy core modules and untracked LoRA guard",
+      "full API/import-supporting software source inventory",
+      "fixed canonical source distribution, separate from measured CODE_ROLES20"
+    ]
+  }
+}

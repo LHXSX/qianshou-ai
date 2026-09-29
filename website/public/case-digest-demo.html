@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>智能阅卷 Demo · 千手算力(真实运行)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0b1020; color: #d7dcea; line-height: 1.6; padding: 24px 16px 48px; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  header h1 { font-size: 24px; color: #fff; }
+  header .sub { color: #8b96b3; font-size: 13px; margin-top: 4px; }
+  .badge { display: inline-block; margin-top: 10px; font-size: 12px; color: #6ee7a8;
+    border: 1px solid #1c3a2a; background: #0e1c14; border-radius: 6px; padding: 3px 10px; }
+  .badge.warn { color: #fbbf24; border-color: #3a301c; background: #1c180e; }
+  .card { background: #11172b; border: 1px solid #1f2a44; border-radius: 14px; padding: 20px; margin-top: 18px; }
+  .card h2 { font-size: 15px; color: #7aa2ff; margin-bottom: 4px; }
+  .card .hint { font-size: 12px; color: #6b7793; margin-bottom: 14px; }
+  label { display: block; font-size: 12px; color: #8b96b3; margin: 10px 0 4px; }
+  textarea, input, select {
+    width: 100%; background: #0e1530; border: 1px solid #243150; border-radius: 8px;
+    color: #d7dcea; padding: 9px 11px; font-size: 13px; font-family: inherit; }
+  textarea { min-height: 160px; resize: vertical; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 200px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab { padding: 7px 14px; border-radius: 8px; border: 1px solid #243150; background: #0e1530;
+    color: #8b96b3; font-size: 13px; cursor: pointer; }
+  .tab.active { border-color: #2563eb; color: #fff; background: #152040; }
+  .drop { border: 2px dashed #243150; border-radius: 10px; padding: 28px; text-align: center;
+    color: #8b96b3; font-size: 13px; cursor: pointer; transition: border-color .2s; }
+  .drop.drag { border-color: #2563eb; background: #0e1a35; }
+  .drop b { color: #7aa2ff; }
+  .thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .thumbs img { width: 72px; height: 96px; object-fit: cover; border-radius: 6px; border: 1px solid #243150; }
+  .btns { display: flex; gap: 10px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+  button { border: none; border-radius: 8px; padding: 9px 22px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; }
+  .btn-go { background: #2563eb; color: #fff; }
+  .btn-go:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-ghost { background: #1a2238; color: #aab4d0; }
+  .btn-dl { background: #16a34a; color: #fff; }
+  .pipe { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; }
+  .pipe .node { background: #0e1530; border: 1px solid #243150; border-radius: 7px; padding: 7px 11px; color: #aab4d0; }
+  .pipe .node b { color: #7aa2ff; }
+  .pipe .arrow { color: #44507a; }
+  .steps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px;
+    background: #0e1530; border: 1px solid #243150; font-size: 12.5px; color: #8b96b3; flex: 1; min-width: 140px; }
+  .step .dot { width: 18px; height: 18px; border-radius: 50%; background: #243150; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; }
+  .step.active { border-color: #2563eb; color: #cdd7f0; }
+  .step.active .dot { background: #2563eb; animation: pulse 1s infinite; }
+  .step.done { border-color: #16a34a; color: #cdd7f0; }
+  .step.done .dot { background: #16a34a; }
+  .step.skip { border-color: #334155; opacity: .7; }
+  .step.skip .dot { background: #334155; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .metrics { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; font-size: 12.5px; color: #8b96b3; }
+  .metrics b { color: #7aa2ff; font-size: 15px; display: block; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12.5px; }
+  th, td { border: 1px solid #243150; padding: 7px 9px; text-align: left; vertical-align: top; }
+  th { background: #16203a; color: #aab4d0; font-weight: 600; }
+  td.page { color: #6ee7a8; white-space: nowrap; }
+  .tag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 8px; }
+  .tag { background: #0e1530; border: 1px solid #243150; border-radius: 8px; padding: 8px 11px; }
+  .tag .k { font-size: 11px; color: #8b96b3; }
+  .tag .v { font-size: 13px; color: #fff; margin-top: 2px; word-break: break-all; }
+  .summary-box { background: #0e1530; border: 1px solid #243150; border-radius: 8px; padding: 12px 14px;
+    font-size: 13px; color: #cdd7f0; white-space: pre-wrap; }
+  ul.lst { margin: 6px 0 0 18px; font-size: 13px; }
+  ul.lst li { margin: 3px 0; }
+  h3.blk { font-size: 13px; color: #9fb0d8; margin: 16px 0 4px; font-weight: 600; }
+  .err { color: #fca5a5; background: #2a1414; border: 1px solid #5a2a2a; border-radius: 8px;
+    padding: 10px 14px; margin-top: 12px; font-size: 13px; }
+  .hidden { display: none; }
+  .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid #243150;
+    border-top-color: #7aa2ff; border-radius: 50%; animation: r .8s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes r { to { transform: rotate(360deg); } }
+  .foot { margin-top: 28px; font-size: 11px; color: #5a6480; text-align: center; }
+  .foot a { color: #7aa2ff; text-decoration: none; }
+  .ocr-preview { max-height: 120px; overflow: auto; font-size: 12px; color: #8b96b3;
+    background: #0e1530; border: 1px solid #243150; border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>智能阅卷 · 完整演示</h1>
+    <p class="sub">律所垂直场景 · 从卷宗传入 → OCR/分块 AI 阅卷 → Excel 报告 · <b>真实后端脚本运行</b>(非模拟)</p>
+    <span class="badge" id="statusBadge">检测中…</span>
+  </header>
+
+  <!-- ① 传入 -->
+  <section class="card">
+    <h2>① 传入卷宗</h2>
+    <p class="hint">粘贴 OCR 后文字,或上传扫描件/照片。演示会调用与生产节点相同的 <code>case_digest.py</code> / <code>ocr_image.py</code>。</p>
+    <div class="tabs">
+      <button type="button" class="tab active" data-mode="text">文字输入</button>
+      <button type="button" class="tab" data-mode="image">图片上传</button>
+    </div>
+    <div id="panelText">
+      <label>卷宗文字(含【第N页】页码标记更佳)</label>
+      <textarea id="textInput" placeholder="粘贴卷宗 OCR 文本…"></textarea>
+    </div>
+    <div id="panelImage" class="hidden">
+      <div class="drop" id="dropZone">拖拽或点击上传 · 支持 JPG/PNG · 最多 8 张<br><b>每张 ≤ 8MB</b></div>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden />
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <div class="row">
+      <div>
+        <label>案由类型</label>
+        <select id="caseType">
+          <option value="借贷纠纷">借贷纠纷</option>
+          <option value="劳动争议">劳动争议</option>
+          <option value="合同纠纷">合同纠纷</option>
+          <option value="侵权纠纷">侵权纠纷</option>
+          <option value="通用">通用</option>
+        </select>
+      </div>
+      <div>
+        <label>自定义标签(逗号分隔,留空用案由默认)</label>
+        <input id="tagsInput" placeholder="出借人,借款人,借款金额,…" />
+      </div>
+    </div>
+    <div class="btns">
+      <button type="button" class="btn-go" id="runBtn">开始真实阅卷</button>
+      <button type="button" class="btn-ghost" id="sampleBtn">加载样例卷宗</button>
+    </div>
+  </section>
+
+  <!-- ② 运行逻辑 -->
+  <section class="card">
+    <h2>② 运行逻辑</h2>
+    <p class="hint">与企业客户端「律所 → 智能阅卷」技能链一致</p>
+    <div class="pipe">
+      <span class="node"><b>传入</b> 卷宗文本/图片</span>
+      <span class="arrow">→</span>
+      <span class="node"><b>ocr_image</b> 识别+页码</span>
+      <span class="arrow">→</span>
+      <span class="node"><b>case_digest</b> Map-Reduce 阅卷</span>
+      <span class="arrow">→</span>
+      <span class="node"><b>excel_export</b> 四表报告</span>
+    </div>
+  </section>
+
+  <!-- ③ 过程 -->
+  <section class="card hidden" id="processCard">
+    <h2>③ 运行过程</h2>
+    <div class="steps" id="steps">
+      <div class="step" data-step="input"><span class="dot">1</span>接收卷宗</div>
+      <div class="step" data-step="ocr"><span class="dot">2</span>OCR 识别</div>
+      <div class="step" data-step="map"><span class="dot">3</span>AI 分块阅卷</div>
+      <div class="step" data-step="reduce"><span class="dot">4</span>汇总 Reduce</div>
+      <div class="step" data-step="excel"><span class="dot">5</span>生成 Excel</div>
+    </div>
+    <p id="runHint" style="margin-top:12px;font-size:13px;color:#8b96b3"></p>
+  </section>
+
+  <!-- ④ 产出 -->
+  <section class="card hidden" id="resultCard">
+    <h2>④ 阅卷产出</h2>
+    <div class="metrics" id="metrics"></div>
+    <div class="btns" style="margin-top:8px">
+      <button type="button" class="btn-dl hidden" id="dlBtn">下载 阅卷报告.xlsx</button>
+    </div>
+    <h3 class="blk">案情摘要</h3>
+    <div class="summary-box" id="caseSummary">—</div>
+    <h3 class="blk">自定义标签</h3>
+    <div class="tag-grid" id="tagGrid"></div>
+    <h3 class="blk">事实时间线</h3>
+    <table><thead><tr><th>时间</th><th>事件</th><th>页码</th></tr></thead><tbody id="timelineBody"></tbody></table>
+    <h3 class="blk">证据清单</h3>
+    <table><thead><tr><th>证据</th><th>证明事项</th><th>页码</th></tr></thead><tbody id="evidenceBody"></tbody></table>
+    <h3 class="blk">争议焦点 & 各方主张</h3>
+    <ul class="lst" id="disputesList"></ul>
+    <ul class="lst" id="claimsList"></ul>
+    <div id="ocrPreviewWrap" class="hidden">
+      <h3 class="blk">OCR 识别文本(供追溯)</h3>
+      <div class="ocr-preview" id="ocrPreview"></div>
+    </div>
+  </section>
+
+  <div class="err hidden" id="errBox"></div>
+
+  <p class="foot">© 千手算力 · 沈阳千手执棋网络科技有限公司 · <a href="/">返回首页</a></p>
+</div>
+
+<script>
+(function () {
+  const API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://127.0.0.1:8000' : '';
+
+  let mode = 'text';
+  let imageFiles = [];
+  let excelB64 = null;
+
+  const $ = (id) => document.getElementById(id);
+  const statusBadge = $('statusBadge');
+  const runBtn = $('runBtn');
+  const errBox = $('errBox');
+  const processCard = $('processCard');
+  const resultCard = $('resultCard');
+
+  async function api(path, opts) {
+    const r = await fetch(API + path, opts);
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.detail || data.message || ('HTTP ' + r.status));
+    return data;
+  }
+
+  async function checkStatus() {
+    try {
+      const s = await api('/api/v8/demo/case-digest/status');
+      const parts = [];
+      parts.push(s.ai_ready ? 'AI ✓' : 'AI ✗(未配置 key)');
+      parts.push(s.ocr_ready ? 'OCR ✓' : 'OCR ✗');
+      statusBadge.textContent = parts.join(' · ') + ' · ' + (s.model || 'deepseek');
+      if (!s.ai_ready) statusBadge.classList.add('warn');
+    } catch (e) {
+      statusBadge.textContent = '后端未连接 · 请确认 API 可达';
+      statusBadge.classList.add('warn');
+    }
+  }
+
+  document.querySelectorAll('.tab').forEach((t) => {
+    t.addEventListener('click', () => {
+      mode = t.dataset.mode;
+      document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('active', x === t));
+      $('panelText').classList.toggle('hidden', mode !== 'text');
+      $('panelImage').classList.toggle('hidden', mode !== 'image');
+    });
+  });
+
+  $('sampleBtn').addEventListener('click', async () => {
+    try {
+      const s = await api('/api/v8/demo/case-digest/sample');
+      $('textInput').value = s.text || '';
+      $('caseType').value = s.case_type || '借贷纠纷';
+      $('tagsInput').value = s.tags || '';
+      mode = 'text';
+      document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('active', x.dataset.mode === 'text'));
+      $('panelText').classList.remove('hidden');
+      $('panelImage').classList.add('hidden');
+    } catch (e) { showErr(e.message); }
+  });
+
+  const drop = $('dropZone');
+  const fileInput = $('fileInput');
+  drop.addEventListener('click', () => fileInput.click());
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault(); drop.classList.remove('drag');
+    addFiles(e.dataTransfer.files);
+  });
+  fileInput.addEventListener('change', () => addFiles(fileInput.files));
+
+  function addFiles(list) {
+    imageFiles = Array.from(list).slice(0, 8);
+    const thumbs = $('thumbs');
+    thumbs.innerHTML = '';
+    imageFiles.forEach((f) => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(f);
+      img.title = f.name;
+      thumbs.appendChild(img);
+    });
+  }
+
+  function showErr(msg) {
+    errBox.textContent = msg;
+    errBox.classList.remove('hidden');
+  }
+  function hideErr() { errBox.classList.add('hidden'); }
+
+  function setStep(name, state) {
+    const el = document.querySelector('.step[data-step="' + name + '"]');
+    if (!el) return;
+    el.classList.remove('active', 'done', 'skip');
+    if (state) el.classList.add(state);
+  }
+
+  function animateProgress(isImage) {
+    processCard.classList.remove('hidden');
+    ['input', 'ocr', 'map', 'reduce', 'excel'].forEach((s) => setStep(s, ''));
+    setStep('input', 'active');
+    $('runHint').innerHTML = '<span class="spin"></span>正在运行真实脚本,通常 5–30 秒…';
+    if (!isImage) setStep('ocr', 'skip');
+  }
+
+  function applyPipeline(pipeline) {
+    (pipeline || []).forEach((p) => {
+      const st = p.status === 'done' ? 'done' : (p.status === 'skipped' ? 'skip' : '');
+      setStep(p.step, st);
+    });
+    $('runHint').textContent = '完成 · 以下为真实 AI 输出';
+  }
+
+  function renderResult(data) {
+    resultCard.classList.remove('hidden');
+    excelB64 = data.excel_base64 || null;
+    $('dlBtn').classList.toggle('hidden', !excelB64);
+
+    const sm = data.summary || {};
+    const dg = data.digest || {};
+    $('metrics').innerHTML = [
+      ['耗时', (data.elapsed_ms || 0) + ' ms'],
+      ['字数', (sm.total_chars || 0).toLocaleString()],
+      ['分块', sm.chunks_processed || 0],
+      ['时间线', sm.events_found || 0],
+      ['证据', sm.evidence_found || 0],
+      ['待核', sm.review_flags || 0],
+    ].map(([l, v]) => '<div><b>' + v + '</b>' + l + '</div>').join('');
+
+    $('caseSummary').textContent = dg.case_summary || '—';
+
+    const tags = dg.tags || {};
+    $('tagGrid').innerHTML = Object.entries(tags).map(([k, v]) =>
+      '<div class="tag"><div class="k">' + esc(k) + '</div><div class="v">' + esc(v || '—') + '</div></div>'
+    ).join('') || '<p style="color:#8b96b3;font-size:13px">无标签结果</p>';
+
+    $('timelineBody').innerHTML = (dg.timeline || []).map((e) =>
+      '<tr><td>' + esc(e.date || '') + '</td><td>' + esc(e.desc || '') + '</td><td class="page">' + esc(e.page || '') + '</td></tr>'
+    ).join('') || '<tr><td colspan="3" style="color:#8b96b3">无</td></tr>';
+
+    $('evidenceBody').innerHTML = (dg.evidence || []).map((e) =>
+      '<tr><td>' + esc(e.name || '') + '</td><td>' + esc(e.proves || '') + '</td><td class="page">' + esc(e.page || '') + '</td></tr>'
+    ).join('') || '<tr><td colspan="3" style="color:#8b96b3">无</td></tr>';
+
+    const disp = (dg.disputes || []).map((d) => '<li>争议: ' + esc(d) + '</li>').join('');
+    const claims = []
+      .concat((dg.plaintiff_claims || []).map((c) => '<li>原告诉请: ' + esc(c) + '</li>'))
+      .concat((dg.defendant_claims || []).map((c) => '<li>被告抗辩: ' + esc(c) + '</li>'));
+    $('disputesList').innerHTML = disp;
+    $('claimsList').innerHTML = claims.join('');
+
+    if (data.ocr_text) {
+      $('ocrPreviewWrap').classList.remove('hidden');
+      $('ocrPreview').textContent = data.ocr_text;
+    } else {
+      $('ocrPreviewWrap').classList.add('hidden');
+    }
+
+    if (data.pipeline) applyPipeline(data.pipeline);
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  $('dlBtn').addEventListener('click', () => {
+    if (!excelB64) return;
+    const bin = atob(excelB64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const blob = new Blob([arr], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '阅卷报告.xlsx';
+    a.click();
+  });
+
+  runBtn.addEventListener('click', async () => {
+    hideErr();
+    resultCard.classList.add('hidden');
+    runBtn.disabled = true;
+    const isImage = mode === 'image';
+    animateProgress(isImage);
+    try {
+      let data;
+      if (isImage) {
+        if (!imageFiles.length) throw new Error('请先上传图片');
+        const fd = new FormData();
+        imageFiles.forEach((f) => fd.append('files', f));
+        fd.append('case_type', $('caseType').value);
+        fd.append('tags', $('tagsInput').value);
+        data = await api('/api/v8/demo/case-digest/from-images', { method: 'POST', body: fd });
+      } else {
+        const text = $('textInput').value.trim();
+        if (!text) throw new Error('请输入卷宗文字或加载样例');
+        data = await api('/api/v8/demo/case-digest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text,
+            case_type: $('caseType').value,
+            tags: $('tagsInput').value,
+          }),
+        });
+      }
+      renderResult(data);
+    } catch (e) {
+      showErr(e.message || String(e));
+      $('runHint').textContent = '运行失败';
+    } finally {
+      runBtn.disabled = false;
+    }
+  });
+
+  checkStatus();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "tsBuildInfoFile": "lib/tsconfig.host.tsbuildinfo"
+  },
+  "include": ["src", "tests"],
+  "references": [
+    { "path": "../platform-foundation" },
+    { "path": "../platform-observability-contract" }
+  ]
+}

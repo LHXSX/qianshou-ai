@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>千手协作端</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><div class="brand-mark" aria-hidden="true">千</div><div><h1 data-copy="title"></h1><p data-copy="subtitle"></p></div><span id="connection" class="status"></span></header>
+  <main>
+    <aside>
+      <section class="card"><h2 data-copy="pairTitle"></h2><p class="caption" data-copy="pairIntro"></p>
+        <label><span data-copy="name"></span><input id="name" maxlength="200" autocomplete="off"></label>
+        <label><span data-copy="endpoint"></span><input id="endpoint" type="url" autocomplete="off" spellcheck="false"></label>
+        <label><span data-copy="code"></span><input id="code" autocomplete="off" maxlength="100" spellcheck="false"></label>
+        <p class="caption" data-copy="codeHint"></p>
+        <div class="row"><button id="connect" class="primary" data-copy="connect"></button><button id="disconnect" data-copy="disconnect"></button></div>
+        <button id="forget" class="text-button" data-copy="forget"></button>
+      </section>
+      <section class="card"><div class="section-head"><h2 data-copy="workspaces"></h2><button id="add-folder" data-copy="addFolder"></button></div><p class="caption" data-copy="workspaceHint"></p><div id="folders"></div></section>
+      <section class="card"><h2 data-copy="desktop"></h2><p class="caption" data-copy="desktopHint"></p><button id="rustdesk" data-copy="openRustDesk"></button></section>
+    </aside>
+    <section class="tasks"><div class="section-head"><div><p class="eyebrow" data-copy="tasksEyebrow"></p><h2 data-copy="tasksTitle"></h2></div><span id="task-count" class="count"></span></div><div id="error" role="alert" hidden></div><div id="jobs"></div></section>
+  </main>
+  <footer data-copy="footer"></footer>
+  <script src="renderer.js"></script>
+</body>
+</html>

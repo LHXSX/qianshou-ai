@@ -1,0 +1,9 @@
+Qianshou mobile preview application
+Copyright 2026 Qianshou contributors
+
+Original application source, tests, HTML, and build configuration in this
+directory are licensed under Apache License 2.0 (see LICENSE). The project
+owner confirms rights to publish the included design-kit/ images here; the
+Apache grant does not cover them, and reuse needs separate permission.
+The adjacent packages/client/account/ package declares MIT in its own
+package.json and is not covered by this application license.

@@ -1,0 +1,38 @@
+.mark {
+  display: block;
+  flex: none;
+  color: var(--dsw-alias-brand-primary);
+}
+
+.ink {
+  color: var(--dsw-alias-label-primary-foreground);
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+
+.name strong {
+  color: var(--dsw-alias-label-primary);
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 22px;
+  letter-spacing: .025em;
+  white-space: nowrap;
+}
+
+.name span {
+  overflow: hidden;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 10px;
+  font-weight: 450;
+  line-height: 14px;
+  letter-spacing: .035em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

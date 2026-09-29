@@ -1,0 +1,38 @@
+[
+  {
+    "id": "dev-section-1",
+    "title": "一、先选择合适的开发方式"
+  },
+  {
+    "id": "dev-section-2",
+    "title": "二、开发一个新应用"
+  },
+  {
+    "id": "dev-section-3",
+    "title": "三、复用统一账号、任务与资产"
+  },
+  {
+    "id": "dev-section-4",
+    "title": "四、登记身份与任务契约"
+  },
+  {
+    "id": "dev-section-5",
+    "title": "五、制作并上传源码包"
+  },
+  {
+    "id": "dev-section-6",
+    "title": "六、构建、核验和上架"
+  },
+  {
+    "id": "dev-section-7",
+    "title": "七、内容更新与三类软件更新"
+  },
+  {
+    "id": "dev-section-8",
+    "title": "八、接口速查与诊断"
+  },
+  {
+    "id": "dev-section-9",
+    "title": "九、当前已完成与待验收"
+  }
+]

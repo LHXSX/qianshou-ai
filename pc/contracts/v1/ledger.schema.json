@@ -1,0 +1,85 @@
+{
+  "title": "qianshou/ledger/v1",
+  "description": "One money movement, and why it happened (section 5). See contracts/README.md §2.5. FIELD PROVENANCE: entry_id/workload_id/shard_id/kind(:DEBIT|CREDIT|REFUND|REWARD|ADMIN_ADJUST)/amount/currency/actor{account_id}/beneficiary{account_id,basis,worker_id}/idempotency_key come from the phase brief; the `contract` const and the `kind` note about which kinds legitimately carry workload identity are this draft's additions (README §7). WHAT ALREADY WORKS: the existing ledger keys idempotency on (workload, shard) with a database uniqueness constraint, and no duplicate-charging path was reproducible — this contract deliberately does not redesign that. WHAT IS MISSING AND ADDED HERE: beneficiary.basis and beneficiary.worker_id. Without them a CREDIT says 'this account gained money' but not which execution earned it, so a zero-compute node (llm_chat) is paid indistinguishably from a real compute contributor. DELIBERATELY CLOSED ROOT: a ledger row is written by the platform's economy module alone, and a misspelled money field must never be tolerated.",
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "qianshou/ledger/v1",
+      "description": "Contract discriminator."
+    },
+    "entry_id": {
+      "type": "string",
+      "description": "Identity of this ledger row. Distinct from idempotency_key: entry_id names the row that exists, idempotency_key names the row that must not exist twice."
+    },
+    "workload_id": {
+      "type": "string",
+      "description": "Workload this movement belongs to. Absent for movements that are not workload-scoped (ADMIN_ADJUST, some REWARD). When present it participates with shard_id in the existing (workload, shard) uniqueness constraint."
+    },
+    "shard_id": {
+      "description": "Shard this movement belongs to, or null for whole-workload and non-workload movements. Modelled as oneOf(string, null) because the enforced schema subset has no nullable type keyword. Note the existing core already stores NULL here for refunds (see the REFUND rows in packages/host/compute-core/tests/core-client.spec.ts), so null is an observed value and not a placeholder.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "A specific shard."
+        },
+        {
+          "type": "null",
+          "description": "No shard scope."
+        }
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["DEBIT", "CREDIT", "REFUND", "REWARD", "ADMIN_ADJUST"],
+      "description": "Direction and nature of the movement: DEBIT takes from the payer, CREDIT pays a beneficiary, REFUND returns a prior DEBIT, REWARD is a platform-funded incentive (not customer money), ADMIN_ADJUST is an operator correction that must be justified out of band. REFUND and ADMIN_ADJUST are the only kinds expected to reverse or correct an existing row; a reversal must add a linked row and must not delete history."
+    },
+    "amount": {
+      "type": "integer",
+      "description": "Integer minor units (fen for CNY). Integer only, so the existing fixed-point discipline is preserved and no rounding residue is invented per row. SIGN IS CONVEYED BY kind, not by amount — the schema cannot express 'positive for DEBIT/CREDIT', so a reader MUST NOT infer direction from the sign."
+    },
+    "currency": {
+      "type": "string",
+      "description": "Currency code. The core currently settles CNY. A currency enum waits for the core to publish one; until then a mismatched currency is a reconciliation error, not a schema error."
+    },
+    "actor": {
+      "type": "object",
+      "description": "Who caused this movement to be written — the requesting account, not the receiving one.",
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "description": "Initiating account. For a customer-submitted task this is the customer; for an operator adjustment it is the operator's account, which is what makes ADMIN_ADJUST attributable."
+        }
+      },
+      "required": ["account_id"],
+      "additionalProperties": false
+    },
+    "beneficiary": {
+      "type": "object",
+      "description": "Who receives, and on what basis. MANDATORY for every row, including DEBIT — on a DEBIT the beneficiary block records the counterparty that will eventually receive, so the row is never half-documented. `basis` and `worker_id` are the two fields this contract adds to close the accounting gap.",
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "description": "account_id credited (or the intended counterparty on a DEBIT)."
+        },
+        "basis": {
+          "type": "string",
+          "enum": ["node_compute", "platform_llm_forward", "platform_relay", "none"],
+          "description": "Which kind of work earned this. MUST equal the value carried by the corresponding result.billing.basis — the contract test asserts the two enums are identical, and the reconciliation rule is that a CREDIT with basis=node_compute requires a result whose executor.kind is node. A CREDIT with basis=platform_llm_forward to a node account is the exact signature of the current llm_chat mispayment and must be refusable without reading a single log line. This enum is identical to result.billing.basis by design; the two are one vocabulary."
+        },
+        "worker_id": {
+          "type": "string",
+          "description": "Which worker actually did the work, so a payout is attributable to an execution rather than to an account balance. On a DEBIT, or where no node executed (platform_llm_forward), this carries the executor identity from result.executor.worker_id — for platform-executed work that is the platform's service identity, never the relaying node."
+        }
+      },
+      "required": ["account_id", "basis", "worker_id"],
+      "additionalProperties": false
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Business idempotency identifier. The existing durability guarantee is a database uniqueness constraint over (workload, shard); this field rides on top of it. It is REQUIRED here, which makes an intent-to-charge with no deduplication identity impossible to express. That the current (workload, shard) constraint has never produced a duplicate charge is an observed property of the existing system and is NOT re-verified by this contract."
+    }
+  },
+  "required": ["contract", "entry_id", "kind", "amount", "currency", "actor", "beneficiary", "idempotency_key"],
+  "additionalProperties": false
+}

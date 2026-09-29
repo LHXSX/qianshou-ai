@@ -1,0 +1,21 @@
+{
+  "name": "@deepseek-ai/dsh-client-pc-window-bridge",
+  "description": "Persistent phone-to-PC command and receipt objects; no mobile compute contribution",
+  "version": "0.1.5-rc.2",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": { "bundle": "tsdown" },
+  "license": "MIT",
+  "devDependencies": {
+    "@deepseek-ai/dsh-api-session-controller": "workspace:^",
+    "@deepseek-ai/dsh-session": "workspace:^"
+  },
+  "files": ["lib/index.js", "lib/types/**/*.d.ts"]
+}

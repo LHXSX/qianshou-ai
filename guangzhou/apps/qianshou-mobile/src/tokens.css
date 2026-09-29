@@ -1,0 +1,28 @@
+:root {
+  --bg: #f3f6ff;
+  --bg-soft: #eef3fc;
+  --ink: #111827;
+  --ink-2: #1f2937;
+  --muted: #8b93a7;
+  --muted-2: #6b7285;
+  --line: #e8ecf4;
+  --card: #ffffff;
+  --blue: #2f6bff;
+  --blue-2: #2563eb;
+  --blue-deep: #1d4ed8;
+  --blue-soft: #eaf0ff;
+  --green: #22c55e;
+  --green-soft: #e8f8ef;
+  --red: #ef4444;
+  --gold: #f5c16c;
+  --orange: #f59e0b;
+  --pink: #ec4899;
+  --violet: #7c5cff;
+  --chip: #f5f7fb;
+  --shadow-card: 0 10px 28px rgba(47, 82, 160, 0.07);
+  --shadow-float: 0 16px 40px rgba(30, 50, 110, 0.12);
+  --r-card: 18px;
+  --r-tile: 16px;
+  --r-composer: 22px;
+  --font: "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+}

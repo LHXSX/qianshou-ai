@@ -1,0 +1,332 @@
+.support-page {
+  background: linear-gradient(145deg, #e2ebf4 0, #edf2f7 420px, #f3f6fa 900px);
+  padding: 40px 0 72px;
+  min-height: 70vh;
+  color: #172b48;
+}
+.support-page .qs-wrap {
+  max-width: 1200px;
+}
+.support-header {
+  padding: 8px 0 30px;
+  max-width: 880px;
+}
+.support-kicker {
+  font-size: 14px;
+  color: #3363a2;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+.support-kicker span {
+  padding: 0 12px;
+  color: #8094ac;
+}
+.support-header h1 {
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.3;
+  letter-spacing: -0.04em;
+  margin: 0 0 14px;
+  font-weight: 650;
+}
+.support-intro {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #4d627a;
+  max-width: 780px;
+}
+.support-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid #bfd0df;
+  margin-bottom: 30px;
+  overflow: auto;
+}
+.support-tabs a {
+  flex-shrink: 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 16px 22px;
+  text-decoration: none;
+  font-size: 16px;
+  border-bottom: 3px solid transparent;
+  color: #475f79;
+  transition:
+    color 0.18s,
+    background 0.18s;
+}
+.support-tabs a:hover {
+  background: #dce7f3;
+  color: #155ab2;
+}
+.support-tabs a[aria-current="location"] {
+  border-color: #2268d5;
+  color: #1854a9;
+  background: #f8fbff;
+  font-weight: 650;
+  border-radius: 8px 8px 0 0;
+}
+.support-tabs a span {
+  font-size: 14px;
+  opacity: 0.65;
+}
+.support-body.has-toc {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+.support-content {
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.support-content h2 {
+  font-size: 24px;
+  line-height: 1.45;
+  letter-spacing: -0.025em;
+  margin: 0 0 20px;
+  font-weight: 650;
+}
+.support-content h3 {
+  font-size: 18px;
+  line-height: 1.55;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+.support-content p {
+  margin: 10px 0;
+  color: #4a6079;
+}
+.support-content a:not(.qs-button) {
+  color: #195eb7;
+  text-underline-offset: 4px;
+}
+.support-content ul,
+.support-content ol {
+  padding-left: 23px;
+  color: #405870;
+}
+.support-content li {
+  margin: 8px 0;
+}
+.support-content section[id] {
+  scroll-margin-top: 105px;
+}
+.support-content section + section {
+  margin-top: 30px;
+}
+.support-toc {
+  position: sticky;
+  top: 105px;
+  border-left: 1px solid #bbccdd;
+  padding: 6px 0 6px 20px;
+  font-size: 14px;
+}
+.support-toc p {
+  color: #6a7d93;
+  margin: 0 0 15px;
+  font-size: 13px;
+}
+.support-toc a {
+  display: block;
+  text-decoration: none;
+  padding: 9px 0;
+  color: #37516e;
+}
+.support-toc a:hover {
+  color: #185eb7;
+}
+.support-panel {
+  background: #fff;
+  border: 1px solid #ccd9e6;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 5px 20px #233e6310;
+}
+.support-callout {
+  border-left: 3px solid #3274d2;
+  background: #e1ecfa;
+  padding: 17px 20px;
+  border-radius: 0 10px 10px 0;
+  color: #304f74;
+  margin: 22px 0;
+  font-size: 15px;
+  line-height: 1.85;
+}
+.support-callout p {
+  margin: 0;
+}
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.support-overline {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  font-weight: 650;
+  color: #356bad;
+  margin: 0 0 12px;
+}
+.support-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid #bccfe5;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #355b8a;
+  background: #edf4fc;
+}
+.support-content code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+.support-content pre {
+  background: #172c46;
+  color: #e0ecfc;
+  border: 1px solid #35506f;
+  border-radius: 10px;
+  padding: 18px;
+  overflow: auto;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 14px 0;
+}
+.support-content details {
+  border-top: 1px solid #d3dfeb;
+  padding: 16px 0;
+}
+.support-content summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #274967;
+  line-height: 1.65;
+}
+.support-content .support-error {
+  border: 1px solid #d99494;
+  border-radius: 10px;
+  background: #fff1f1;
+  padding: 18px;
+  margin: 0 0 22px;
+  color: #962f36;
+}
+.support-text-button {
+  border: 0;
+  background: none;
+  padding: 6px 0;
+  color: #155eb9;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 14px;
+  min-height: 36px;
+}
+.support-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 20px;
+}
+.support-actions .qs-button {
+  font-size: 15px;
+}
+.support-assistance {
+  border-top: 1px solid #bdcddd;
+  margin-top: 50px;
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+.support-assistance h2 {
+  font-size: 19px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.support-assistance p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: #506982;
+  max-width: 720px;
+}
+.support-assistance .qs-button {
+  flex-shrink: 0;
+  background: #f7faff;
+}
+@media (max-width: 850px) {
+  .support-body.has-toc {
+    display: block;
+  }
+  .support-toc {
+    position: static;
+    display: flex;
+    gap: 15px;
+    overflow: auto;
+    padding: 0 0 14px;
+    margin-bottom: 22px;
+    border: 0;
+    border-bottom: 1px solid #c6d5e5;
+  }
+  .support-toc a {
+    white-space: nowrap;
+    padding: 4px;
+  }
+  .support-toc p {
+    display: none;
+  }
+  .support-tabs a {
+    padding: 14px 15px;
+    gap: 10px;
+  }
+  .support-assistance {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 600px) {
+  .support-page {
+    padding: 24px 0 48px;
+  }
+  .support-header {
+    padding-bottom: 24px;
+  }
+  .support-intro {
+    font-size: 16px;
+  }
+  .support-grid {
+    grid-template-columns: 1fr;
+  }
+  .support-panel {
+    padding: 22px;
+  }
+  .support-content h2 {
+    font-size: 22px;
+  }
+  .support-tabs {
+    margin-bottom: 24px;
+  }
+  .support-tabs a {
+    font-size: 15px;
+    padding: 13px 12px;
+  }
+  .support-tabs a span {
+    display: none;
+  }
+  .support-assistance {
+    margin-top: 34px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .support-page * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

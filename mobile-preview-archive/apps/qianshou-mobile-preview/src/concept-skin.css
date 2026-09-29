@@ -1,0 +1,742 @@
+/*
+ * Concept baseline: one iOS shell with two restrained skins.
+ * This file is loaded after the legacy preview rules so the current product
+ * cannot accidentally fall back to the old full-page rainbow or dark splash.
+ */
+:root {
+  color-scheme: light;
+  --concept-bg: #f2f2f7;
+  --concept-surface: #ffffff;
+  --concept-soft: #f7f7f9;
+  --concept-line: #e5e5ea;
+  --concept-ink: #111111;
+  --concept-muted: #6d6d72;
+  --concept-blue: #007aff;
+  --concept-blue-strong: #0066d6;
+  --concept-violet: #7657f5;
+  --concept-gold: #f5b82e;
+  --concept-pink: #ed5ca5;
+  --concept-mint: #21b889;
+  --concept-radius: 14px;
+  /* Legacy selectors are kept source-compatible, but use the concept tokens. */
+  --surface: var(--concept-surface);
+  --surface-soft: var(--concept-soft);
+  --surface-tint: #eef0f5;
+  --border: var(--concept-line);
+  --ink: var(--concept-ink);
+  --muted: var(--concept-muted);
+  --accent: var(--concept-blue);
+  --accent-strong: var(--concept-blue-strong);
+  --on-accent: #ffffff;
+}
+
+html[data-skin="dopamine"] {
+  --concept-primary: var(--concept-violet);
+  --concept-primary-strong: #6544dc;
+}
+
+html[data-skin="ios"] {
+  --concept-primary: var(--concept-blue);
+  --concept-primary-strong: var(--concept-blue-strong);
+}
+html[data-skin="dopamine"] {
+  --accent: var(--concept-violet);
+  --accent-strong: #6544dc;
+  --surface-tint: #f1ecff;
+}
+
+html, body { background: var(--concept-bg); }
+body { color: var(--concept-ink); }
+
+.mobile-shell {
+  background: var(--concept-surface);
+  background-image: none;
+}
+
+.header {
+  background: var(--concept-surface);
+  border-bottom: 1px solid var(--concept-line);
+  backdrop-filter: none;
+}
+
+.header::before { content: none; }
+.brand { gap: 10px; color: var(--concept-ink); letter-spacing: 0; }
+.brand-name { font-weight: 650; }
+.brand-mark, .sidebar-brand-mark, .splash-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+.brand-mark { width: 28px; height: 28px; }
+.sidebar-brand-mark { width: 26px; height: 26px; margin-right: 9px; }
+.brand-bar {
+  display: block;
+  width: 7px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--concept-violet);
+}
+.brand-bar:nth-child(2) { height: 29px; }
+.brand-bar:nth-child(3) { height: 22px; }
+.brand-bar-violet { background: var(--concept-violet); }
+.brand-bar-gold { background: var(--concept-gold); }
+.brand-bar-pink { background: var(--concept-pink); }
+
+.sidebar {
+  background: var(--concept-surface);
+  border-right: 1px solid var(--concept-line);
+}
+.sidebar-top { color: var(--concept-ink); }
+.sidebar-top strong { color: var(--concept-ink); letter-spacing: 0; }
+.sidebar-tools { gap: 2px; }
+.sidebar-tool { border-radius: 10px; }
+.sidebar-tool:hover, [data-testid="mobile-sidebar"] button:hover,
+.settings-button:hover, .sidebar-account:hover, .sidebar-settings:hover { background: var(--concept-soft); }
+.sidebar-footer { border-top-color: var(--concept-line); }
+.sidebar-account-avatar { background: var(--concept-soft); color: var(--concept-primary); }
+.sidebar-account-name { color: var(--concept-ink); }
+.sidebar-account-id { color: var(--concept-muted); }
+.sidebar-settings { color: var(--concept-muted); }
+[data-testid="mobile-new-agent"] {
+  background: transparent !important;
+  border: 0;
+  color: var(--concept-primary);
+  font-size: 16px !important;
+  padding-block: 12px !important;
+}
+[data-testid="mobile-new-agent"]::before { content: '＋'; color: var(--concept-primary); }
+[data-testid="mobile-pc-drawer"] { border-block-color: var(--concept-line); }
+[data-testid="mobile-pc-drawer-title"], [data-testid="mobile-sessions-title"], [data-testid="mobile-pc-sessions-title"] {
+  color: var(--concept-muted);
+  letter-spacing: 0;
+}
+
+.conversation-content {
+  background: var(--concept-surface);
+  padding-top: 12px;
+}
+.context-bar {
+  min-height: 45px;
+  justify-content: center;
+  padding: 8px 20px 0;
+  color: var(--concept-muted);
+  border-bottom: 1px solid var(--concept-line);
+}
+.context-bar [data-testid="mobile-target"] {
+  color: var(--concept-ink);
+  font-size: 17px;
+  font-weight: 600;
+}
+.context-bar [data-testid="mobile-status"] {
+  width: 100%;
+  text-align: center;
+  color: var(--concept-muted);
+  font-size: 12px;
+}
+.hero, .suggestions { display: none !important; }
+
+.composer-area {
+  width: 100%;
+  padding: 9px 18px max(14px, env(safe-area-inset-bottom));
+  background: var(--concept-surface);
+}
+.composer {
+  min-height: 52px;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.composer:focus-within {
+  border: 0;
+  box-shadow: none;
+}
+.composer-add {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  padding: 0;
+  background: transparent !important;
+  color: var(--concept-ink);
+  border: 1px solid var(--concept-line);
+  border-radius: 50%;
+  font-size: 0;
+  line-height: 0;
+}
+.composer-add svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.composer-add:hover {
+  background: var(--concept-soft) !important;
+  color: var(--concept-primary);
+}
+.composer textarea {
+  min-height: 42px;
+  max-height: 116px;
+  padding: 9px 15px;
+  border-radius: 22px;
+  background: var(--concept-bg);
+  color: var(--concept-ink);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.composer textarea::placeholder { color: var(--concept-muted); }
+.composer .voice-button[data-testid="mobile-voice"] {
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--concept-muted);
+  position: relative;
+}
+.composer .voice-button[data-testid="mobile-voice"] svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.composer .voice-button[data-testid="mobile-voice"]:hover { color: var(--concept-primary); }
+.composer .voice-button[data-testid="mobile-voice"][aria-pressed="true"] { color: var(--concept-primary); }
+.composer [data-testid="mobile-send"] {
+  width: 42px;
+  height: 42px;
+  margin-left: 0;
+  background: var(--concept-primary);
+  box-shadow: none;
+  font-size: 24px;
+}
+.composer [data-testid="mobile-send"]:hover { background: var(--concept-primary-strong); filter: none; }
+.composer-quick-menu {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 0 8px 51px;
+  scrollbar-width: none;
+}
+.composer-quick-menu::-webkit-scrollbar { display: none; }
+.composer-quick-menu .suggestion {
+  flex: 0 0 auto;
+  padding: 7px 12px;
+  border: 1px solid var(--concept-line);
+  border-radius: 16px;
+  color: var(--concept-muted);
+  background: var(--concept-surface);
+  font-size: 12px;
+}
+.footnote { display: none; }
+
+.message-user .message-body,
+.message-user .message-markdown {
+  background: var(--concept-primary);
+  border: 0;
+  color: #fff;
+  border-radius: 19px 19px 4px 19px;
+}
+.message-assistant .message-body { color: var(--concept-ink); }
+.message-assistant .message-speaker::before { content: none; }
+[data-testid^="mobile-activity-"] {
+  background: transparent;
+  color: var(--concept-muted);
+}
+
+.account-button {
+  border-color: var(--concept-line);
+  background: var(--concept-surface);
+  color: var(--concept-ink);
+}
+.primary-button {
+  background: var(--concept-primary);
+  border-radius: 12px;
+}
+.primary-button:hover { background: var(--concept-primary-strong); }
+.auth-mark {
+  width: 35px;
+  height: 31px;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 4px;
+  flex: 0 0 auto;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+.auth-mark .brand-bar { width: 9px; border-radius: 8px; }
+.auth-mark .brand-bar-violet { height: 23px; background: var(--concept-violet); }
+.auth-mark .brand-bar-gold { height: 31px; background: var(--concept-gold); }
+.auth-mark .brand-bar-pink { height: 20px; background: var(--concept-pink); }
+.auth-hero { border: 0; background: transparent; padding-inline: 0; }
+.auth-hero-copy strong { color: var(--concept-ink); }
+.auth-title { margin: 10px 0 6px; text-align: left; color: var(--concept-ink); font-size: 20px; line-height: 1.25; letter-spacing: 0; font-weight: 600; }
+.auth-legal { display: block; margin-top: 12px; text-align: center; color: var(--concept-muted); line-height: 1.55; }
+.dialog-header h2 { color: var(--concept-ink); }
+.auth-method { color: var(--concept-ink); }
+.auth-method-active { color: #fff; background: var(--concept-primary); }
+html[data-skin="dopamine"] .auth-method-active { background: linear-gradient(135deg, var(--concept-violet), var(--concept-pink) 55%, var(--concept-gold)); }
+html[data-skin="dopamine"] .primary-button,
+html[data-skin="dopamine"] .composer [data-testid="mobile-send"] {
+  background: linear-gradient(135deg, var(--concept-violet), var(--concept-pink) 55%, var(--concept-gold));
+}
+
+/* The concept screens are full routes on a phone, not bottom sheets. */
+@media (max-width: 720px) {
+  .header {
+    min-height: calc(61px + env(safe-area-inset-top));
+    height: calc(61px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 14px 0 12px;
+  }
+  .brand { margin: 0 auto; }
+  .header .account-button { display: none; }
+  .header .account-button::before { content: none; }
+  .header-spacer { width: 42px; height: 42px; }
+  .conversation-content { padding: 7px 18px 16px; }
+  .composer-area { padding-inline: 17px; }
+  .composer { gap: 5px; }
+  .composer textarea { min-width: 0; }
+  .composer .voice-button[data-testid="mobile-voice"] { width: 34px; }
+  .composer [data-testid="mobile-send"] { width: 38px; height: 38px; }
+  .composer-quick-menu { padding-left: 48px; }
+  .account-dialog {
+    inset: 0;
+    width: min(400px, calc(100% - 28px));
+    max-width: none;
+    height: fit-content;
+    max-height: calc(100dvh - 48px);
+    margin: auto;
+    padding: 16px;
+    border: 1px solid var(--concept-line);
+    border-radius: 16px;
+  }
+  .account-dialog-login {
+    width: min(320px, calc(100% - 40px));
+    padding: 22px 20px 18px;
+    border-radius: 20px;
+  }
+  .account-dialog::before { display: none; }
+  .account-dialog::backdrop { background: #11111152; }
+  .account-overview { border-radius: 14px; }
+}
+
+.splash-screen {
+  background:
+    radial-gradient(circle at 18% 24%, #eadcff 0, transparent 36%),
+    radial-gradient(circle at 84% 38%, #ffe8b2 0, transparent 34%),
+    linear-gradient(145deg, #fbf9ff 0%, #f7f4ff 56%, #fffaf5 100%);
+  color: var(--concept-ink);
+}
+.splash-screen::before, .splash-screen::after { display: none; }
+.splash-screen:focus { outline: none; }
+/* Ma Shan Zheng, SIL OFL-1.1; license ships at fonts/ma-shan-zheng-OFL.txt.
+   This local subset contains only 无极问道千手执棋; no third-party font request. */
+@font-face {
+  font-family: "Qianshou Motto";
+  src: url("./assets/fonts/qianshou-motto.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+.splash-content { gap: 18px; position: relative; }
+.splash-brand, .splash-motto { grid-area: 1 / 1; }
+.splash-brand { display: grid; justify-items: center; gap: 18px; }
+.splash-screen[data-stage="brand"] .splash-motto { visibility: hidden; }
+.splash-screen[data-stage="motto"] .splash-brand { visibility: hidden; }
+.splash-mark {
+  width: 128px;
+  height: 128px;
+  border-radius: 28px;
+  background: var(--concept-blue);
+  box-shadow: 0 14px 28px #007aff25;
+  animation: none;
+}
+.splash-mark .brand-bar {
+  width: 14px;
+  height: 53px;
+  background: #fff;
+  border-radius: 6px;
+}
+.splash-mark .brand-bar:nth-child(2) { height: 65px; }
+html[data-skin="dopamine"] .splash-mark {
+  background: var(--concept-surface);
+  box-shadow: 0 14px 28px #00000016;
+}
+html[data-skin="dopamine"] .splash-mark .brand-bar-violet { background: var(--concept-violet); }
+html[data-skin="dopamine"] .splash-mark .brand-bar-gold { background: var(--concept-gold); }
+html[data-skin="dopamine"] .splash-mark .brand-bar-pink { background: var(--concept-pink); }
+.splash-wordmark {
+  color: var(--concept-ink);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-shadow: none;
+}
+.splash-tagline { display: none; }
+.splash-motto {
+  position: relative;
+  margin: 0;
+  color: #1a1428;
+  font-family: "Qianshou Motto", "STKaiti", "Kaiti SC", cursive;
+  font-size: clamp(44px, 13vw, 60px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: .16em;
+  text-align: center;
+}
+.splash-motto-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.splash-motto-line { display: block; white-space: nowrap; }
+.splash-help {
+  display: none !important;
+  pointer-events: none !important;
+  position: static;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+.splash-progress {
+  width: min(190px, 52vw);
+  height: 3px;
+  margin-top: 27px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--concept-violet), var(--concept-gold), var(--concept-pink));
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .splash-screen[data-stage="motto"] .splash-motto-line {
+    animation: splash-motto-line-in .65s cubic-bezier(.22,.7,.18,1) both;
+  }
+  .splash-screen[data-stage="motto"] .splash-motto-line:last-child { animation-delay: .36s; }
+  .splash-screen[open] .splash-progress { animation: splash-progress var(--splash-duration, 4.8s) linear both; }
+}
+@keyframes splash-motto-line-in {
+  from { opacity: 0; transform: translateY(7px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes splash-progress { from { transform: scaleX(0); opacity: .55; } to { transform: scaleX(1); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-mark, .splash-motto, .splash-progress, .splash-motto-line {
+    animation: none; opacity: 1; filter: none; transform: none; clip-path: none;
+  }
+}
+
+/* Authentication actions sit below the credentials form as a clear vertical
+   stack. This prevents three tiny tabs from becoming the visual focus on a
+   narrow phone and leaves room for the fourth, honest registration action. */
+.account-dialog {
+  inset: 0;
+  width: min(400px, calc(100% - 32px));
+  height: fit-content;
+  min-height: 0;
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 16px;
+  border: 1px solid var(--concept-line);
+  border-radius: 16px;
+  background: var(--concept-surface);
+}
+.account-dialog-login {
+  width: min(320px, calc(100% - 40px));
+  padding: 22px 20px 18px;
+  border-radius: 20px;
+}
+.account-dialog::backdrop { background: #11111152; }
+.account-dialog-center { width: min(400px, calc(100% - 24px)); padding: 16px; }
+.auth-hero { margin: 0; padding: 0; align-items: flex-end; }
+.auth-hero-copy { gap: 2px; }
+.auth-hero-copy strong { font-size: 22px; letter-spacing: 0; font-weight: 600; }
+.auth-hero-copy span { font-size: 12px; color: var(--concept-muted); }
+.account-dialog-login .login-form {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0 16px;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+}
+.account-dialog-login .login-form label {
+  gap: 6px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--concept-line);
+  border-radius: 14px;
+  background: var(--concept-soft);
+  font-size: 12px;
+  color: var(--concept-muted);
+}
+.account-dialog-login .login-form input,
+.account-dialog-login .password-row {
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  padding: 4px 0 0;
+  min-width: 0;
+  font-size: 17px;
+  color: var(--concept-ink);
+}
+.account-dialog-login .password-toggle {
+  color: var(--concept-primary);
+  font-size: 13px;
+  font-weight: 500;
+  min-height: 0;
+  padding: 0 2px 0 8px;
+}
+.auth-submit-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.auth-methods { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 4px 0 0; }
+.auth-method {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-width: 0; min-height: 46px; padding: 0 14px;
+  border: 1px solid transparent; border-radius: 12px;
+  background: var(--concept-soft); color: var(--concept-ink);
+  font-size: 16px; font-weight: 600; text-align: center; white-space: nowrap;
+}
+.auth-method:hover { filter: brightness(.97); }
+.auth-method-active {
+  margin-bottom: 0;
+  border: 0;
+  color: #fff;
+  background: var(--concept-primary);
+}
+.auth-method-active:hover { color: #fff; filter: brightness(.96); }
+.auth-method-phone {
+  color: #0f6b52;
+  background: color-mix(in srgb, var(--concept-mint) 18%, #fff);
+  border-color: color-mix(in srgb, var(--concept-mint) 38%, var(--concept-line));
+}
+.auth-method-wechat {
+  color: #1f6b32;
+  background: #eef8ef;
+  border-color: color-mix(in srgb, #2aa84a 35%, var(--concept-line));
+}
+.auth-method-register {
+  color: var(--concept-ink);
+  background: #fff;
+  border-color: var(--concept-line);
+}
+.auth-method-notice {
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fff6e5;
+  color: #6a4e16;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.auth-method-notice:empty { display: none; }
+.auth-legal-link {
+  display: inline; border: 0; padding: 0; margin: 0; min-height: 0;
+  background: transparent; color: var(--concept-primary);
+  font-size: inherit; font-weight: 600; text-decoration: underline;
+  white-space: nowrap;
+}
+.auth-legal-sheet {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: max(56px, env(safe-area-inset-top)) 24px max(32px, env(safe-area-inset-bottom));
+  background: var(--concept-surface);
+  overflow-x: hidden; overflow-y: auto;
+}
+.auth-legal-sheet-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.auth-legal-sheet-bar h2 { margin: 0; font-size: 18px; }
+.auth-legal-sheet-body { display: grid; gap: 12px; min-width: 0; }
+.auth-legal-sheet-body p { margin: 0; font-size: 15px; line-height: 1.65; overflow-wrap: anywhere; }
+.account-overview { background: var(--concept-surface); box-shadow: none; }
+.account-overview::after { display: none; }
+.commerce-module, .payment-module, .promotion-module { background: var(--concept-surface); }
+.commerce-current { display: grid; gap: 8px; margin: 8px 0 12px; min-width: 0; }
+.commerce-current-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 14px; }
+.commerce-current-row span { color: var(--concept-muted); }
+.commerce-current-row strong { min-width: 0; text-align: right; overflow-wrap: anywhere; }
+.commerce-plans { display: grid; gap: 8px; min-width: 0; }
+.account-tabs { background: var(--concept-surface); }
+.account-tabs button { color: var(--concept-ink); font-weight: 600; }
+.account-tabs button[aria-selected="true"] { color: var(--concept-primary); background: transparent; }
+
+/* User sends hug their text. A full-width right-aligned row leaves an empty bar. */
+.message-user {
+  align-self: flex-end;
+  width: fit-content;
+  max-width: min(80%, 22rem);
+}
+.message-user .message-header { justify-content: flex-end; margin-bottom: 4px; }
+.message-user .message-body,
+.message-user .message-markdown {
+  width: fit-content;
+  max-width: 100%;
+  background: var(--concept-primary);
+  border: 0;
+  color: #fff;
+  border-radius: 18px 18px 4px 18px;
+  padding: 8px 14px;
+  text-align: left;
+}
+.message-user .message-speaker { color: var(--concept-muted); }
+
+/* Compact composer: 1px ring + hairline cross for add; stroke microphone for voice. */
+.composer .voice-button[data-testid="mobile-voice"]:focus-visible { outline-offset: 1px; }
+.composer [data-testid="mobile-voice-stop"] {
+  width: auto;
+  min-width: 0;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 16px;
+  border: 1px solid var(--concept-line);
+  font-size: 12px;
+  color: var(--concept-muted);
+}
+.composer-control-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.message-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 0; margin-top: 4px; min-height: 44px; }
+.message-user .message-actions { justify-content: flex-end; }
+.message-action {
+  display: inline-flex; align-items: center; justify-content: center; flex: 0 0 44px;
+  width: 44px; height: 44px; min-height: 44px; padding: 14px;
+  border: 0; border-radius: 12px; background: transparent; color: var(--concept-muted);
+}
+.message-action:hover { background: var(--concept-soft); color: var(--concept-primary); }
+.message-action[aria-busy="true"] { color: var(--concept-primary); background: var(--concept-soft); }
+.message-action-icon { width: 16px; height: 16px; display: block; flex-shrink: 0; }
+.message-action-label, .message-copy-status:not([data-feedback="error"]) {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.message-copy-status[data-feedback="error"] {
+  flex-basis: 100%; max-width: 100%; padding: 2px 0 6px;
+  color: var(--concept-muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere;
+}
+
+/* Login is a phone screen. The workspace is gated until Shanghai admits the session. */
+.account-dialog.account-dialog-login {
+  position: relative;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  min-height: 100dvh;
+  margin: 0;
+  padding: max(56px, env(safe-area-inset-top)) 24px max(32px, env(safe-area-inset-bottom));
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--concept-surface);
+}
+.account-dialog.account-dialog-login[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-content: safe center;
+  gap: 16px;
+}
+.account-dialog.account-dialog-login::backdrop { background: var(--concept-surface); }
+.account-dialog.account-dialog-login:focus,
+.account-dialog.account-dialog-login:focus-visible { outline: none; }
+.account-dialog.account-dialog-login > * { width: min(320px, 100%); max-width: 100%; min-width: 0; }
+
+html[data-skin="dopamine"] .auth-hero-copy strong,
+html[data-skin="dopamine"] .brand-name,
+html[data-skin="dopamine"] .message-body,
+html[data-skin="dopamine"] .auth-method:not(.auth-method-active) {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+.conversation, .transcript, .message, .message-body, .draft, .generated-image-turn {
+  min-width: 0;
+  max-width: 100%;
+}
+.message-body, .draft, .auth-legal { overflow-wrap: anywhere; word-break: break-word; }
+.generated-image-turn { margin: 0; width: min(100%, 420px); align-self: flex-start; }
+.generated-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  cursor: zoom-in;
+}
+.generated-image-caption { margin: 8px 0 0; font-size: 14px; color: var(--concept-muted); overflow-wrap: anywhere; }
+.image-confirm { width: 100%; margin-top: 10px; font-size: 16px; }
+.image-intent-card, .pending-image-user { max-width: 100%; overflow-wrap: anywhere; }
+.image-intent-question { margin: 0; font-size: 17px; line-height: 1.65; overflow-wrap: anywhere; }
+.image-wait-card {
+  width: 100%; max-width: 100%; border: 1px solid var(--concept-line); border-radius: 14px;
+  padding: 14px 16px; background: var(--concept-surface); display: grid; gap: 6px;
+}
+.image-wait-copy { color: var(--concept-muted); }
+.message-markdown { color: var(--concept-ink); }
+.message-user .message-markdown { color: #fff; }
+.message-table { border-color: var(--concept-line); }
+.message-table th { background: var(--concept-surface); }
+.image-wait-track { background: var(--concept-line); }
+.image-wait-bar { background: var(--qs-mint, #1c7c3a); }
+.composer textarea { font-size: 17px; }
+.auth-hero-copy span { font-size: 14px; }
+.auth-legal { font-size: 12px; }
+.auth-method { font-size: 16px; }
+
+.message, .message-markdown, .message-body { max-width: 100%; min-width: 0; overflow-x: hidden; }
+.message-user {
+  width: fit-content;
+  max-width: min(80%, 22rem);
+  overflow-x: visible;
+}
+.message-body pre {
+  display: block; max-width: 100%; overflow-x: auto; white-space: pre-wrap;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+.message-body code { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.pc-toggle-status { display: inline-flex; align-items: center; gap: 6px; }
+.pc-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #6a788b; }
+.pc-status-dot-online { background: #1c7c3a; }
+
+@media (max-width: 720px) {
+  .brand, .brand-name { font-size: 17px; }
+  .sidebar-top { font-size: 17px; }
+  [data-testid="mobile-sidebar"] button { font-size: 13px; }
+  [data-testid="mobile-new-agent"] { font-size: 16px !important; }
+  [data-testid="mobile-sidebar"] .pc-toggle { font-size: 12px; }
+  .sidebar-account-name { font-size: 13px; }
+  .sidebar-account-id { font-size: 11px; }
+  .context-bar [data-testid="mobile-target"] { font-size: 17px; }
+  .context-bar [data-testid="mobile-status"] { font-size: 12px; }
+  .message-body { font-size: 17px; }
+  .image-intent-question { font-size: 17px; }
+  .image-confirm { font-size: 16px; }
+  .auth-hero-copy strong { font-size: 20px; }
+  .auth-method { font-size: 16px; }
+  .auth-legal { font-size: 12px; }
+  .composer textarea { font-size: 17px; }
+}

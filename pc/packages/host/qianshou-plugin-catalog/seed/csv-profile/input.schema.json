@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CSV 结构体检输入",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["csv"],
+  "properties": {
+    "csv": { "type": "string", "minLength": 1, "maxLength": 1048576 },
+    "delimiter": { "enum": [",", ";", "\t"] },
+    "header": { "type": "boolean" },
+    "sampleRows": { "type": "integer", "minimum": 1, "maximum": 20 }
+  }
+}

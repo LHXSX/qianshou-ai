@@ -1,0 +1,13 @@
+{
+  "source": {
+    "url": "https://codeload.github.com/ggml-org/whisper.cpp/tar.gz/86c40c3bd6fc86f1187fb751d111b49e0fc18e84",
+    "revision": "86c40c3bd6fc86f1187fb751d111b49e0fc18e84",
+    "bytes": 9016396,
+    "sha256": "2c2b020305abe6024c07716d40c71a7172182dd2063e076b8b509882023aa7bb"
+  },
+  "model": {
+    "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-small-q5_1.bin",
+    "sha256": "ae85e4a935d7a567bd102fe55afc16bb595bdb618e11b2fc7591bc08120411bb",
+    "bytes": 190085487
+  }
+}

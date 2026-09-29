@@ -1,0 +1,678 @@
+{
+  "contract": "qianshou/capabilities/registry/v1",
+  "registry_version": "1.0",
+  "title": "语义能力名注册表",
+  "description": "The single registry of semantic capability names (contract section 2, the foundation). A task states a semantic need, a node states a semantic capability PLUS the implementation binding that satisfies it, and this file is the only place where the two vocabularies meet. See contracts/README.md §2.2 and decision one. WHY THIS FILE EXISTS: today capability is expressed as a bare package string. The platform's `required_software` vocabulary has 14 members, the client can advertise 5 (`node/git/python3/ffmpeg/ffprobe`), and the intersection is exactly 1 (`ffmpeg`) — so 19 of 25 task types are permanently unreachable for that node (audit §1.1). Sixteen of those names appear ZERO times in the local TypeScript source. The mismatch is not a bug in either side's list; it is the absence of a semantic layer between them.",
+  "name_grammar": "<domain>.<object>.<action>",
+  "name_grammar_description": "Names are lowercase, dot-separated, and read as domain.object.action (e.g. `ocr.image`, `doc.pdf.extract`, `accelerator.gpu`). A name identifies a CAPABILITY, never a vendor, package, or binary: `media.transcode` must not be called `ffmpeg`. That single rule is what lets the implementation be replaced without renegotiating a single task.",
+  "provenance": [
+    "docs/dev-plan/跨边界一致性审计.md §1.1 — the platform's required_software union (14 names) and the 20 blocked task types, read from engine/task_registry.py plus production database we_workers",
+    "docs/dev-plan/evidence/双机验收/AT-08.json — a real dispatcher worker row carrying 47 capability keys, captured 2026-09-17T05:36:48.802Z",
+    "packages/host/compute-core/tests/fixtures/platform-worker-capabilities.ts — the 47-key field set pinned locally from that capture",
+    "生产库 we_workers 抽样 (审计 §1.1) — a real node advertising 11 Python tier packages, including pdfplumber and tldextract",
+    "engine/capabilities.py:358-374 (audit §1.3) — the platform ALREADY uses dot-names for capabilities (observed: doc.pdf.text, media.probe)",
+    "engine/task_registry.py:980 SOFTWARE_TO_TIER (audit §1.1) — pip package to auto-installed venv tier mapping"
+  ],
+  "platform_required_software": [
+    "blender",
+    "faster_whisper",
+    "ffmpeg",
+    "local_llm",
+    "moondream2",
+    "numpy",
+    "onnxruntime",
+    "openpyxl",
+    "pillow",
+    "pymupdf",
+    "readability",
+    "requests",
+    "selectolax",
+    "whisper"
+  ],
+  "platform_required_software_description": "The union of every TaskTypeSpec.required_software value, read statically from engine/task_registry.py (14 members). This array is the migration target: every member MUST map to at least one implementation below, and the contract test fails if any member is unaccounted for. It is reproduced here so the registry can be checked without reading the platform source.",
+  "alias_normalization": {
+    "description": "Real advertisements in the production pool do not agree on separators: one sampled node advertised `faster-whisper` (hyphen) while the platform's required_software says `faster_whisper` (underscore). Any matcher that compares raw strings will miss this. Normalization rule for v1: lowercase, then map `-` to `_`. Aliases are recorded per implementation in `aliases` so the raw advertised value can still be attributed to a real package.",
+    "rule": "lowercase + hyphen-to-underscore",
+    "observed_violations_in_production": [
+      {
+        "advertised": "faster-whisper",
+        "required_spelling": "faster_whisper",
+        "evidence": "生产库 we_workers 节点广告样本 (审计 §1.1)"
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "capability": "media.transcode",
+      "advertisement_proof": "software-probe",
+      "title": "音视频转码",
+      "determinism": "deterministic",
+      "impl_kind": "binary",
+      "implementations": [
+        {
+          "impl": "ffmpeg",
+          "kind": "cli",
+          "package_names": ["ffmpeg"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "审计 §1.1 video_compress/video_repurpose 均只需 ffmpeg；生产池 130 个节点广告 ffmpeg"
+        }
+      ],
+      "legacy_task_types": ["video_compress", "video_repurpose"],
+      "notes": "ffmpeg is the only member of the 5-vs-14 intersection, which is why exactly the six ffmpeg-only task types are reachable today."
+    },
+    {
+      "capability": "media.probe",
+      "advertisement_proof": "software-probe",
+      "title": "媒体元数据探测",
+      "determinism": "deterministic",
+      "impl_kind": "binary",
+      "implementations": [
+        {
+          "impl": "ffmpeg",
+          "kind": "cli",
+          "package_names": ["ffmpeg"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "审计 §1.1 video_info 的 required_software 就是 ('ffmpeg',)；审计 §1.11 复核确认没有任何 spec 要求 ffprobe"
+        }
+      ],
+      "legacy_task_types": ["video_info"],
+      "notes": "ffprobe is a sibling binary of the same ffmpeg installation. The audit (§1.11) explicitly corrected the claim that a missing ffprobe breaks video_info: no task spec requires it, so it is NOT modelled as its own capability. If a future task does need stream-level probing, it belongs under this capability as a second implementation of the same binding, not as a new capability."
+    },
+    {
+      "capability": "media.thumbnail",
+      "advertisement_proof": "software-probe",
+      "title": "视频缩略图",
+      "determinism": "deterministic",
+      "impl_kind": "binary",
+      "implementations": [
+        {
+          "impl": "ffmpeg",
+          "kind": "cli",
+          "package_names": ["ffmpeg"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "审计 §1.1 video_thumbnail ['ffmpeg']"
+        }
+      ],
+      "legacy_task_types": ["video_thumbnail"]
+    },
+    {
+      "capability": "audio.extract",
+      "advertisement_proof": "software-probe",
+      "title": "音轨提取",
+      "determinism": "deterministic",
+      "impl_kind": "binary",
+      "implementations": [
+        {
+          "impl": "ffmpeg",
+          "kind": "cli",
+          "package_names": ["ffmpeg"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "审计 §1.1 audio_extract ['ffmpeg']"
+        }
+      ],
+      "legacy_task_types": ["audio_extract"]
+    },
+    {
+      "capability": "audio.transcode",
+      "advertisement_proof": "software-probe",
+      "title": "音频转码",
+      "determinism": "deterministic",
+      "impl_kind": "binary",
+      "implementations": [
+        {
+          "impl": "ffmpeg",
+          "kind": "cli",
+          "package_names": ["ffmpeg"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "审计 §1.1 audio_transcode ['ffmpeg']"
+        }
+      ],
+      "legacy_task_types": ["audio_transcode"]
+    },
+    {
+      "capability": "image.transform",
+      "advertisement_proof": "software-probe",
+      "title": "图像变形（缩放/压缩）",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "pillow",
+          "kind": "python-package",
+          "package_names": ["pillow"],
+          "tier": "lite",
+          "aliases": ["PIL"],
+          "evidence": "审计 §1.1 image_resize/image_compress ['pillow']；SOFTWARE_TO_TIER: pillow → lite"
+        }
+      ],
+      "legacy_task_types": ["image_resize", "image_compress"]
+    },
+    {
+      "capability": "image.convert",
+      "advertisement_proof": "software-probe",
+      "title": "图像格式转换",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "pillow",
+          "kind": "python-package",
+          "package_names": ["pillow"],
+          "tier": "lite",
+          "aliases": ["PIL"],
+          "evidence": "审计 §1.1 image_convert ['pillow']"
+        }
+      ],
+      "legacy_task_types": ["image_convert"]
+    },
+    {
+      "capability": "image.thumbnail",
+      "advertisement_proof": "software-probe",
+      "title": "图像缩略图",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "pillow",
+          "kind": "python-package",
+          "package_names": ["pillow"],
+          "tier": "lite",
+          "aliases": ["PIL"],
+          "evidence": "审计 §1.1 image_thumbnail ['pillow']"
+        }
+      ],
+      "legacy_task_types": ["image_thumbnail"]
+    },
+    {
+      "capability": "image.probe",
+      "advertisement_proof": "software-probe",
+      "title": "图像元数据探测",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "pillow",
+          "kind": "python-package",
+          "package_names": ["pillow"],
+          "tier": "lite",
+          "aliases": ["PIL"],
+          "evidence": "审计 §1.1 image_info ['pillow']"
+        }
+      ],
+      "legacy_task_types": ["image_info"],
+      "notes": "DESIGN JUDGMENT, not in the brief's mapping table: the brief lists image.transform/image.convert/image.thumbnail for pillow but omits a probe capability. Legacy task type image_info is one of the 20 blocked types and needs a semantic home, otherwise it has no name to migrate onto."
+    },
+    {
+      "capability": "doc.pdf.extract",
+      "advertisement_proof": "software-probe",
+      "title": "PDF 文本提取",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "pymupdf",
+          "kind": "python-package",
+          "package_names": ["pymupdf"],
+          "tier": "lite",
+          "aliases": ["fitz"],
+          "evidence": "审计 §1.1 pdf_to_text ['pymupdf']；SOFTWARE_TO_TIER: pymupdf → lite；生产池 125 个节点广告 pymupdf"
+        },
+        {
+          "impl": "pdfplumber",
+          "kind": "python-package",
+          "package_names": ["pdfplumber"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "生产库 we_workers 真实节点广告样本含 pdfplumber (审计 §1.1)"
+        }
+      ],
+      "legacy_task_types": ["pdf_to_text"],
+      "notes": "THE MULTI-IMPLEMENTATION CASE THE CURRENT SYSTEM CANNOT EXPRESS, with real evidence: a production node advertises pdfplumber, which never appears in any required_software, so a task demanding an extracted PDF text cannot be legally dispatched to that node even though the node can plainly do it. Under semantic naming the task asks for doc.pdf.extract and both pymupdf and pdfplumber satisfy it."
+    },
+    {
+      "capability": "doc.pdf.probe",
+      "advertisement_proof": "software-probe",
+      "title": "PDF 结构探测",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "pymupdf",
+          "kind": "python-package",
+          "package_names": ["pymupdf"],
+          "tier": "lite",
+          "aliases": ["fitz"],
+          "evidence": "审计 §1.1 pdf_info ['pymupdf']"
+        }
+      ],
+      "legacy_task_types": ["pdf_info"],
+      "notes": "DESIGN JUDGMENT, not in the brief's mapping table: same reasoning as image.probe. Note planner.py:925 additionally needs a NATIVE executor for pdf_info/pdf_to_text, which is a separate missing capability surface (audit §1.5)."
+    },
+    {
+      "capability": "ocr.image",
+      "advertisement_proof": "software-probe",
+      "title": "图像文字识别",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "paddleocr",
+          "kind": "python-package",
+          "package_names": ["paddleocr"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "phase brief mapping table；不在平台 required_software 并集内，属本草案新增的等价实现"
+        },
+        {
+          "impl": "rapidocr",
+          "kind": "python-package",
+          "package_names": ["rapidocr"],
+          "tier": null,
+          "aliases": ["rapidocr_onnxruntime"],
+          "evidence": "审计 §1.5 列出 ONNX 执行器任务 rapid_ocr_v1；phase brief 映射表把 rapidocr 列为 ocr.image 的实现之一"
+        },
+        {
+          "impl": "pytesseract",
+          "kind": "cli-wrapper",
+          "package_names": ["pytesseract"],
+          "tier": null,
+          "aliases": ["tesseract"],
+          "evidence": "phase brief mapping table；core/worker.py:63 的 native_binaries 注释里出现 tesseract"
+        }
+      ],
+      "legacy_task_types": ["pdf_ocr", "rapid_ocr_v1"],
+      "notes": "THREE IMPLEMENTATIONS, ONE CAPABILITY — exactly what a package-name vocabulary cannot say. pdf_ocr additionally needs a PDF rasterizer (doc.pdf.*), so its legacy requirement set is an AND-set, not a choice among these three; see open_questions."
+    },
+    {
+      "capability": "speech.transcribe",
+      "advertisement_proof": "executor-self-test",
+      "title": "语音转写",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "whisper",
+          "kind": "python-package",
+          "package_names": ["whisper"],
+          "tier": null,
+          "aliases": [],
+          "evidence": "审计 §1.1 whisper_transcribe ['ffmpeg','whisper']；生产池 79 个节点广告 whisper"
+        },
+        {
+          "impl": "faster_whisper",
+          "kind": "python-package",
+          "package_names": ["faster_whisper"],
+          "tier": "speech",
+          "aliases": ["faster-whisper"],
+          "evidence": "审计 §1.1；SOFTWARE_TO_TIER: faster_whisper → speech；生产池 96 个节点广告 faster_whisper，另有节点广告连字符拼法 faster-whisper"
+        }
+      ],
+      "legacy_task_types": ["whisper_transcribe", "audio_transcribe_refine", "video_analyze"],
+      "notes": "SECOND MULTI-IMPLEMENTATION CASE. Note the local repository's only 'whisper' reference (packages/host/voice-local/src/index.ts:50) points at a whisper.cpp BINARY, not this Python package — so the same word names two different implementations across the two sides. Under this registry they are distinguishable: a whisper.cpp binding would be registered as a second implementation id, not conflated with the pip package."
+    },
+    {
+      "capability": "vision.caption",
+      "advertisement_proof": "executor-self-test",
+      "title": "图像描述生成",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "moondream2",
+          "kind": "python-package",
+          "package_names": ["moondream2"],
+          "tier": "moondream",
+          "aliases": [],
+          "evidence": "审计 §1.1 image_caption ['moondream2','pillow']；SOFTWARE_TO_TIER: moondream2 → moondream"
+        }
+      ],
+      "legacy_task_types": ["image_caption"],
+      "notes": "image_caption's legacy requirement is an AND-set (moondream2 AND pillow — the image must be decoded first). The registry lists moondream2 as the implementation of vision.caption and pillow under the image.* capabilities, so the AND-set decomposes into two capabilities rather than one requirement with two packages."
+    },
+    {
+      "capability": "ml.onnx.infer",
+      "advertisement_proof": "executor-self-test",
+      "title": "ONNX 模型推理",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "onnxruntime",
+          "kind": "python-package",
+          "package_names": ["onnxruntime"],
+          "tier": "lite",
+          "aliases": [],
+          "evidence": "审计 §1.1 onnx_infer ['onnxruntime']；SOFTWARE_TO_TIER: onnxruntime → lite；生产池 128 个节点广告 onnxruntime"
+        }
+      ],
+      "legacy_task_types": ["onnx_infer"]
+    },
+    {
+      "capability": "render.3d",
+      "advertisement_proof": "software-probe",
+      "title": "三维渲染",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "blender",
+          "kind": "cli",
+          "package_names": ["blender"],
+          "tier": "render",
+          "aliases": ["bpy"],
+          "evidence": "审计 §1.1 blender_render ['blender']；SOFTWARE_TO_TIER: blender → render"
+        }
+      ],
+      "legacy_task_types": ["blender_render"]
+    },
+    {
+      "capability": "llm.generate.local",
+      "advertisement_proof": "executor-self-test",
+      "title": "本地大模型生成",
+      "determinism": "random",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "local_llm",
+          "kind": "local-service",
+          "package_names": ["local_llm"],
+          "tier": null,
+          "aliases": ["ollama"],
+          "evidence": "审计 §1.1；engine/planner.py:578-588 _has_local_llm_capability 接受 software 含 local_llm 或 ollama，或节点上报了模型列表"
+        }
+      ],
+      "legacy_task_types": ["local_llm_chat"],
+      "notes": "'local_llm' is a capability concept, not a package name — the platform's own code comment says so. The platform already had to special-case it (planner.py:717-732) precisely because one concept had three advertisements (local_llm / ollama / model-list-only). This capability name is that concept finally having a home, and it is the case that proves the semantic layer is not a new invention but a formalisation of a fix the platform already needed."
+    },
+    {
+      "capability": "compute.numeric",
+      "advertisement_proof": "software-probe",
+      "title": "数值计算",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "numpy",
+          "kind": "python-package",
+          "package_names": ["numpy"],
+          "tier": "lite",
+          "aliases": [],
+          "evidence": "审计 §1.1 fft_compute ['numpy']；SOFTWARE_TO_TIER: numpy → lite；生产池 131 个节点广告 numpy"
+        }
+      ],
+      "legacy_task_types": ["fft_compute"]
+    },
+    {
+      "capability": "doc.spreadsheet.write",
+      "advertisement_proof": "software-probe",
+      "title": "电子表格写出",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "openpyxl",
+          "kind": "python-package",
+          "package_names": ["openpyxl"],
+          "tier": "lite",
+          "aliases": [],
+          "evidence": "审计 §1.1 excel_export ['openpyxl']；SOFTWARE_TO_TIER: openpyxl → lite"
+        }
+      ],
+      "legacy_task_types": ["excel_export"]
+    },
+    {
+      "capability": "web.fetch",
+      "advertisement_proof": "software-probe",
+      "title": "网络抓取",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "requests",
+          "kind": "python-package",
+          "package_names": ["requests"],
+          "tier": "lite",
+          "aliases": [],
+          "role": "http_client",
+          "evidence": "审计 §1.1 crawl_url_fetch / crawl_batch_fetch ['requests','selectolax']；SOFTWARE_TO_TIER: requests → lite；生产池 133 个节点广告 requests"
+        },
+        {
+          "impl": "selectolax",
+          "kind": "python-package",
+          "package_names": ["selectolax"],
+          "tier": "crawl",
+          "aliases": [],
+          "role": "html_parser",
+          "evidence": "审计 §1.1；SOFTWARE_TO_TIER: selectolax → crawl；生产池 125 个节点广告 selectolax"
+        }
+      ],
+      "legacy_task_types": ["crawl_url_fetch", "crawl_batch_fetch"],
+      "notes": "NOT INTERCHANGEABLE despite sharing one capability name: `role` records that requests is an HTTP client and selectolax an HTML parser. The legacy requirement demanded BOTH (AND-semantics). The brief's table groups these packages under web.fetch/web.extract without splitting client from parser; this entry keeps that grouping but adds `role` so the distinction is not lost. See open_questions."
+    },
+    {
+      "capability": "web.extract",
+      "advertisement_proof": "software-probe",
+      "title": "正文抽取",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "selectolax",
+          "kind": "python-package",
+          "package_names": ["selectolax"],
+          "tier": "crawl",
+          "aliases": [],
+          "role": "html_parser",
+          "evidence": "审计 §1.1 crawl_url_extract ['requests','selectolax','readability']"
+        },
+        {
+          "impl": "readability",
+          "kind": "python-package",
+          "package_names": ["readability"],
+          "tier": "crawl",
+          "aliases": ["readability-lxml"],
+          "role": "content_extractor",
+          "evidence": "审计 §1.1；SOFTWARE_TO_TIER: readability → crawl；生产池节点广告 readability"
+        }
+      ],
+      "legacy_task_types": ["crawl_url_extract"],
+      "notes": "Same AND/OR caveat as web.fetch: crawl_url_extract required requests+selectolax+readability together, which is a three-package AND-set, while a registry `implementations` list is read as 'any one satisfies'."
+    },
+    {
+      "capability": "accelerator.gpu",
+      "advertisement_proof": "host-binding",
+      "title": "GPU 加速器",
+      "determinism": "deterministic",
+      "impl_kind": "hardware",
+      "implementations": [
+        {
+          "impl": "supply-probe",
+          "kind": "host-probe",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "packages/host/compute-core/src/supply (probeLocalSupply hardware section)；平台读取 gpu_count/gpu_model/vram_mb/accelerators (fixtures/platform-worker-capabilities.ts 47 键实测)"
+        }
+      ],
+      "legacy_task_types": [],
+      "notes": "DESIGN JUDGMENT, not in the brief's mapping table, added because the brief's OWN task example requires `accelerator.gpu` with `min_vram_mb: 8192` — a requirement with no registry entry could never be matched, which would make the contract's own example invalid. It is not a package: it is reported by the local hardware probe. No legacy task type requires it; it is a placement criterion (vram floors), not a task type."
+    },
+    {
+      "capability": "image.generate",
+      "advertisement_proof": "executor-self-test",
+      "title": "图像生成",
+      "determinism": "random",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "h3",
+          "kind": "local-service",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "packages/host/capability-h3-image/src/index.ts H3_IMAGE_CAPABILITY_ID；CEO 2026-09-19 授权收进注册表。权重与托管 API 不在本仓。"
+        }
+      ],
+      "legacy_task_types": [],
+      "notes": "The only production ComputeCapabilityId literal before this row. Admitted so the Host vocabulary lock can raise INTERSECTION_BASELINE instead of treating h3 as a permanent fork."
+    },
+    {
+      "capability": "text.transform",
+      "advertisement_proof": "host-binding",
+      "title": "文本变换",
+      "determinism": "deterministic",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "isolated-inline",
+          "kind": "host-runner",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "packages/host/compute-core/src/resident/isolated-inline-runner.ts word_count；QS-18 生产 we_shards 主流 task_type。CEO 2026-09-19 授权四个落地名归同一语义能力。"
+        }
+      ],
+      "legacy_task_types": ["word_count", "base64_decode", "json_validate", "text_sort"],
+      "notes": "Built-in Python inline tasks. Preferred landing is word_count. Quote and estimate still POST that landing name."
+    },
+    {
+      "capability": "media.compose",
+      "advertisement_proof": "host-binding",
+      "title": "影片合成",
+      "determinism": "random",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "qianshou-film",
+          "kind": "local-service",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "QS-18 生产 we_shards task_type qianshou_film_media 4 条。CEO 2026-09-19 授权归 media.* 族，不并进 media.transcode。"
+        }
+      ],
+      "legacy_task_types": ["qianshou_film_media"],
+      "notes": "Film pipeline is not ffmpeg transcode. A new media.* name keeps the family without colliding with media.transcode landings."
+    },
+    {
+      "capability": "video.render",
+      "advertisement_proof": "host-binding",
+      "title": "视频渲染",
+      "determinism": "random",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "svg-to-video",
+          "kind": "host-runner",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "隔离 bar_chart_svg_v1 执行器本机绑定并运行样例后才可声明；不能凭 ffmpeg 或技能说明书声明。"
+        },
+        {
+          "impl": "h3-owner-video",
+          "kind": "host-runner",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "PC 机主显式配置本机模型、工作流、PNG 首帧及 loopback H3 adapter；本人试用真实 5 秒 MP4 经 ffprobe/hash 验证后才声明 video_generate，媒体由 PC 直传 COS。"
+        }
+      ],
+      "legacy_task_types": ["bar_chart_svg_v1", "video_generate"],
+      "notes": "受限 SVG 动效与机主固定模型/工作流的 H3 五秒视频共用此能力，任务执行器按 task_type 独立绑定；媒体字节不经上海，结果不可按确定性缓存。"
+    },
+    {
+      "capability": "legal.doc.bundle",
+      "advertisement_proof": "host-binding",
+      "title": "法律文书批量草稿",
+      "determinism": "random",
+      "impl_kind": "package",
+      "implementations": [
+        {
+          "impl": "qianshou-native-legal-documents",
+          "kind": "local-service",
+          "package_names": [],
+          "tier": null,
+          "aliases": [],
+          "evidence": "Explicit node-installed provider with exact local model SHA-256 and execution preflight; fictional structural tests do not establish professional legal quality or market dispatch."
+        }
+      ],
+      "legacy_task_types": [
+        "legal_doc_bundle_v1"
+      ],
+      "notes": "Native file task for fifteen Word drafts in one verified ZIP. Registration of this vocabulary grants no intake; task-owned attachments, actual provider binding, result verification and lawyer review remain required. It does not replace the approved QuickJS legal precheck task."
+    }
+  ],
+  "package_index": {
+    "blender": ["render.3d"],
+    "faster_whisper": ["speech.transcribe"],
+    "ffmpeg": ["media.transcode", "media.probe", "media.thumbnail", "audio.extract", "audio.transcode"],
+    "local_llm": ["llm.generate.local"],
+    "moondream2": ["vision.caption"],
+    "numpy": ["compute.numeric"],
+    "onnxruntime": ["ml.onnx.infer"],
+    "openpyxl": ["doc.spreadsheet.write"],
+    "paddleocr": ["ocr.image"],
+    "pdfplumber": ["doc.pdf.extract"],
+    "pillow": ["image.transform", "image.convert", "image.thumbnail", "image.probe"],
+    "pymupdf": ["doc.pdf.extract", "doc.pdf.probe"],
+    "pytesseract": ["ocr.image"],
+    "rapidocr": ["ocr.image"],
+    "readability": ["web.extract"],
+    "requests": ["web.fetch"],
+    "selectolax": ["web.fetch", "web.extract"],
+    "whisper": ["speech.transcribe"]
+  },
+  "package_index_description": "Reverse index from a legacy package/tool name to the capabilities it can satisfy: the migration lookup that answers 'which semantic capability was this required_software value standing in for'. Keys are normalized per alias_normalization. Every value must be exactly the reverse of `capabilities[].implementations[].package_names`; the contract test asserts both directions so a one-way reference cannot appear. Covers all 14 members of platform_required_software plus the three OCR implementations the brief adds (paddleocr, rapidocr, pytesseract) and pdfplumber, which is observed in production advertisements but never required. 18 keys total.",
+  "observed_unmapped_software": [
+    {
+      "name": "tldextract",
+      "evidence": "生产库 we_workers 真实节点广告样本 (审计 §1.1)",
+      "reason": "Registered implementations must not be invented: no task type in the audit requires it and no capability above is defined in terms of domain parsing. Recorded here so the production observation is not silently lost."
+    },
+    {
+      "name": "node/git/python3/ffprobe/bash",
+      "evidence": "审计 §1.1 / §1.11 tool catalog; apps/qianshou-node/node-daemon.mjs:63-69",
+      "reason": "These are local CLI tools advertised as `software`/`runtimes` by the current client, not capabilities. ffprobe and bash appear in no required_software at all (audit §1.11). They belong to a tool-inventory concept, which this contract deliberately does not model."
+    }
+  ],
+  "platform_vocabulary_observed": [
+    {
+      "name": "media.probe",
+      "source": "engine/capabilities.py:358-374 via audit §1.3",
+      "status": "aligned",
+      "note": "The platform already uses a dot-name for this concept; this registry uses the same spelling. This is direct evidence that dot-names are the platform's own convention, not something this draft invents."
+    },
+    {
+      "name": "doc.pdf.text",
+      "source": "engine/capabilities.py:358-374 via audit §1.3",
+      "status": "needs_reconciliation",
+      "note": "The platform has a dot-name doc.pdf.text where this registry says doc.pdf.extract. Only two members of the platform's CAPABILITIES set were visible from this repository, so the full set could not be read. RECONCILIATION IS REQUIRED BEFORE ADOPTION: either this registry adopts the platform's exact names, or the platform publishes the mapping. Guessing which is authoritative is exactly the failure mode this contract exists to prevent."
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Are multiple `implementations` of one capability alternatives (OR) or a required set (AND)?",
+      "why_it_matters": "Legacy `required_software` is an AND-set: planner.py:717-731 hard-filters on `effective_needed.issubset(worker_sw)`. A registry `implementations` list reads naturally as 'any one suffices' (OR). For ocr.image and speech.transcribe OR is almost certainly right (three OCR engines, two whisper variants). For web.fetch the legacy set demanded requests AND selectolax together, and for image_caption it demanded moondream2 AND pillow — there the AND is real, because an HTTP client and an HTML parser are not alternatives.",
+      "status": "UNRESOLVED. This draft encodes both facts (the list, plus a per-implementation `role`) and does not pick a matching rule. Picking one without the platform's confirmation would trade a visible divergence (no semantic layer) for an invisible one (a semantic layer that silently drops half of an AND-set).",
+      "evidence_is_in_repo": true
+    },
+    {
+      "question": "Which side owns the semantic name space — this registry or engine/capabilities.py?",
+      "why_it_matters": "Two registries would be a sixth copy of a vocabulary, which is the exact defect class being fixed (audit §1.1, §1.11: three copies of the tool list).",
+      "status": "UNRESOLVED. Only two platform names are observable from this repository (doc.pdf.text, media.probe). Proposal for phase 2: the platform's CAPABILITIES set becomes the single source and this file is generated from it, with the legacy package mapping retained as the migration lookup.",
+      "evidence_is_in_repo": false
+    },
+    {
+      "question": "What is the versioning unit for min_version?",
+      "why_it_matters": "task.requires[].min_version is declared to mean 'generation of the capability contract'. Whether a capability name can be versioned independently of the whole v1 contract is not decidable from the evidence read.",
+      "status": "UNRESOLVED; v1 treats min_version as advisory and does not enforce it.",
+      "evidence_is_in_repo": false
+    }
+  ]
+}

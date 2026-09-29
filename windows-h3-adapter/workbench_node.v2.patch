@@ -1,0 +1,309 @@
+--- a/workbench/workbench_node.py
++++ b/workbench/workbench_node.py
+@@ -21,6 +21,7 @@
+ 
+ from graphs import SPECS, build
+ from recipe_identity import RecipeIdentityError, build_identity, verify_actual_graph
++from recipe_identity_v2 import build_identity_v2, freeze_model_config
+ from runtime_attestation import (ComfyRuntimeError, comfy_accepted_graph_sha256,
+                                  measure_comfy_runtime, verify_model_load_history)
+ 
+@@ -212,6 +213,32 @@
+     if body["workflow"] in BASE_WORKFLOWS:
+         spec_for_job(body)
+     return attested_request(body)
++
++
++def attested_request_v2(body):
++    """Admit V2 only on the explicit new route; retain V1 payload validation."""
++    if not isinstance(body, dict):
++        raise ValueError("Object required")
++    expected = body.get("expected")
++    fields = {"schemaVersion", "executionRecipeSha256", "modelSha256",
++              "firstFrameSha256", "localConfigSha256"}
++    if (not isinstance(expected, dict) or set(expected) != fields
++            or expected["schemaVersion"] != "qs.h3.execution-expected.v2"
++            or any(not isinstance(expected[key], str) or not _SHA256.fullmatch(expected[key])
++                   for key in fields - {"schemaVersion"})):
++        raise ValueError("H3_V2_EXPECTED_IDENTITY_INVALID")
++    legacy = {**body, "expected": {key: expected[key] for key in
++                                  ("executionRecipeSha256", "modelSha256")}}
++    attested = validate_payload(legacy)
++    if attested is None or attested["firstFrameSha256"] != expected["firstFrameSha256"]:
++        raise ValueError("H3_V2_FIRST_FRAME_IDENTITY_MISMATCH")
++    return legacy, {**attested, "schemaVersion": "qs.h3.job-identity.v2", "expected": dict(expected)}
++
++
++def identity_keys(attested):
++    return (("executionRecipeSha256", "modelSha256", "firstFrameSha256", "localConfigSha256")
++            if attested.get("schemaVersion") == "qs.h3.job-identity.v2"
++            else ("executionRecipeSha256", "modelSha256"))
+ 
+ 
+ def trim_delivery(source, destination, ffmpeg):
+@@ -296,6 +323,21 @@
+                                        output_root=output_root, force_hash=True)
+                         if model_root is not None and model_root.is_absolute() else None)
+ 
++    source_paths_v2 = {**source_paths, "identityV2": Path(__file__).with_name("recipe_identity_v2.py")}
++    source_snapshot_v2 = {}
++    initial_identity_v2 = model_config_v2 = None
++    v2_startup_error = False
++    if model_root is not None and model_root.is_absolute():
++        try:
++            model_config_v2 = freeze_model_config(model_root)
++            source_snapshot_v2 = {role: hashlib.sha256(Path(path).read_bytes()).hexdigest()
++                                  for role, path in source_paths_v2.items()}
++            initial_identity_v2 = build_identity_v2(api_root, model_root, source_paths_v2,
++                                                   output_root=output_root, force_hash=True)
++        except (RecipeIdentityError, OSError):
++            # Unsupported V2 routing cannot silently promote V1, or disable its old route.
++            v2_startup_error = True
++
+     def runtime_identity():
+         try:
+             return measure_comfy_runtime(comfy_base, model_root, root / "input", output_root)
+@@ -325,6 +367,61 @@
+         if any(mtime > boot_ns for mtime in measured.model_asset_mtime_ns.values()):
+             raise RecipeIdentityError("H3 model changed after Comfy started; restart Comfy")
+         return measured
++    def current_identity_v2(*, force_hash=False):
++        if v2_startup_error or initial_identity_v2 is None or model_config_v2 is None:
++            raise RecipeIdentityError("Explicit V2 recipe is not configured")
++        token, boot_ns = runtime_identity()
++        def assert_sources():
++            model_config_v2.assert_current(boot_ns)
++            try:
++                for role, path in source_paths_v2.items():
++                    if hashlib.sha256(Path(path).read_bytes()).hexdigest() != source_snapshot_v2[role]:
++                        raise RecipeIdentityError("Loaded V2 source changed; restart adapter")
++                    if role.startswith(("comfy", "dualClock")) or role in {"h3ComfyNodes", "sageNode"}:
++                        if Path(path).stat().st_mtime_ns > boot_ns:
++                            raise RecipeIdentityError("Comfy V2 source changed after process start")
++            except OSError as error:
++                raise RecipeIdentityError("Loaded V2 source is unavailable") from error
++        assert_sources()
++        measured = build_identity_v2(api_root, model_root, source_paths_v2,
++                                     output_root=output_root, force_hash=force_hash)
++        if (measured.model_sha256 != initial_identity_v2.model_sha256
++                or measured.local_config_sha256 != initial_identity_v2.local_config_sha256):
++            raise RecipeIdentityError("V2 model bytes or private configuration changed")
++        if any(mtime > boot_ns for mtime in measured.model_asset_mtime_ns.values()):
++            raise RecipeIdentityError("H3 model changed after Comfy started")
++        assert_sources()
++        after_token, after_boot = runtime_identity()
++        if token != after_token or boot_ns != after_boot:
++            raise RecipeIdentityError("Comfy process changed during V2 recipe check")
++        return measured
++
++    def first_frame_v2(job, attested):
++        input_root = (root / "input").resolve(strict=True)
++        relative = job.get("first_frame_rel")
++        if not isinstance(relative, str) or not relative:
++            raise RecipeIdentityError("V2 first frame is unavailable")
++        requested = input_root / relative
++        first_path = requested.resolve(strict=True)
++        if requested.is_symlink() or not first_path.is_relative_to(input_root) or not first_path.is_file():
++            raise RecipeIdentityError("V2 first frame escaped Comfy input")
++        before = first_path.stat()
++        if not 8 < before.st_size <= 16 * 1024 * 1024:
++            raise RecipeIdentityError("V2 first frame is invalid")
++        with first_path.open("rb") as stream:
++            opened = os.fstat(stream.fileno())
++            data = stream.read(16 * 1024 * 1024 + 1)
++            finished = os.fstat(stream.fileno())
++        after = first_path.stat()
++        fact = lambda st: (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
++        digest = hashlib.sha256(data).hexdigest()
++        if (len(data) != before.st_size or fact(before) != fact(opened)
++                or fact(opened) != fact(finished) or fact(finished) != fact(after)
++                or requested.resolve(strict=True) != first_path or not data.startswith(b"\x89PNG\r\n\x1a\n")
++                or digest != attested["firstFrameSha256"]):
++            raise RecipeIdentityError("V2 first frame changed during execution")
++        return digest
++
+     workflows.WF_DIR = out / "workflows"
+     workflows.WF_DIR.mkdir(parents=True, exist_ok=True)
+     workflows.BUILTINS = {workflow: {"id": workflow, "kind": "builtin", **recipe_metadata(workflow),
+@@ -358,7 +455,7 @@
+             # start_worker() runs in another thread. Persist the checked values
+             # before the gateway can launch it; never use a process-global slot.
+             job["recipe_identity"] = {
+-                "schemaVersion": "qs.h3.job-identity.v1",
++                "schemaVersion": attested.get("schemaVersion", "qs.h3.job-identity.v1"),
+                 "expected": attested["expected"],
+                 "firstFrameSha256": attested["firstFrameSha256"],
+                 "negativeSha256": attested["negativeSha256"],
+@@ -402,14 +499,19 @@
+             first_sha = hashlib.sha256(first_bytes).hexdigest()
+             if not hmac.compare_digest(first_sha, attested["firstFrameSha256"]):
+                 raise RecipeIdentityError("The fixed first frame changed after submit")
+-            identity = current_identity(force_hash=True)
++            is_v2 = attested.get("schemaVersion") == "qs.h3.job-identity.v2"
++            if is_v2:
++                first_sha = first_frame_v2(job, attested)
++            identity = (current_identity_v2 if is_v2 else current_identity)(force_hash=True)
++            if is_v2:
++                first_frame_v2(job, attested)
+             token, _boot_ns = runtime_identity()
+             if not hmac.compare_digest(token, attested["comfyRuntimeToken"]):
+                 raise RecipeIdentityError("Comfy process changed during recipe check")
+             actual = identity.identity_for(first_sha, negative_sha)
+             verify_actual_graph(graph, identity.graph_sha256)
+             if any(not hmac.compare_digest(actual[key], attested["expected"][key])
+-                   for key in ("executionRecipeSha256", "modelSha256")):
++                   for key in identity_keys(attested)):
+                 raise RecipeIdentityError("The measured recipe or model changed before Comfy submit")
+             attested["actualBeforeComfySubmit"] = {
+                 **actual,
+@@ -435,11 +537,14 @@
+             token, _boot_ns = runtime_identity()
+             if not hmac.compare_digest(token, attested["comfyRuntimeToken"]):
+                 raise RecipeIdentityError("Comfy process changed during render")
+-            post = current_identity(force_hash=True).identity_for(
++            is_v2 = attested.get("schemaVersion") == "qs.h3.job-identity.v2"
++            if is_v2:
++                first_frame_v2(job, attested)
++            post = (current_identity_v2 if is_v2 else current_identity)(force_hash=True).identity_for(
+                 attested["firstFrameSha256"], attested["negativeSha256"])
+             before = attested.get("actualBeforeComfySubmit") or {}
+             if any(not hmac.compare_digest(post[key], before.get(key, ""))
+-                   for key in ("executionRecipeSha256", "modelSha256")):
++                   for key in identity_keys(attested)):
+                 raise RecipeIdentityError("H3 recipe or model changed during render")
+             generation = verify_model_load_history(
+                 comfy_base, job["comfy_prompt_id"], before["comfyAcceptedGraphSha256"],
+@@ -447,6 +552,15 @@
+             end_token, _boot_ns = runtime_identity()
+             if not hmac.compare_digest(end_token, token):
+                 raise RecipeIdentityError("Comfy process changed during load-generation check")
++            if is_v2:
++                first_frame_v2(job, attested)
++                final = current_identity_v2(force_hash=True).identity_for(
++                    attested["firstFrameSha256"], attested["negativeSha256"])
++                if any(final[key] != post[key] for key in identity_keys(attested)):
++                    raise RecipeIdentityError("V2 recipe changed during load-generation verification")
++                final_token, _boot_ns = runtime_identity()
++                if not hmac.compare_digest(final_token, token):
++                    raise RecipeIdentityError("Comfy process changed after V2 load-generation verification")
+             attested["actualAfterComfySubmit"] = {
+                 **post, "graphInstanceSha256": before["graphInstanceSha256"],
+                 "comfyAcceptedGraphSha256": before["comfyAcceptedGraphSha256"],
+@@ -474,8 +588,8 @@
+                 "schemaVersion": attested["schemaVersion"],
+                 "expected": attested["expected"],
+                 "actual": {key: actual[key] for key in (
+-                    "executionRecipeSha256", "modelSha256", "modelSetSha256",
+-                    "graphInstanceSha256")} if completed else None,
++                    (*identity_keys(attested), "modelSetSha256", "graphInstanceSha256"))}
++                    if completed else None,
+                 "attested": completed,
+             }
+             if completed:
+@@ -512,20 +626,66 @@
+             "weightSha256ByRole": dict(current.model_asset_sha256),
+         }, headers={"Cache-Control": "no-store"})
+ 
++    @gateway.app.get("/v2/recipes/qs_new4/identity")
++    def get_qs_new4_identity_v2(firstFrameSha256: str, negativeSha256: str):
++        try:
++            current = current_identity_v2()
++            bound = current.identity_for(firstFrameSha256, negativeSha256)
++        except (RecipeIdentityError, OSError):
++            return JSONResponse({"error": "H3_V2_RECIPE_IDENTITY_UNAVAILABLE"}, status_code=503)
++        return JSONResponse({
++            "schemaVersion": "qs.h3.recipe-identity.v2", "workflow": WORKFLOW,
++            "recipeVersion": CATALOG_VERSION, "graphTemplateSha256": current.graph_sha256,
++            "builderSourceSha256": current.source_sha256, "firstFrameSha256": firstFrameSha256,
++            "negativeSha256": negativeSha256, **bound,
++            "weightSha256ByRole": dict(current.model_asset_sha256),
++        }, headers={"Cache-Control": "no-store"})
++
+     @gateway.app.middleware("http")
+     async def integration_guard(request, call_next):
+         if request.client.host not in ("127.0.0.1", "::1") or request.headers.get("origin"):
+             return JSONResponse({"error": "Local server-to-server integration only"}, status_code=403)
+         path = request.url.path
++        original_path = path
++        if path == "/v2/recipes/qs_new4/identity":
++            if request.method != "GET":
++                return JSONResponse({"error": "Mutation disabled"}, status_code=405)
++            if (set(request.query_params) != {"firstFrameSha256", "negativeSha256"}
++                    or any(len(request.query_params.getlist(k)) != 1 for k in request.query_params)):
++                return JSONResponse({"error": "H3_V2_IDENTITY_QUERY_INVALID"}, status_code=400)
++            return await call_next(request)
++        status_v2 = re.fullmatch(r"/v2/jobs/([A-Za-z0-9_-]+)", path)
++        if status_v2:
++            if request.method not in ("GET", "HEAD"):
++                return JSONResponse({"error": "Mutation disabled"}, status_code=405)
++            try:
++                job = jobs.load_job(status_v2.group(1))
++            except (OSError, KeyError, ValueError):
++                return JSONResponse({"error": "Job not found"}, status_code=404)
++            if (job.get("recipe_identity") or {}).get("schemaVersion") != "qs.h3.job-identity.v2":
++                return JSONResponse({"error": "H3_JOB_SCHEMA_MISMATCH"}, status_code=409)
++            path = "/v1/jobs/" + status_v2.group(1)
++            request.scope.update(path=path, raw_path=path.encode("ascii"))
++        legacy_job = re.fullmatch(r"/v1/jobs/([A-Za-z0-9_-]+)(?:/.*)?", original_path)
++        if legacy_job:
++            try:
++                job = jobs.load_job(legacy_job.group(1))
++            except (OSError, KeyError, ValueError):
++                job = None
++            if job is not None and (job.get("recipe_identity") or {}).get("schemaVersion") == "qs.h3.job-identity.v2":
++                return JSONResponse({"error": "H3_JOB_SCHEMA_MISMATCH"}, status_code=409)
++        submit_v2 = path == "/v2/jobs"
++        if submit_v2 and request.method != "POST":
++            return JSONResponse({"error": "Mutation disabled"}, status_code=405)
+         if path == "/v1/recipes/qs_new4/identity":
+             if request.method != "GET":
+                 return JSONResponse({"error": "Mutation disabled"}, status_code=405)
+             return await call_next(request)
+-        if not re.fullmatch(r"/(health|v1/(spec|workflows|jobs(?:/[A-Za-z0-9_-]+(?:/(?:progress|events|video|cancel|frames(?:/\d+)?))?)?))", path):
++        if not submit_v2 and not re.fullmatch(r"/(health|v1/(spec|workflows|jobs(?:/[A-Za-z0-9_-]+(?:/(?:progress|events|video|cancel|frames(?:/\d+)?))?)?))", path):
+             return JSONResponse({"error": "Route disabled in isolated test node"}, status_code=404)
+         if request.method == "GET" and path == "/v1/spec":
+             return JSONResponse(production_spec(str(request.base_url).rstrip("/")))
+-        if request.method == "POST" and path == "/v1/jobs":
++        if request.method == "POST" and (path == "/v1/jobs" or submit_v2):
+             async with lock:
+                 if any(j.get("status") in ("running", "queued") for j in jobs.list_jobs(limit=100)):
+                     return JSONResponse({"error": "Node worker busy"}, status_code=409)
+@@ -534,22 +694,34 @@
+                     if len(raw) > 32 * 1024 * 1024:
+                         raise ValueError("Request exceeds limit")
+                     body = json.loads(raw)
+-                    attested = validate_payload(body)
++                    if submit_v2:
++                        body, attested = attested_request_v2(body)
++                    else:
++                        attested = validate_payload(body)
+                 except (ValueError, TypeError) as error:
+                     return JSONResponse({"error": str(error)}, status_code=400)
+                 if attested is None:
+                     return await call_next(request)
+                 try:
+                     comfy_token, _boot_ns = runtime_identity()
+-                    current = await asyncio.to_thread(current_identity)
++                    current = await asyncio.to_thread(current_identity_v2 if submit_v2 else current_identity)
+                     actual = current.identity_for(attested["firstFrameSha256"], attested["negativeSha256"])
+                 except RecipeIdentityError:
+                     return JSONResponse({"error": "H3_RECIPE_IDENTITY_UNAVAILABLE"}, status_code=503)
+                 if any(not hmac.compare_digest(actual[key], attested["expected"][key])
+-                       for key in ("executionRecipeSha256", "modelSha256")):
++                       for key in identity_keys(attested)):
+                     return JSONResponse({"error": "H3_RECIPE_IDENTITY_MISMATCH"}, status_code=409)
+                 attested["checkedAtQueue"] = actual
+                 attested["comfyRuntimeToken"] = comfy_token
++                if submit_v2:
++                    try:
++                        final_token, _boot_ns = runtime_identity()
++                    except RecipeIdentityError:
++                        return JSONResponse({"error": "H3_V2_RECIPE_IDENTITY_UNAVAILABLE"}, status_code=503)
++                    if not hmac.compare_digest(final_token, comfy_token):
++                        return JSONResponse({"error": "H3_V2_RECIPE_IDENTITY_UNAVAILABLE"}, status_code=503)
++                    request.scope.update(path="/v1/jobs", raw_path=b"/v1/jobs")
++                    request._body = json.dumps(body, ensure_ascii=False).encode("utf-8")
+                 token = _submission_identity.set(attested)
+                 try:
+                     return await call_next(request)

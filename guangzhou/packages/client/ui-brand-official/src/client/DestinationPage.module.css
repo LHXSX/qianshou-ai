@@ -1,0 +1,387 @@
+/* Forge product destinations.
+ *
+ * One visual system for the four pages: a hero (eyebrow, title, positioning
+ * line), a quick-jump action row, then grouped cards. Every color comes from a
+ * theme alias token, every border is 0.5px, and no rule declares a full-round
+ * radius, so the theme's corner-shape guard stays honest without an opt-out. */
+.page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100%;
+  overflow: auto;
+  padding: 34px 36px 44px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  /* This page scrolls while it paints the l2 elevation (cards, roster rows), so
+   * the bar is rebound to the l2 pair as one rule — scrollbar.css renders the
+   * l1 pair by default and only a deliberate rebind changes the elevation. */
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.position {
+  margin: 0;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.75;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.action {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  padding: 7px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 10px;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-secondary);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.action svg { flex: 0 0 auto; }
+
+.action:hover {
+  border-color: var(--dsw-alias-brand-primary);
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-brand-text);
+}
+
+.action:active { background: var(--dsw-alias-interactive-bg-active); }
+
+.action:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 2px;
+}
+
+.card {
+  box-sizing: border-box;
+  padding: 20px 22px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 14px;
+  background: var(--dsw-alias-bg-layer-1);
+  box-shadow: 0 1px 2px var(--dsw-alias-bg-layer-2);
+  min-width: 0;
+}
+
+.cardHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l1);
+}
+
+.cardHead h2 {
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.count {
+  color: var(--dsw-alias-brand-text);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.empty,
+.hint {
+  margin: 0;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  display: grid;
+  grid-template-columns: minmax(132px, auto) 1fr;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding-left: 26px;
+  position: relative;
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: 9px;
+  background: var(--dsw-alias-brand-primary);
+  color: var(--dsw-alias-label-primary-foreground);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.steps strong {
+  color: var(--dsw-alias-label-primary);
+  font-weight: 650;
+}
+
+.steps span { color: var(--dsw-alias-label-secondary); }
+
+.cardFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 0.5px solid var(--dsw-alias-border-l1);
+}
+
+.roster,
+.jobs,
+.providers {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rosterRow,
+.jobRow,
+.providerRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l1);
+  border-radius: 10px;
+  background: var(--dsw-alias-bg-layer-2);
+  min-width: 0;
+}
+
+.rosterRow[data-running] { border-color: var(--dsw-alias-brand-primary); }
+
+.avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--dsw-alias-button-ghost-active-fill);
+  color: var(--dsw-alias-brand-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rosterCopy,
+.jobCopy,
+.providerHead {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rosterCopy strong,
+.jobCopy strong,
+.providerHead strong {
+  color: var(--dsw-alias-label-primary);
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.rosterMeta,
+.jobMeta,
+.providerId {
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.rosterMeta [data-state="running"] { color: var(--dsw-alias-state-success-primary); }
+
+.rosterOpen {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rosterOpen:hover {
+  border-color: var(--dsw-alias-brand-primary);
+  color: var(--dsw-alias-brand-text);
+}
+
+.rosterOpen:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 2px;
+}
+
+.jobDot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--dsw-alias-label-tertiary);
+}
+
+.jobDot[data-status="running"] { background: var(--dsw-alias-state-success-primary); }
+.jobDot[data-status="stopping"] { background: var(--dsw-alias-state-warn-primary); }
+.jobDot[data-status="failed"] { background: var(--dsw-alias-state-error-primary); }
+
+.jobMeta code,
+.modelList code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--dsw-alias-markdown-inline-code);
+  color: var(--dsw-alias-label-secondary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+}
+
+.providerRow { align-items: flex-start; flex-direction: column; gap: 8px; }
+
+.providerHead { flex-direction: row; align-items: baseline; gap: 10px; }
+
+.modelList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modelList li {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.failures {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 0.5px solid var(--dsw-alias-state-error-secondary);
+  border-radius: 10px;
+  background: var(--dsw-alias-bg-layer-2);
+}
+
+.failures strong {
+  color: var(--dsw-alias-state-error-primary);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.failures ul { display: grid; gap: 4px; margin: 0; padding-left: 18px; }
+.failures li { color: var(--dsw-alias-label-secondary); font-size: 11.5px; line-height: 1.65; }
+.failures em { color: var(--dsw-alias-label-tertiary); font-style: normal; }
+
+.route {
+  margin: 0 0 6px;
+  color: var(--dsw-alias-brand-text);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.notice {
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 2px solid var(--dsw-alias-brand-primary);
+  border-radius: 0 10px 10px 0;
+  background: var(--dsw-alias-button-ghost-active-fill);
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.notice p { margin: 0; }
+
+.noticeLead {
+  color: var(--dsw-alias-label-primary);
+  font-weight: 600;
+}
+
+.noticeLead + p { margin-top: 6px; }
+
+@media (max-width: 720px) {
+  .page { padding: 20px 16px 32px; }
+  .title { font-size: 21px; }
+  .card { padding: 16px; }
+  .steps li { grid-template-columns: 1fr; }
+}

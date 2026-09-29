@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "frpcVersion": "0.71.0",
+  "upstream": "https://github.com/fatedier/frp/releases/tag/v0.71.0",
+  "targets": [
+    {
+      "platform": "darwin",
+      "arch": "arm64",
+      "archive": {
+        "url": "https://github.com/fatedier/frp/releases/download/v0.71.0/frp_0.71.0_darwin_arm64.tar.gz",
+        "sha256": "45be02b186860d375ed49a8941ae9569628a54bf14e67fc36b29c98c99dabcc6",
+        "bytes": 12680181
+      },
+      "binary": {
+        "entry": "frp_0.71.0_darwin_arm64/frpc",
+        "file": "frpc",
+        "sha256": "3ce4ba70ffce7da4026940586c5f3454df50814f4c050d6560efc556b3adef48"
+      },
+      "license": {
+        "entry": "frp_0.71.0_darwin_arm64/LICENSE",
+        "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+      }
+    },
+    {
+      "platform": "win32",
+      "arch": "x64",
+      "archive": {
+        "url": "https://github.com/fatedier/frp/releases/download/v0.71.0/frp_0.71.0_windows_amd64.zip",
+        "sha256": "9e5062e3e5cf07e67144a3a4acf175ef6a2486f3605dd6cf288bae34ab39819f",
+        "bytes": 13933256
+      },
+      "binary": {
+        "entry": "frp_0.71.0_windows_amd64/frpc.exe",
+        "file": "frpc.exe",
+        "sha256": "c9c59f9bb99561405b81d68f688384aec49369df10489044315292b0eaac957a"
+      },
+      "license": {
+        "entry": "frp_0.71.0_windows_amd64/LICENSE",
+        "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+      }
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "archive": {
+        "url": "https://github.com/fatedier/frp/releases/download/v0.71.0/frp_0.71.0_linux_amd64.tar.gz",
+        "sha256": "84f27e39f11169f7adcef8e8b70c9329de17747b1f14dad9fb95eef5682ea716",
+        "bytes": 13932092
+      },
+      "binary": {
+        "entry": "frp_0.71.0_linux_amd64/frpc",
+        "file": "frpc",
+        "sha256": "f79fff8de3089ec711ff8bdd4b73e00dfe491a1c3d754983c8b0f8d58c21b068"
+      },
+      "license": {
+        "entry": "frp_0.71.0_linux_amd64/LICENSE",
+        "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+      }
+    }
+  ],
+  "ca": {
+    "file": "isrg-roots.pem",
+    "sha256": "0cd98d2dd7a71afe5e2e93673933f15254c5a41a9be4682f27ec582e72c52ce0",
+    "sources": [
+      {
+        "url": "https://letsencrypt.org/certs/isrgrootx1.pem",
+        "sha256": "22b557a27055b33606b6559f37703928d3e4ad79f110b407d04986e1843543d1"
+      },
+      {
+        "url": "https://letsencrypt.org/certs/isrg-root-x2.pem",
+        "sha256": "a13d881e11fe6df181b53841f9fa738a2d7ca9ae7be3d53c866f722b4242b013"
+      }
+    ]
+  }
+}

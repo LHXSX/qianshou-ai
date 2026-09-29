@@ -1,0 +1,67 @@
+/* Default upstream foot indicator. */
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  margin-inline-end: 4px;
+  padding: 1px 8px;
+  border: 1px solid color-mix(in srgb, var(--dsw-alias-brand-primary) 20%, transparent);
+  border-radius: 6px;
+  color: var(--dsw-alias-brand-primary);
+  background: color-mix(in srgb, var(--dsw-alias-brand-primary) 8%, transparent);
+  font: inherit;
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Qianshou keeps the version/update action on its own quiet line. */
+:global([data-qianshou-update-row]) .indicator {
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  min-height: 26px;
+  margin: 0;
+  padding: 2px 10px 2px 54px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--dsw-alias-label-tertiary);
+  background: transparent;
+  font-size: 11px;
+  line-height: 18px;
+  flex: auto;
+  text-align: left;
+}
+
+:global([data-qianshou-update-row]) .indicator:hover:not([aria-disabled='true']),
+:global([data-qianshou-update-row]) .indicator:focus-visible { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+:global([data-qianshou-update-row]) .indicator:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: -2px; }
+:global([data-qianshou-update-row]) .indicator > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+:global([data-qianshou-update-row]) .indicator:not([aria-disabled='true']):has(svg),
+:global([data-qianshou-update-row]) .indicator:not([aria-disabled='true']):has(.errorDot) { color: var(--dsw-alias-brand-primary); }
+.indicator[data-error] {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+.badge {
+  position: absolute;
+  inset-inline-end: 2px;
+  top: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  corner-shape: round;
+  background: var(--dsw-alias-brand-primary);
+}
+
+.badge[data-error], .errorDot { background: var(--dsw-alias-state-error-primary); }
+.errorDot { width: 6px; height: 6px; border-radius: 50%; corner-shape: round; }
+.spinner { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+
+.indicator[aria-disabled="true"] {
+  cursor: default;
+}

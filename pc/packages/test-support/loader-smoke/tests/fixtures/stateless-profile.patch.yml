@@ -1,0 +1,5 @@
+- id: session-persistence-jsonl
+  disabled: true
+
+- id: session-checkpoint-policy
+  disabled: true

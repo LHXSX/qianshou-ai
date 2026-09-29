@@ -1,0 +1,39 @@
+/* Personal workspace content: one visual language for all authenticated pages. */
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) {
+  padding: 28px !important; background: #f7f8fa !important; color: #172033 !important;
+  min-height: 100% !important; box-sizing: border-box; min-width: 0;
+}
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) .page-head h1 { font-size: 26px; font-weight: 650; letter-spacing: -.5px; }
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) :is(.panel,.node-card,.app-card,.kpi-box,.filter-bar) { border-color: #e4e8ef; border-radius: 14px; box-shadow: 0 2px 8px #17203305; }
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) :is(.page-head,.head-actions,.filter-bar,.panel-head,.pagination) { flex-wrap: wrap; gap: 12px; }
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) :is(button,input,select,a):focus-visible { outline: 3px solid #85aaf2; outline-offset: 3px; }
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) button:disabled { cursor: not-allowed; opacity: .5; }
+#app :is(.tasks-v2,.wallet-v2) .kpi-icon { display: none; }
+#app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) .sub { color: #657084; line-height: 1.6; }
+#app .portal-error { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px; margin: 12px 0; border: 1px solid #efc5c5; border-radius: 12px; background: #fff6f6; color: #9d3030; line-height: 1.6; }
+#app .portal-table-scroll { overflow-x: auto; max-width: 100%; }
+#app .portal-table-scroll table { min-width: 650px; }
+#app .task-error { display: block; color: #b42318; max-width: 300px; overflow-wrap: anywhere; }
+#app .wallet-v2 .balance-hero,#app .level-center .level-hero { background: #163e65; color: #fff; }
+#app .wallet-v2 .balance-hero .balance-label,.wallet-v2 .balance-meta { color: #e5edf8; }
+#app .wallet-v2 .dialog { max-height: 85dvh; overflow-y: auto; }
+#app .wallet-v2 .form-row { margin-bottom: 12px; }
+#app .wallet-v2 .form-row select { width: 100%; padding: 10px; border: 1px solid #d7deea; border-radius: 6px; background: #fff; }
+#app .wallet-v2 .dialog-tips { color: #875508; }
+@media(max-width: 640px) {
+  #app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) { padding: 18px 14px !important; }
+  #app :is(.tasks-v2,.wallet-v2,.my-nodes-v2,.my-equipment,.level-center,.app-market) .search-input { width: 100%; margin-left: 0; }
+  #app :is(.tasks-v2,.my-nodes-v2) .search-input input { width: 100%; box-sizing: border-box; }
+  #app :is(.tasks-v2,.wallet-v2) .kpi-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  #app .portal-error { align-items: stretch; flex-direction: column; }
+  #app .wallet-v2 .balance-hero { display: flex; flex-direction: column; align-items: stretch; gap: 18px; padding: 20px 16px; min-width: 0; }
+  #app .wallet-v2 .balance-main { min-width: 0; width: 100%; }
+  #app .wallet-v2 .balance-amount { font-size: clamp(24px, 8vw, 36px); white-space: nowrap; overflow-wrap: normal; overflow-x: auto; max-width: 100%; line-height: 1.35; }
+  #app .wallet-v2 .balance-unit { font-size: 16px; }
+  #app .wallet-v2 .balance-meta { flex-wrap: wrap; }
+  #app .wallet-v2 .balance-actions { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; align-items: stretch; gap: 10px; }
+  #app .wallet-v2 .balance-actions :is(button, a) { white-space: nowrap; text-align: center; box-sizing: border-box; width: 100%; }
+  #app .level-center .ladder li { flex-wrap: wrap; gap: 10px; }
+}
+
+#app .wallet-v2 .kpi-val.unavailable-value { font-size: 14px; white-space: nowrap; font-family: inherit; line-height: 1.7; }

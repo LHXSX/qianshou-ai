@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1B2C3D40014000000000000 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40013000000000000 /* AppInfo.swift */; };
+		A1B2C3D40016000000000000 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40015000000000000 /* AppModel.swift */; };
+		A1B2C3D40018000000000000 /* DebugLaunchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40017000000000000 /* DebugLaunchOptions.swift */; };
+		A1B2C3D4001A000000000000 /* DiagnosticsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40019000000000000 /* DiagnosticsLog.swift */; };
+		A1B2C3D4001C000000000000 /* QianshouIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4001B000000000000 /* QianshouIOSApp.swift */; };
+		A1B2C3D4B100000000000002 /* BridgeOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4B100000000000001 /* BridgeOrigin.swift */; };
+		A1B2C3D4001E000000000000 /* BridgeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4001D000000000000 /* BridgeProtocol.swift */; };
+		A1B2C3D40020000000000000 /* BridgeRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4001F000000000000 /* BridgeRuntime.swift */; };
+		A1B2C3D40022000000000000 /* BridgeSelfCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40021000000000000 /* BridgeSelfCheck.swift */; };
+		A1B2C3D40024000000000000 /* BridgeUserScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40023000000000000 /* BridgeUserScript.swift */; };
+		A1B2C3D40026000000000000 /* BrowserErrorText.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40025000000000000 /* BrowserErrorText.swift */; };
+		A1B2C3D40028000000000000 /* BrowserScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40027000000000000 /* BrowserScreen.swift */; };
+		A1B2C3D4002A000000000000 /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40029000000000000 /* BrowserViewModel.swift */; };
+		A1B2C3D4002C000000000000 /* WebAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4002B000000000000 /* WebAddress.swift */; };
+		A1B2C3D4002E000000000000 /* WebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4002D000000000000 /* WebViewContainer.swift */; };
+		A1B2C3D40030000000000000 /* CameraScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4002F000000000000 /* CameraScannerView.swift */; };
+		A1B2C3D40032000000000000 /* PhotoBarcodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40031000000000000 /* PhotoBarcodeScanner.swift */; };
+		A1B2C3D40034000000000000 /* QRScannerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40033000000000000 /* QRScannerScreen.swift */; };
+		A1B2C3D40036000000000000 /* ScannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40035000000000000 /* ScannerModel.swift */; };
+		A1B2C3D40038000000000000 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D40037000000000000 /* SettingsScreen.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A1B2C3D40013000000000000 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		A1B2C3D40015000000000000 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		A1B2C3D40017000000000000 /* DebugLaunchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLaunchOptions.swift; sourceTree = "<group>"; };
+		A1B2C3D40019000000000000 /* DiagnosticsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsLog.swift; sourceTree = "<group>"; };
+		A1B2C3D4001B000000000000 /* QianshouIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QianshouIOSApp.swift; sourceTree = "<group>"; };
+		A1B2C3D4B100000000000001 /* BridgeOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeOrigin.swift; sourceTree = "<group>"; };
+		A1B2C3D4001D000000000000 /* BridgeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeProtocol.swift; sourceTree = "<group>"; };
+		A1B2C3D4001F000000000000 /* BridgeRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeRuntime.swift; sourceTree = "<group>"; };
+		A1B2C3D40021000000000000 /* BridgeSelfCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeSelfCheck.swift; sourceTree = "<group>"; };
+		A1B2C3D40023000000000000 /* BridgeUserScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeUserScript.swift; sourceTree = "<group>"; };
+		A1B2C3D40025000000000000 /* BrowserErrorText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserErrorText.swift; sourceTree = "<group>"; };
+		A1B2C3D40027000000000000 /* BrowserScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserScreen.swift; sourceTree = "<group>"; };
+		A1B2C3D40029000000000000 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
+		A1B2C3D4002B000000000000 /* WebAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddress.swift; sourceTree = "<group>"; };
+		A1B2C3D4002D000000000000 /* WebViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContainer.swift; sourceTree = "<group>"; };
+		A1B2C3D4002F000000000000 /* CameraScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScannerView.swift; sourceTree = "<group>"; };
+		A1B2C3D40031000000000000 /* PhotoBarcodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBarcodeScanner.swift; sourceTree = "<group>"; };
+		A1B2C3D40033000000000000 /* QRScannerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerScreen.swift; sourceTree = "<group>"; };
+		A1B2C3D40035000000000000 /* ScannerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModel.swift; sourceTree = "<group>"; };
+		A1B2C3D40037000000000000 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		A1B2C3D4000B000000000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B2C3D4000C000000000000 /* QianshouIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QianshouIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1B2C3D40007000000000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A1B2C3D40003000000000000 = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D40001000000000000 /* QianshouIOS */,
+				A1B2C3D40002000000000000 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A1B2C3D40002000000000000 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4000C000000000000 /* QianshouIOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1B2C3D40001000000000000 /* QianshouIOS */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4000D000000000000 /* App */,
+				A1B2C3D4000E000000000000 /* Bridge */,
+				A1B2C3D4000F000000000000 /* Browser */,
+				A1B2C3D40010000000000000 /* Scanner */,
+				A1B2C3D40011000000000000 /* Settings */,
+				A1B2C3D40012000000000000 /* Resources */,
+			);
+			path = QianshouIOS;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4000D000000000000 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D40013000000000000 /* AppInfo.swift */,
+				A1B2C3D40015000000000000 /* AppModel.swift */,
+				A1B2C3D40017000000000000 /* DebugLaunchOptions.swift */,
+				A1B2C3D40019000000000000 /* DiagnosticsLog.swift */,
+				A1B2C3D4001B000000000000 /* QianshouIOSApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4000E000000000000 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4B100000000000001 /* BridgeOrigin.swift */,
+				A1B2C3D4001D000000000000 /* BridgeProtocol.swift */,
+				A1B2C3D4001F000000000000 /* BridgeRuntime.swift */,
+				A1B2C3D40021000000000000 /* BridgeSelfCheck.swift */,
+				A1B2C3D40023000000000000 /* BridgeUserScript.swift */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4000F000000000000 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D40025000000000000 /* BrowserErrorText.swift */,
+				A1B2C3D40027000000000000 /* BrowserScreen.swift */,
+				A1B2C3D40029000000000000 /* BrowserViewModel.swift */,
+				A1B2C3D4002B000000000000 /* WebAddress.swift */,
+				A1B2C3D4002D000000000000 /* WebViewContainer.swift */,
+			);
+			path = Browser;
+			sourceTree = "<group>";
+		};
+		A1B2C3D40010000000000000 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4002F000000000000 /* CameraScannerView.swift */,
+				A1B2C3D40031000000000000 /* PhotoBarcodeScanner.swift */,
+				A1B2C3D40033000000000000 /* QRScannerScreen.swift */,
+				A1B2C3D40035000000000000 /* ScannerModel.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		A1B2C3D40011000000000000 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D40037000000000000 /* SettingsScreen.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A1B2C3D40012000000000000 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4000B000000000000 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A1B2C3D40004000000000000 /* QianshouIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D4000A000000000000 /* Build configuration list for PBXNativeTarget "QianshouIOS" */;
+			buildPhases = (
+				A1B2C3D40006000000000000 /* Sources */,
+				A1B2C3D40007000000000000 /* Frameworks */,
+				A1B2C3D40008000000000000 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QianshouIOS;
+			productName = QianshouIOS;
+			productReference = A1B2C3D4000C000000000000 /* QianshouIOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1B2C3D40005000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A1B2C3D40004000000000000 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = A1B2C3D40009000000000000 /* Build configuration list for PBXProject "QianshouIOS" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = zh-Hans;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				zh-Hans,
+				en,
+				Base,
+			);
+			mainGroup = A1B2C3D40003000000000000;
+			productRefGroup = A1B2C3D40002000000000000 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A1B2C3D40004000000000000 /* QianshouIOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A1B2C3D40008000000000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1B2C3D40006000000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D40014000000000000 /* AppInfo.swift in Sources */,
+				A1B2C3D40016000000000000 /* AppModel.swift in Sources */,
+				A1B2C3D40018000000000000 /* DebugLaunchOptions.swift in Sources */,
+				A1B2C3D4001A000000000000 /* DiagnosticsLog.swift in Sources */,
+				A1B2C3D4001C000000000000 /* QianshouIOSApp.swift in Sources */,
+				A1B2C3D4B100000000000002 /* BridgeOrigin.swift in Sources */,
+				A1B2C3D4001E000000000000 /* BridgeProtocol.swift in Sources */,
+				A1B2C3D40020000000000000 /* BridgeRuntime.swift in Sources */,
+				A1B2C3D40022000000000000 /* BridgeSelfCheck.swift in Sources */,
+				A1B2C3D40024000000000000 /* BridgeUserScript.swift in Sources */,
+				A1B2C3D40026000000000000 /* BrowserErrorText.swift in Sources */,
+				A1B2C3D40028000000000000 /* BrowserScreen.swift in Sources */,
+				A1B2C3D4002A000000000000 /* BrowserViewModel.swift in Sources */,
+				A1B2C3D4002C000000000000 /* WebAddress.swift in Sources */,
+				A1B2C3D4002E000000000000 /* WebViewContainer.swift in Sources */,
+				A1B2C3D40030000000000000 /* CameraScannerView.swift in Sources */,
+				A1B2C3D40032000000000000 /* PhotoBarcodeScanner.swift in Sources */,
+				A1B2C3D40034000000000000 /* QRScannerScreen.swift in Sources */,
+				A1B2C3D40036000000000000 /* ScannerModel.swift in Sources */,
+				A1B2C3D40038000000000000 /* SettingsScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A1B2C3D40039000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+									"DEBUG=1",
+									"$(inherited)",
+								);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A1B2C3D4003A000000000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1B2C3D4003B000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = QianshouIOS/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+									"$(inherited)",
+									"@executable_path/Frameworks",
+								);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianshou.agent.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B2C3D4003C000000000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = QianshouIOS/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+									"$(inherited)",
+									"@executable_path/Frameworks",
+								);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qianshou.agent.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1B2C3D40009000000000000 /* Build configuration list for PBXProject "QianshouIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D40039000000000000 /* Debug */,
+				A1B2C3D4003A000000000000 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D4000A000000000000 /* Build configuration list for PBXNativeTarget "QianshouIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D4003B000000000000 /* Debug */,
+				A1B2C3D4003C000000000000 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1B2C3D40005000000000000 /* Project object */;
+}

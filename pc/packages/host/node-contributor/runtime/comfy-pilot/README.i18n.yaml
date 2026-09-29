@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/host/node-contributor/runtime/comfy-pilot/README.md
+README.md: ab6cc15dd58f4cb97c7318daf2748bf15c72e9cc
+README.zh.md: 335a573d652dd7711d37eda57b332a942bb4e684

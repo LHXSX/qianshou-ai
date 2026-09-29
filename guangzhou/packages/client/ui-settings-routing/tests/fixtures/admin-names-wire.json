@@ -1,0 +1,77 @@
+{
+  "note": "由 packages/host/model-gateway/tools/capture-wire.mjs 从真实 admin 处理器抓取。",
+  "capturedAt": "2026-09-15T19:02:06.064Z",
+  "namesPath": "/api/qianshou/ai/admin/names",
+  "names": {
+    "ok": true,
+    "names": [
+      {
+        "publishedName": "千手·迅捷",
+        "label": "千手·迅捷",
+        "tiers": [
+          "basic",
+          "plus",
+          "max"
+        ],
+        "maxOutputTokens": 4096,
+        "order": 0,
+        "upgradeRule": "on-expiry",
+        "lifecycleStage": "ga",
+        "shutdownDate": null,
+        "migrationTarget": null,
+        "history": [
+          {
+            "publishedName": "千手·迅捷",
+            "effectiveFrom": 0,
+            "effectiveTo": null,
+            "backendKeys": [
+              "flash"
+            ],
+            "reason": "契约抓取",
+            "operator": "system",
+            "rolloutPercent": 100
+          }
+        ]
+      },
+      {
+        "publishedName": "千手·强力",
+        "label": "千手·强力",
+        "tiers": [
+          "plus",
+          "max"
+        ],
+        "maxOutputTokens": 16384,
+        "order": 1,
+        "upgradeRule": "on-expiry",
+        "lifecycleStage": "ga",
+        "shutdownDate": null,
+        "migrationTarget": null,
+        "history": [
+          {
+            "publishedName": "千手·强力",
+            "effectiveFrom": 0,
+            "effectiveTo": null,
+            "backendKeys": [
+              "pro"
+            ],
+            "reason": "契约抓取",
+            "operator": "system",
+            "rolloutPercent": 100
+          }
+        ]
+      }
+    ],
+    "backends": [
+      {
+        "key": "flash",
+        "id": "deepseek-flash",
+        "concurrency": 2500
+      },
+      {
+        "key": "pro",
+        "id": "deepseek-v4-pro",
+        "concurrency": 500
+      }
+    ]
+  }
+}

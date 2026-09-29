@@ -1,0 +1,457 @@
+.root {
+  container-type: inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 20px 24px;
+}
+
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.identity { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.markFrame {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: 19px;
+  background: color-mix(in srgb, var(--dsw-alias-brand-primary) 7%, var(--dsw-alias-bg-base));
+}
+
+.mark { display: block; color: var(--dsw-alias-brand-primary); flex: none; }
+.markStroke { stroke: var(--dsw-alias-label-primary-foreground); stroke-linejoin: round; }
+.brandCopy { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.brand {
+  color: var(--dsw-alias-label-primary);
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.previewBadge { color: var(--dsw-alias-label-tertiary); font-size: 11px; line-height: 1.5; letter-spacing: 0.04em; }
+.headline {
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+  font-size: clamp(28px, 5cqi, 38px);
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.description { margin: 0; max-width: 540px; color: var(--dsw-alias-label-tertiary); font-size: 13px; line-height: 1.85; text-wrap: pretty; }
+.starters { container: home-starters / inline-size; padding: 18px 16px 0; }
+.starterGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.starter {
+  --starter-accent: var(--dsw-alias-brand-primary);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+  padding: 18px;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--starter-accent) 2%, var(--dsw-alias-bg-base));
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    border-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    transform var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+.starter[data-starter='fix'] { --starter-accent: var(--dsw-alias-state-warn-label); }
+.starter[data-starter='review'] { --starter-accent: var(--dsw-alias-state-success-primary); }
+.starter[data-starter='build'] { --starter-accent: var(--dsw-alias-state-business-primary); }
+.starter:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--starter-accent) 6%, var(--dsw-alias-bg-base));
+  border-color: color-mix(in srgb, var(--starter-accent) 45%, var(--dsw-alias-border-l2));
+  transform: translateY(-2px);
+}
+
+.starter:focus-visible { outline: 2px solid var(--starter-accent); outline-offset: 3px; }
+.starter:active:not(:disabled) { background: var(--dsw-alias-interactive-bg-active); transform: translateY(0); }
+.starter:disabled { opacity: 0.45; cursor: not-allowed; }
+.starterIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border-radius: 11px;
+  color: var(--starter-accent);
+  background: color-mix(in srgb, var(--starter-accent) 10%, var(--dsw-alias-bg-base));
+}
+
+.starterCopy { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding-right: 4px; }
+.starterTitle { color: var(--dsw-alias-label-primary); font-size: 13px; line-height: 1.5; font-weight: 600; }
+.starterDescription { color: var(--dsw-alias-label-tertiary); font-size: 11px; line-height: 1.7; overflow-wrap: anywhere; }
+.starterArrow {
+  position: absolute;
+  right: 15px;
+  top: 18px;
+  display: flex;
+  color: var(--dsw-alias-label-caption);
+  transition: color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+.starter:hover:not(:disabled) .starterArrow, .starter:focus-visible .starterArrow { color: var(--starter-accent); }
+
+@container home-starters (min-width: 660px) {
+  .starterGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@container home-starters (max-width: 390px) {
+  .starterGrid { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  .starter { flex-direction: row; align-items: center; gap: 12px; padding: 14px; }
+  .starterCopy { padding-right: 18px; }
+  .starterArrow { top: 18px; right: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starter, .starterArrow { transition: none; }
+  .starter:hover:not(:disabled) { transform: none; }
+}
+
+/* 首屏容器：只负责纵向排布，**不做横向居中**。
+   横向对齐交给下面的 `.productCopy` / `.productHome` 各自承担，
+   且两者用**同一个 max-width**——之前一个 1120、一个 936，
+   各自 `margin: auto` 算出的左边缘差了 16px，于是标题比卡片右移一格
+   （实测视口 1508 下：标题 x=453、卡片 x=437）。 */
+.productRoot {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 24px 0;
+}
+
+.globeFrame {
+  position: absolute;
+  top: -4%;
+  right: -8%;
+  overflow: hidden;
+  width: min(62%, 640px);
+  height: 78%;
+  pointer-events: none;
+  contain: paint;
+}
+
+.globeFrame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--dsw-alias-bg-layer-1) 0%, color-mix(in srgb, var(--dsw-alias-bg-layer-1) 62%, transparent) 20%, transparent 38%);
+  pointer-events: none;
+}
+
+.earth {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 28% center;
+  opacity: 0.92;
+}
+
+.productCopy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  /* 与 `.productHome` **完全相同的宽度与水平内边距**：
+     两者都对同一个父级居中，参数一致才会落在同一条左边缘上。 */
+  /* **对齐基准**：这两个块必须横向完全一致，所以宽度与水平内边距写成同一组数，
+     不留任何"各自居中"的自由度。
+     之前一个 max-width 1120、另一个被父级压到 920，各自 margin:auto 之后
+     内容左边缘差了 16px——标题比卡片右移一格，这就是"歪"的来源。
+     912 = 内容 896 + 两侧各 8；896 是按 4 列卡片算出来的（见下方算术注释）。 */
+  /* 与 `.productHome` 同样**不设横向参数**：两者共用父级 `.composerStack` 的
+     横向基准，所以左边缘必然一致——这比"两边各自算居中"稳得多。 */
+  width: 100%;
+}
+
+.productHeadline {
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.productTagline {
+  margin: 0;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.productDescription {
+  margin: 0 0 12px;
+  max-width: 520px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+.productHome {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* 1120 而不是 720。720 时内容区只有 704px，两侧空掉一大片——
+     `ui-aesthetics` 把这种形态叫 **Narrow Page Shell**："整页坐在一个小居中容器里，
+     桌面端大量宽度没用上，结果像贴在页面上的 mockup 而不是真实页面布局"。
+     规范 §4 要求页面级布局**默认铺满宽度**，只约束内部内容区。
+
+     宽度是按内容算出来的，不是凑的：
+     - `.productGrid` 4 列、间距 12、内边距 8×2 → 每列 (1120-16-36)/4 = **267px**；
+       卡内是 36px 标记 + 10 间距 + 文字，文字道 267-32-46 = **189px**，
+       13px 字号下约 14 字/行 → 「多个专业员工一起推进」10 字**一行放得下**；
+     - `.suggestRow` 3 列、间距 12 → 每列 (1120-16-24)/3 = **360px**，
+       一句短语有充足余量，不会再出现第三条被裁的问题。 */
+  /* **对齐基准**：这两个块必须横向完全一致，所以宽度与水平内边距写成同一组数，
+     不留任何"各自居中"的自由度。
+     之前一个 max-width 1120、另一个被父级压到 920，各自 margin:auto 之后
+     内容左边缘差了 16px——标题比卡片右移一格，这就是"歪"的来源。
+     912 = 内容 896 + 两侧各 8；896 是按 4 列卡片算出来的（见下方算术注释）。 */
+  /* **不设宽度与内边距**：父级 `.composerStack` 已经给了 `padding: 0 8px`，
+     这里再来一次会把内容再缩 16px，并且让"居中"多算一层，结果左右留白差 10px
+     （实测 leftGap 119 / rightGap 129）。
+     交给父级统一承担横向基准，这里只管纵向排布。 */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.productCard {
+  display: flex;
+  min-width: 0;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 12px;
+  background: var(--dsw-alias-bg-layer-1);
+  color: inherit;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--dsw-alias-label-primary) 6%, transparent);
+}
+
+/* 四个能力标记**不再各用一种装饰色**：蓝/绿/紫/橙四个不同色相没有任何语义差
+   （它们不表示状态、不表示分类规则），只是"让四张卡看起来不一样"。
+   `ui-aesthetics` 的配色纪律写明："不要在没有各自语义职责时使用多个装饰色相"，
+   以及"颜色要表达结构：动作、选中、状态、警告、强调"。
+   改成统一用品牌蓝的浅底 + 中性描边，靠**卡片本身的排版**区分，而不是靠色相。
+   强调色因此只留给真正有语义的地方（选中、主按钮、焦点环）。 */
+.productCard .productCardMark { color: var(--dsw-alias-brand-primary); background: var(--dsw-alias-accent-soft); }
+
+.productCardMark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+}
+
+.productCardCopy { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+
+.productCard:hover {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--dsw-alias-brand-primary) 12%, transparent);
+}
+
+.productCard:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--dsw-alias-label-primary) 10%, transparent);
+}
+
+.productCard:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 3px; }
+.productCard:disabled {
+  opacity: 1;
+  cursor: default;
+  pointer-events: auto;
+}
+.productCardTitle { color: var(--dsw-alias-label-primary); font-size: 13px; font-weight: 600; line-height: 1.4; }
+.productCardDescription { color: var(--dsw-alias-label-secondary); font-size: 12px; font-weight: 500; line-height: 1.6; }
+
+/* 建议是一行**自适应宽度的 chip**，不是等宽网格。
+   等宽网格会把「帮我写一份市场分析」和「用多个智能体做市场调研报告」
+   拉成同样宽，两边的空白都不自然；`flex-wrap` 让每条只占它需要的宽度。 */
+.suggestRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* 建议：**行内 chip**，不是卡片。
+   原来每条约 48px 高、12px 内边距、带 22px 色块标记与右箭头，六条占三行 158px，
+   而内容只是一句短语——`ui-aesthetics` 把这叫 **Surface Inflation**：
+   容器的视觉重量超过了它承载的信息。建议条要轻到几乎不像控件。 */
+.suggest {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 6px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l1);
+  /* 胶囊形：它是"一句话"，不是"一个模块"，所以用 full-round 而不是方角。
+     全圆角必须配 corner-shape: round，否则主题的角形平滑会把两端压成方形
+     （`ui-theme` 的 corner-shape 审计钉这条）。 */
+  border-radius: 999px;
+  corner-shape: round;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  text-align: left;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 450;
+  line-height: 18px;
+  cursor: pointer;
+  /* 静止态安静：只有描边，没有填充、没有阴影（规范 §2）。 */
+  transition: background-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    border-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    color var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+.suggest:hover:not(:disabled) {
+  border-color: var(--dsw-alias-border-l3);
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+/* 建议条的标记同样不再按序号换色相：那三个色（红/蓝/绿）不表示任何状态，
+   只是让六条建议看起来"更丰富"。配色纪律要求强调色集中在动作、选中、状态与
+   单一 hero 信号上；这里统一用品牌蓝的浅底，颜色因此重新变得可信。 */
+.suggestMark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--dsw-alias-accent-soft);
+}
+
+.suggestChevron { flex: none; margin-left: auto; color: var(--dsw-alias-label-caption); }
+.suggest:hover {
+  border-color: var(--dsw-alias-brand-primary);
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.suggest:active { transform: translateY(0); }
+.suggest:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 3px; }
+.suggest:disabled {
+  opacity: 1;
+  cursor: default;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .productCard:hover, .productCard:active, .suggest:hover, .suggest:active { transform: none; }
+}
+
+@container (max-width: 560px) {
+  .productGrid, .suggestRow { grid-template-columns: minmax(0, 1fr); }
+  .globeFrame { width: 70%; height: 48%; }
+}
+
+.workspace {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: min(100%, 360px);
+  min-height: 28px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--dsw-alias-label-primary);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.workspace:not(:disabled):hover,
+.workspace[aria-expanded='true'] {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+/* Locked form (bound guidance state): a static echo — no hover feedback, no
+   pointer affordance; label keeps full contrast. */
+.workspace:disabled {
+  cursor: default;
+}
+
+.folder {
+  flex: none;
+  color: var(--dsw-alias-label-primary);
+}
+
+.workspaceLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex: none;
+  color: var(--dsw-alias-label-caption);
+}
+
+/* Dialog field: 44 tall on the modal's 332 content column, r22, hairline
+   border, pad 14/7, 14/22 wt400 primary text, caption placeholder. Focus
+   keeps the resting border (design shows no focus ring). */
+.modalInput {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: 7px 14px;
+  border: 0.5px solid var(--dsw-alias-border-l4);
+  border-radius: 22px;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--dsw-alias-label-primary);
+}
+
+.modalInput::placeholder {
+  color: var(--dsw-alias-label-caption);
+}
+
+.modalInput:disabled {
+  color: var(--dsw-alias-label-dimmed);
+}
+
+.modalAction {
+  min-width: 72px;
+}
+
+.modalError {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-state-error-primary);
+}

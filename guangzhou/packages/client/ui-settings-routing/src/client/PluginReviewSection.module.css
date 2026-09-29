@@ -1,0 +1,28 @@
+.page { max-width: 1040px; margin: 0 auto; padding: 28px 32px 56px; color: var(--text-primary, #e9edf0); }
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+.header h1 { font-size: 26px; letter-spacing: -.03em; margin: 6px 0; }
+.header p { margin: 0; color: var(--text-secondary, #aeb8bf); line-height: 1.55; }
+.eyebrow, .kicker { color: #7ad0c2; font-size: 12px; font-weight: 650; letter-spacing: .08em; }
+.notice { border: 1px solid #355650; border-radius: 14px; padding: 14px 18px; background: #1d302c; color: #b5d7d0; line-height: 1.55; }
+.error { border: 1px solid #96545b; border-radius: 10px; padding: 10px 14px; color: #ffc8cb; }
+.muted { color: var(--text-secondary, #aeb8bf); line-height: 1.5; }
+.empty { margin-top: 22px; padding: 60px 24px; text-align: center; border: 1px solid #3f474b; border-radius: 16px; color: #aeb8bf; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 20px; }
+.card { border: 1px solid #404a4d; border-radius: 16px; padding: 22px; background: #232829; }
+.cardTop { display: flex; justify-content: space-between; gap: 14px; }
+.cardTop h2 { font-size: 19px; margin: 7px 0 3px; }
+.cardTop p { margin: 0; }
+.ready, .blocked { align-self: flex-start; white-space: nowrap; border-radius: 999px; padding: 5px 10px; font-size: 12px; }
+.ready { color: #86ddbc; background: #1e493c; }
+.blocked { color: #f4cf9a; background: #53402b; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 17px 0; border-block: 1px solid #414b4d; }
+.facts div { display: grid; gap: 3px; }
+.facts dt { color: #aeb8bf; font-size: 12px; }
+.facts dd { margin: 0; font-size: 14px; }
+.issues { background: #392f2c; border: 1px solid #755446; border-radius: 10px; padding: 12px 14px; color: #f6d6bd; line-height: 1.5; }
+.issues ul { margin: 8px 0 0; padding-left: 20px; }
+.note { display: grid; gap: 8px; margin-top: 18px; font-size: 13px; }
+.note textarea { min-height: 70px; resize: vertical; color: inherit; background: #1a1f20; border: 1px solid #536063; border-radius: 9px; padding: 10px 12px; font: inherit; }
+.note textarea:focus { outline: 2px solid #60c7b6; outline-offset: 2px; }
+.actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 14px; }
+@media (max-width: 680px) { .page { padding: 20px 16px 40px; } .header { display: block; } .header button { margin-top: 14px; } .grid { grid-template-columns: 1fr; } }

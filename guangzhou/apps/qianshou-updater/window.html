@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"><title>千手 · 软件更新</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <main>
+    <header><div class="symbol" aria-hidden="true">↗</div><div><div class="eyebrow" id="eyebrow">千手 · 软件更新</div><h1 id="title">让工作台保持最新</h1></div></header>
+    <p class="description" id="description">后台下载，工作结束后再重启。你的会话、接口与密钥继续保留。</p>
+    <section class="status" aria-live="polite"><div class="status-line"><strong id="phase">准备检查</strong><span id="version"></span></div><progress id="progress" max="100" value="0" hidden></progress><p id="detail"></p></section>
+    <ul id="notes"></ul>
+    <footer><span id="privacy">仅连接官方更新服务，不使用模型额度。基于 DeepSeek Harness 开源项目构建。</span><div class="actions"><button id="secondary" type="button">稍后</button><button id="primary" type="button">检查更新</button></div></footer>
+  </main>
+  <script src="renderer.js"></script>
+</body>
+</html>

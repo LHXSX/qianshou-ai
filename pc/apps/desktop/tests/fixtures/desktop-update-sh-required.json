@@ -1,0 +1,21 @@
+{
+  "code": 40005,
+  "msg": "",
+  "data": {
+    "show_content": {
+      "title": "Fixture update required",
+      "detail": "Fixture only: preserve original active tasks before installation."
+    },
+    "desktop_app_link": "https://qianshousuanli.com/downloads",
+    "policy": {
+      "schema": "qianshou.desktop-update-policy.v1",
+      "bundleId": "com.qianshou.fixture.desktop",
+      "platform": "desktop-mac",
+      "arch": "arm64",
+      "channel": "beta",
+      "currentVersion": "0.1.6-alpha.2",
+      "targetVersion": "0.1.7-beta.1",
+      "feedUrl": "https://qianshousuanli.com/qianshou-desktop/feeds/mac-arm64/beta-mac.yml"
+    }
+  }
+}

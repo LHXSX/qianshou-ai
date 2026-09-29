@@ -1,0 +1,230 @@
+/* ============================================================
+   Portal 浅色覆盖层 — 抹掉 theme.css 的霓虹暗色
+   只在 <body class="in-portal"> 时生效（PortalLayout mounted 时挂上）
+   ============================================================ */
+
+body.in-portal,
+html.in-portal,
+body.in-portal #app {
+  background: #f0f2f5 !important;
+  color: #1f2937 !important;
+}
+body.in-portal::before,
+body.in-portal::after {
+  display: none !important;
+  background: none !important;
+}
+
+/* ── 卡片 ── */
+body.in-portal .el-card {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #1f2937 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+body.in-portal .el-card__header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  color: #111827 !important;
+  font-weight: 600;
+}
+
+/* ── 表格 ── */
+body.in-portal .el-table {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  --el-table-border-color: #e5e7eb !important;
+  --el-table-header-bg-color: #f9fafb !important;
+  --el-table-row-hover-bg-color: #f3f4f6 !important;
+  --el-table-tr-bg-color: #ffffff !important;
+  --el-table-text-color: #1f2937 !important;
+  --el-table-header-text-color: #111827 !important;
+}
+body.in-portal .el-table th.el-table__cell {
+  background: #f9fafb !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+body.in-portal .el-table td.el-table__cell {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+}
+body.in-portal .el-table tr.el-table__row--striped td.el-table__cell {
+  background: #f9fafb !important;
+}
+body.in-portal .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background: #eef2ff !important;
+}
+body.in-portal .el-table__inner-wrapper {
+  background: #ffffff !important;
+}
+
+/* ── 表单输入 ── */
+body.in-portal .el-input__wrapper {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+}
+body.in-portal .el-input__wrapper:hover {
+  border-color: #9ca3af !important;
+}
+body.in-portal .el-input__wrapper.is-focus {
+  border-color: #1890ff !important;
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.12) !important;
+}
+body.in-portal .el-input__inner,
+body.in-portal .el-textarea__inner {
+  color: #1f2937 !important;
+  background: transparent !important;
+}
+body.in-portal .el-input__inner::placeholder,
+body.in-portal .el-textarea__inner::placeholder {
+  color: #9ca3af !important;
+}
+body.in-portal .el-textarea__inner {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+}
+
+/* ── 表单标签 ── */
+body.in-portal .el-form-item__label,
+body.in-portal .el-form-item__content,
+body.in-portal .el-checkbox__label,
+body.in-portal .el-radio__label {
+  color: #374151 !important;
+}
+
+/* ── 按钮 ── */
+body.in-portal .el-button {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+body.in-portal .el-button:hover {
+  background: #f9fafb !important;
+  border-color: #1890ff !important;
+  color: #1890ff !important;
+}
+body.in-portal .el-button--primary {
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #ffffff !important;
+}
+body.in-portal .el-button--primary:hover {
+  background: #40a9ff !important;
+  border-color: #40a9ff !important;
+}
+body.in-portal .el-button--success {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}
+body.in-portal .el-button--warning {
+  background: #f59e0b !important;
+  border-color: #f59e0b !important;
+  color: #ffffff !important;
+}
+body.in-portal .el-button--danger {
+  background: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* ── 标签 (el-tag) ── */
+body.in-portal .el-tag {
+  background: #f0f9ff !important;
+  border-color: #bae6fd !important;
+  color: #0369a1 !important;
+}
+body.in-portal .el-tag--success { background: #f0fdf4 !important; border-color: #bbf7d0 !important; color: #15803d !important; }
+body.in-portal .el-tag--warning { background: #fffbeb !important; border-color: #fde68a !important; color: #b45309 !important; }
+body.in-portal .el-tag--danger  { background: #fef2f2 !important; border-color: #fecaca !important; color: #b91c1c !important; }
+body.in-portal .el-tag--info    { background: #f9fafb !important; border-color: #e5e7eb !important; color: #4b5563 !important; }
+body.in-portal .el-tag--primary { background: #eff6ff !important; border-color: #bfdbfe !important; color: #1d4ed8 !important; }
+body.in-portal .el-tag.is-effect-dark { color: #ffffff !important; }
+body.in-portal .el-tag.is-effect-dark.el-tag--success { background: #10b981 !important; }
+body.in-portal .el-tag.is-effect-dark.el-tag--warning { background: #f59e0b !important; }
+body.in-portal .el-tag.is-effect-dark.el-tag--danger  { background: #ef4444 !important; }
+body.in-portal .el-tag.is-effect-dark.el-tag--info    { background: #6b7280 !important; }
+body.in-portal .el-tag.is-effect-dark.el-tag--primary { background: #1890ff !important; }
+
+/* ── 下拉/选择器 ── */
+body.in-portal .el-select__wrapper,
+body.in-portal .el-select__inner {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+}
+body.in-portal .el-select-dropdown {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+}
+body.in-portal .el-select-dropdown__item {
+  color: #374151 !important;
+}
+body.in-portal .el-select-dropdown__item.is-hovering {
+  background: #f3f4f6 !important;
+}
+body.in-portal .el-select-dropdown__item.is-selected {
+  color: #1890ff !important;
+  background: #eff6ff !important;
+}
+
+/* ── 分页 ── */
+body.in-portal .el-pagination {
+  color: #4b5563 !important;
+}
+body.in-portal .el-pagination button,
+body.in-portal .el-pager li {
+  background: #ffffff !important;
+  color: #4b5563 !important;
+  border: 1px solid #e5e7eb !important;
+}
+body.in-portal .el-pagination .el-pager li.is-active {
+  background: #1890ff !important;
+  color: #ffffff !important;
+  border-color: #1890ff !important;
+}
+
+/* ── 面包屑 ── */
+body.in-portal .el-breadcrumb__inner {
+  color: #6b7280 !important;
+}
+body.in-portal .el-breadcrumb__inner.is-link {
+  color: #1890ff !important;
+}
+
+/* ── 弹窗 ── */
+body.in-portal .el-dialog {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+}
+body.in-portal .el-dialog__title {
+  color: #111827 !important;
+}
+
+/* ── 复选框 ── */
+body.in-portal .el-checkbox__inner {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+}
+body.in-portal .el-checkbox.is-checked .el-checkbox__inner {
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+/* ── 空状态 / 加载 ── */
+body.in-portal .el-empty__description {
+  color: #6b7280 !important;
+}
+body.in-portal .el-loading-mask {
+  background: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ── 消息条 / 通知 ── */
+body.in-portal .el-message {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #1f2937 !important;
+}

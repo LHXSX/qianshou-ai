@@ -1,0 +1,732 @@
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Side pads ride the shared clearance (figma Input_Bottom drew L32/R32/B8;
+     the sides narrow with the shared width axis); the bottom gradient mask
+     is owned by the chat scroller. No top pad: the composer stack's gap owns
+     the space above; the status strip still carries its own margin. */
+  padding: 0 var(--dsh-composer-side-clearance) 8px;
+}
+
+.hero {
+  /* No bottom pad in the centered hero, but the side clearance must survive:
+     the hero wrapper is full-width on narrow viewports, so this padding is
+     the only thing keeping the card off the edges there. */
+  padding: 0 var(--dsh-composer-side-clearance);
+}
+
+:global([data-phase='active']) .root {
+  align-items: flex-start;
+  padding-inline: var(--dsh-conversation-start, 32px);
+}
+
+.notice {
+  width: 100%;
+  max-width: var(--dsh-composer-card-max-width);
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.card {
+  box-sizing: border-box;
+  position: relative; /* overlay anchor positioning context */
+  display: flex;
+  flex-direction: column;
+  /* figma Input 75:8208: 12px between the text area and the button row; the
+     card's top pad before .InputText tightened from the drawn 10 to 8. */
+  gap: 12px;
+  width: 100%;
+  max-width: var(--dsh-composer-card-max-width);
+  padding-top: 8px;
+  /* Input stroke: the light neutral (l2, one step above the menus' l1),
+     drawn as the elevation hairline so it costs no layout; the shadow is the
+     soft elevation tier. Fill: the input surface token (elevated in dark). */
+  border: 0;
+  --dsw-elevation-stroke-color: var(--dsw-alias-border-l2);
+  border-radius: 16px;
+  background: var(--dsw-specific-input-major);
+  box-shadow: var(--dsw-elevation-soft);
+  /* The draft text follows the Settings font-size preference (the textarea,
+     mirror, and backdrop all inherit from here, so the three layers stay in
+     step); the line height keeps the default 10px leading via the shared px
+     delta. */
+  font-size: var(--dsh-content-font-size, 14px);
+  line-height: calc(24px + var(--dsh-content-font-delta, 0px));
+  /* Elevated surface in dark, same as the menus: the draft scrollport inside
+     scrolls once the composer hits its height cap, so the thumb takes the l2
+     pair. Declared on the card because the elevation belongs to the surface,
+     and the custom properties inherit down to the box that actually scrolls
+     (see ui-theme styles/scrollbar.css for the rebinding contract). */
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+}
+
+/* No-workspace trigger state: dashed l4 stroke marks the card as a pick-a-
+   workspace affordance rather than a live composer; hover answers in the
+   business blue to invite the click. Native `dashed` has a fixed browser
+   pattern, so the stroke is an ::after overlay: theme-token background masked
+   by an SVG dash ring (stroke-width 2 centered on the box edge = 1px visible
+   inside), which keeps the 22px radius and both themes. */
+.cardWorkspaceTrigger {
+  --dsw-elevation-stroke-color: transparent;
+  cursor: pointer;
+}
+
+.cardWorkspaceTrigger::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 22px;
+  background: var(--dsw-alias-border-l4);
+  transition: background-color 100ms ease;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='none' rx='22' ry='22' stroke='black' stroke-width='2' stroke-dasharray='4 4'/%3E%3C/svg%3E");
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='none' rx='22' ry='22' stroke='black' stroke-width='2' stroke-dasharray='4 4'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Disabled toolbar controls neither receive nor swallow clicks in the trigger
+   state: pointer events fall through to the card's own click handler, making
+   the full capsule one pick target. */
+.cardWorkspaceTrigger :disabled {
+  pointer-events: none;
+}
+
+.cardWorkspaceTrigger:hover::after {
+  background: var(--dsw-alias-state-business-primary);
+}
+
+.accessory {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 0;
+}
+
+/* Floating overlay anchor (menu / popupSelect shell): entries position
+   themselves against the card (bottom: 100% + gap); closed entries render null. */
+.overlayAnchor {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0;
+}
+
+/* The draft's scrollport, and the ONLY scrolling box in the composer. The
+   contenteditable grows with its content inside; the 14-line cap lives here
+   because this is the box the cap describes. */
+.scroll {
+  max-height: var(--dsh-composer-text-max-height);
+  overflow-y: auto;
+  /* Keeps the bar off the card's right border; .input's right pad gives the
+     4px back so the text column is unchanged. */
+  margin-right: 4px;
+}
+
+/* The card's 22px corner arc still overlaps the scrollport's top (8px top
+   pad reaches only y=8): start the thumb's travel below the arc so it never
+   pokes outside the capsule. WebKit-path only; Firefox's thin bar has no
+   track margin, an accepted remainder. */
+.scroll::-webkit-scrollbar-track {
+  margin-top: 8px;
+}
+
+/* Auto-grow anchor: the contenteditable is in normal flow and sets the
+   draft's height; the placeholder rides it absolutely. */
+.grow {
+  position: relative;
+}
+
+/* Machine pending dot (adjudicating / submitting). */
+.pending {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  corner-shape: round;
+  background: var(--dsw-alias-state-business-primary);
+  animation: input-pending 1s ease-in-out infinite alternate;
+}
+
+@keyframes input-pending {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+/* The contenteditable draft surface (grows with its content; .scroll caps
+   and scrolls it). figma .InputText 34:10434 drew pl 16 / pr 12 / pt 4; the
+   left pad tightened to 14, and the right pad is 8 here plus .scroll's 4px
+   bar inset. */
+.input {
+  box-sizing: border-box;
+  /* Docked floor: one 24px line + 4px top pad = 28 content height; 36 leaves
+     an 8px breath below the line (the hero keeps its own 52px floor below). */
+  min-height: 36px;
+  padding: 4px 8px 0 14px;
+  font-family: var(--dsw-font-family);
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  outline: none;
+  color: var(--dsw-alias-label-primary);
+  /* Business blue, not brand-primary: that token resolves to ink in this sheet. */
+  caret-color: var(--dsw-alias-state-business-primary);
+}
+
+/* Lexical paragraphs are <p> blocks: strip the UA margins so the surface
+   keeps the textarea's line rhythm. */
+.input p {
+  margin: 0;
+}
+
+/* Claim ghost hint as generated content after the last paragraph: the bar
+   sets --dsh-composer-hint (a quoted string) while the claim's args are
+   blank; without the variable the declaration is invalid and nothing shows. */
+.input p:last-child::after {
+  content: var(--dsh-composer-hint);
+  color: var(--dsw-alias-label-caption);
+}
+
+.input[data-composer-composing] p:last-child::after {
+  content: none;
+}
+
+.input[data-composer-composing] + .placeholder {
+  visibility: hidden;
+}
+
+/* figma 34:10434: #ADB2B8 light / #81858C dark — the caption pair exactly.
+   Insets mirror .input's pads (the other right 4px sits on .scroll). One
+   ellipsized line: a wrapped second line would clip against the docked
+   36px floor. */
+.placeholder {
+  position: absolute;
+  inset: 4px 8px auto 14px;
+  color: var(--dsw-alias-label-caption);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  user-select: none;
+}
+
+.inputDisabled {
+  color: var(--dsw-alias-label-tertiary);
+  cursor: not-allowed;
+}
+
+.input[aria-haspopup='menu'] {
+  cursor: pointer;
+}
+
+/* Hero (centered empty-state) keeps the 2-line floor (figma min-h 52 = ~2 × 24
+   line + 4pt); the docked composer collapses to the content height. */
+.hero .input {
+  min-height: 52px;
+}
+
+/* The hero's 52px floor fits two lines, so its placeholder clamps at two
+   instead of the docked single line. */
+.hero .placeholder {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Toolbar: attach + Plan + Read-only on the left; model + send on the right
+   (figma Input_Bottom chrome). */
+.row {
+  display: flex;
+  /* **不换行**：`flex-wrap: wrap` 会让这条控制行按内容宽度自己决定行数——
+     左侧控件一多、或某个控件文字一长，右侧的模型/语音/发送就被挤到第二行，
+     而第二行是"内容撑出来"的，于是**每次内容变化高度都在跳**。
+     `ui-aesthetics` 的交互状态纪律把这种"让附近内容重排"明确列为错误，
+     并要求默认态保持"尺寸、排版基线、间距节奏、网格对齐"稳定。
+     所以这一行改成单行 + `space-between`：左组与右组各占一端，行高恒定。
+     容纳不下时由**组内**收缩与截断承担（见 `.tools` 与 `.trailing`），不再整行折行。
+
+     `height` 是这条契约真正生效的部分：行高**由我们钉住**，而不是由
+     "当前哪个控件展开得最高"决定。实测过没有它的时候：点开语音 →
+     入口由 79px 涨到 296px → 操作行 49 → 75px、卡片 141 → 167px，
+     **整块跳 26px**。钉住后，任何展开态都必须换一种方式表达
+     （浮层 / 覆盖），而不是把行顶高。 */
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 41px;
+  /* ── 铁律：控件一律不得超出卡片边框 ────────────────────────────────
+     `overflow-x: clip` 是这条铁律的**结构性保证**，不是"当前恰好没溢出"：
+     它在**内容坐标**上裁掉溢出，比 `hidden` 更合适——不产生滚动容器，
+     因此不会引入新的滚动条，也不会影响纵向的浮层定位。
+     实测（1440 / 900 / 700 三种宽度）：溢出控件数 0、`scrollWidth === clientWidth`
+     （无横向滚动）。钉住它之后，即使将来有人在右组塞进更长的文字，
+     最坏结果也只是被裁掉，**不会把边框顶开或推出横向滚动条**。 */
+  overflow-x: clip;
+  /* 2px moved from the bottom pad to the top: the whole control row sits 2px
+     lower in the card (it read too high against the textarea) while the
+     controls' own centering stays untouched. */
+  /* 控制行四周留白。底部由 6px 提到 10px：6px 时按钮行的下边缘几乎贴住卡片的
+     圆角，在 28px 高的控件旁边看起来像"被切掉一截"。10px 与卡片自身 8px 的
+     上内边距接近，视觉上四边呼吸均匀；同时**不动控件自身尺寸**，
+     所以这次调整不会让任何控件位移（`ui-aesthetics`：状态与留白的调整
+     应保持几何稳定，只改强调与呼吸感）。 */
+  padding: 2px 8px 10px;
+  min-width: 0;
+  /* Size container so the chips inside can collapse to icon-only when the
+     card runs out of row width (PermissionSelect @container rule). Anonymous
+     on purpose: CSS modules hash container-name per module, so a name declared
+     here can never match a query in another module's sheet. */
+  container-type: inline-size;
+}
+
+/* 组级共同规则：三组都是"一行内水平排列、垂直居中、可收缩"。
+   `min-width: 0` 是收缩的前提——没有它，flex 子项的最小宽度等于内容宽度，
+   长文字就会把组撑宽，进而把整行挤到折行。 */
+.tools,
+.modes,
+.trailing {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  /* 6px 与 `.tools` 的间距一致：模型名 / 投递方式 / 语音 / 发送之间若没有间距，
+     在 28px 高的行里会读成一块糊在一起的图形。 */
+  gap: 6px;
+  min-width: 0;
+}
+
+/* figma 75:8208 drew 16 between + and the mode chips and 4 between Plan /
+   Read-only; both gaps settled on 12 so the pill chips read as separate
+   controls without drifting from the + control. */
+.tools {
+  gap: 6px;
+  /* 容纳不下时**只让左侧工具组收缩**：右侧的"投给谁 / 哪个模型 / 语音 / 发送"
+     永远留在原位，不因为左边多一个字而漂移（布局契约 §3 顺序稳定）。
+     `min-width: 0` 是必须的：flex 项默认 `min-width: auto`，会被内容顶住不收
+     ——那样收缩就落不到实处，压力会转成溢出。 */
+  flex: 1 1 auto;
+  min-width: 0;
+  /* **永不换行**。
+     原来这里是 `flex-wrap: wrap`，后果是：窗口拉窄时每个 chip 各占一行、
+     **竖着摞起来**（实测在约 500px 视口下 5 个 chip 摞成 5 行），
+     而 `.row` 的高度被钉在 41px —— 于是整摞**纵向溢出到卡片外面**。
+     用户看到的就是"拉到最窄的时候就乱了"。
+
+     正确的做法不是让它折行，而是**在窄宽度下渐进式地把控件收起来**
+     （见下面的容器查询）：放不下时少显示几个，而不是把布局压坏。
+     这也正是 ChatGPT 的做法——位置不够时先收次要控件，最后只留「+」和发送。 */
+  flex-wrap: nowrap;
+}
+
+.productChips {
+  display: flex;
+  /* **不换行**：与 `.tools` 同理。chip 组若允许折行，窄宽度下会在组内
+     竖着摞起来，把控制行顶破（这正是"拉最窄就乱"的直接机制）。
+     不够放时由下面的容器查询逐级 `display: none`，而不是折行。
+
+     ⚠️ 这条基础规则**必须写在容器查询之前**：同优先级下"后出现者胜"，
+     否则容器查询里为窄宽度写的 `.productChips { display: none }`
+     会被它反盖掉（本轮实测：去掉 240px 那一档后，260px 档整排收起的规则
+     因为基础规则在文件更靠后被彻底压过，视口 260px 时 chip 仍在、行溢出 20px）。 */
+  flex-wrap: nowrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ── 窄宽度渐进式收起（列宽不足时逐级隐藏，拉回来自动恢复）──────────────
+   用**容器查询**而不是媒体查询：组件要知道的是"我占了多宽"，
+   而不是"视口多宽"——同一条 composer 在宽屏的窄栏里也可能很窄。
+
+   `.row` 已声明 `container-type: inline-size`，chip 都在 `.row` 内部，
+   所以匿名容器查询能命中它（同一模块内，不受 CSS Modules 哈希影响）。
+
+   chip 渲染顺序固定：① 联网搜索 ② 深度思考 ③ 文件 ④ 图像 ⑤ 更多工具。
+   ⑤ 与「+」打开同一个命令菜单，所以最先收它不损失能力。 */
+@container (max-width: 520px) {
+  /* 5 个 chip 的实测最小需求：+28、间距 12、chip 310、右组最小 144 = **494**。
+     阈值必须严格小于 494（写成 490 就是 4px 余量，写成 720 就是白丢能力）。
+     这里取 520 是**把右组最坏情况也算进去**之后的值：
+     右组实测最坏 342.8px（投递方式 104 + 模型选择器 192.8 + 发送 34 + 间距 12）
+     时，整排需要 28+12+310+342.8 = 692.8px。实测视口 528px（行宽 528px）
+     时行横向溢出 17px、视口 488px 时溢出 0 —— 临界落在 528 与 488 之间，
+     取 520 落在其中。
+
+     收 ⑤「更多工具」与 ④「图像」：两者都只值一次点击，
+     且「+」打开的命令菜单里都有同一件事。 */
+  .productChips > .productChip:nth-child(4),
+  .productChips > .productChip:nth-child(5) {
+    display: none;
+  }
+
+  /* 模型选择器（外部插槽 `conversation.input.model`）的宽度上限再收一档。
+     它是这一行里**最大且可缩**的一项：自己声明 `max-width: min(360px, 45cqw)`，
+     而 `cqw` 相对本容器（`.row`）——容器越宽它越宽，比例过了头：
+     实测容器 552px 时它是 248px，行出现 3px 横向溢出；容器 232px 时
+     45cqw 已不生效、回落到 220px 上限，反而完全没有溢出。
+
+     这里用 `min(220px, 26cqw)` 把上限压到容器的 26%（220px 与其他兄弟行一致，
+     26cqw 让它在中等宽度下随行缩）。模型名超长时它自己的
+     `text-overflow: ellipsis` 给出"DeepSeek-V4…"这种**可读截断**——
+     那是"先窄后收"的降级，比把发送按钮挤出卡片好得多。
+     只覆盖这一档，宽屏几何逐像素不变。 */
+  [class*='trigger'] {
+    max-width: min(220px, 26cqw);
+  }
+}
+
+@container (max-width: 490px) {
+  /* 投递方式（`input.delivery`）：隐藏后仍有合理默认——默认值就是
+     「与 CEO 对话」（manager），即本产品的主路径，收它不等于失去能力。
+
+     把它收掉后，右组地板可以从 180px 降到 46px（只保发送），
+     省下的 134px 全部还给 chip：收一个投递方式 = 多显示 2 个 chip。
+
+     实测（本轮 after 扫描）：容器 468px 与 448px 时行仍有 5–13px 横向溢出
+     （投递方式还在），容器 428px 与 412px 时为 0 —— 临界落在 448 与 428 之间；
+     取 490 是保守值（约 20–40px 余量），避免右组文案变长时又溢出。 */
+  .deliverySelect {
+    display: none;
+  }
+}
+
+@container (max-width: 390px) {
+  /* 收 ②「深度思考」（提示词层面的开关，不影响这一轮能不能发出去）。
+     收后可见「联网搜索 / 文件 / 图像」。 */
+  .productChips > .productChip:nth-child(2) {
+    display: none;
+  }
+}
+
+@container (max-width: 360px) {
+  /* 再收 ③「文件」，可见「联网搜索 / 图像」。 */
+  .productChips > .productChip:nth-child(3) {
+    display: none;
+  }
+}
+
+@container (max-width: 300px) {
+  /* 再收 ④「图像」，只留「联网搜索」。 */
+  .productChips > .productChip:nth-child(4) {
+    display: none;
+  }
+}
+
+@container (max-width: 260px) {
+  /* 极窄收尾：连「联网搜索」也放不下了，整排收起，只留「+」。
+     实测：容器 288px（视口 460px）时"28(+)+12+66(chip)+46(右组地板)=152"
+     放得下、行不溢出；容器 268px（视口 440px）时同一组合开始把 chip
+     推出卡片，因此在 260 这一档收起。收后左侧只剩「+」，
+     需求 28+6+40 = 74px，最窄 108px 的容器也放得下。 */
+  .productChips {
+    display: none;
+  }
+}
+
+.productChip {
+  padding: 4px 10px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 999px;
+  corner-shape: round;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 16px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--dsw-alias-label-primary) 6%, transparent);
+  /* ── 铁律：chip 宁可被收起，也绝不能被压扁 ──────────────────────────
+     这两条是本轮缺陷（用户截图：三个 chip 压成"一列一个字"、纵向穿过
+     卡片下边框）的**根本修复**，不是保险丝。
+
+     缺陷机制（真实 Chrome 实测，非推断）：
+       `.row` 恒定 41px 高；`.trailing` 声明 `flex: none` 拒绝收缩；
+       `.tools` 是 `flex: 1 1 auto`，于是"放不下"的压力**全部**落到它身上，
+       再传给 `.productChips`，最后落到每个 chip 的 `flex-shrink`。
+       chip 原来没有 `white-space`、也没有 `flex`/`min-width`——
+       中文可在任意字之间断行，于是 flex 能把它一路压到**单字一列**
+       （实测宽 33px = 1 字 11px + 左右 padding 20px + 边框），高度 26 → 74px；
+       而 `.row` 的高度钉死 41px，多出来的部分**纵向溢出到卡片下边框外**。
+       实测在布局视口 620–690px（对应 `.row` 宽 448–518px）整段复现。
+
+     `white-space: nowrap` 把可断行的中文变成不可断行的整体，
+     `flex: none` 让 chip 不参与收缩：两者合起来把"放不下"从"压扁"改写成"溢出"。
+     溢出本身不可接受（会被 `.row` 的 clip 安静裁掉），所以**溢出之前必须先收起**
+     ——由下面的容器查询按实测阈值负责。 */
+  white-space: nowrap;
+  flex: none;
+}
+
+.productChip:hover {
+  color: var(--dsw-alias-brand-primary);
+  border-color: var(--dsw-alias-brand-primary);
+  background: var(--dsw-alias-button-ghost-active-fill);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--dsw-alias-brand-primary) 16%, transparent);
+}
+
+.productChip:active { transform: translateY(1px); }
+.productChip:disabled {
+  opacity: 1;
+  cursor: default;
+  pointer-events: auto;
+}
+
+/* 底部呼吸：上游 `.root` 画的是 `padding … 8px`（Figma Input_Bottom 的 B8），
+   在首屏形态下卡片下边缘离视口只剩 8px，卡片的层次投影（`box-shadow`）下缘被裁掉，
+   看起来像"贴死"在底边、被切了一刀。用户的原话是
+   "和下面的边缘不要贴合得死死"。
+   只在**千手皮肤**上覆盖（`.product` 由 forge 构建注入），官方皮肤保持上游值不变。
+   下面两条是同一件事：`padding-bottom` 给输入框自身，`.hero .card` 那条保证首屏形态
+   与 docked 形态落成同一距离——两种形态之间切换时输入框不跳位置
+   （`ui-aesthetics`：间距调整应保持几何稳定，只改呼吸感）。 */
+.product {
+  padding-bottom: 20px;
+}
+
+.product.hero {
+  padding-bottom: 20px;
+}
+
+.product.hero .card {
+  max-width: 860px;
+  padding: 14px 16px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 24px;
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--dsw-alias-label-primary) 8%, transparent);
+}
+
+.modes {
+  gap: 6px;
+}
+
+.trailing {
+  /* ── 右组：**可以收窄**，但有一条地板 ───────────────────────────────
+     旧值是 `flex: none`（"右组永不收缩"）。本轮实测证明那条是**不可见裁切**
+     的直接成因：`.row` 是 `flex-wrap: nowrap` + 固定 41px 高，
+     当"左组最小需求 + 右组自然宽度"超过行宽时，flex 只能让**可收缩的**那部分
+     让步；右组一步不让，于是整行溢出、由 `.row` 的 `overflow-x: clip`
+     安静裁掉最右边的东西——实测被裁掉的正是**发送按钮**
+     （注入式会话态实测：行横向溢出 35px，发送按钮右缘超出卡片右边框 20.5px）。
+     "看不见的裁切"比"看得见的压扁"更糟，所以这里立一条铁律：
+     **宁可让右组里的文字先变窄，也不许任何控件被推出卡片。**
+
+     `flex: 0 1 auto` + `min-width`：
+     - `flex-basis: auto`：从自然宽度开始；
+     - `flex-shrink: 1`：放不下时先压右组（模型名/投递方式自带
+       `text-overflow: ellipsis`，压出来是"DeepSeek-V4…"这种可读截断）；
+     - `min-width`：地板，默认 180px（含投递方式 104 + 发送 34 + 间距）。
+       没有地板的话右组会被压到 0、发送按钮跟着消失——那只是换一个东西被裁。
+       地板在窄宽度下由文件末尾的容器查询逐级下调（520px → 46px，240px → 40px，
+       230px → 34px），而不是继续压 chip。
+
+     宽屏不受影响（右组不收缩时几何与之前逐像素一致），只在"真的放不下"时生效。 */
+  flex: 0 1 auto;
+  min-width: var(--dsh-composer-trailing-floor, 180px);
+  /* 与 `.row` 的 `justify-content: space-between` 同向，不冲突：
+     单行时 space-between 已经把它顶到右边，这里作为双保险。 */
+  margin-left: auto;
+  gap: 6px;
+}
+
+/* Attach circle (figma + control): 28px, selector fill, primary glyph. */
+.add {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  corner-shape: round;
+  background: var(--dsw-specific-selector);
+  color: var(--dsw-alias-label-primary);
+  cursor: pointer;
+}
+
+.add:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover-solid);
+}
+
+.add:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Plan / Read-only / model — native <select>, chip-like closed chrome
+   (figma ToggleButton: 13/20 medium secondary, 12px chevron). */
+.select {
+  max-width: 220px;
+  height: 28px;
+  padding: 0 20px 0 8px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%2381858C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 12px 12px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+}
+
+.select:hover:not(:disabled) {
+  background-color: var(--dsw-alias-interactive-bg-hover);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Primary send (figma IconButton 34:10465): 34px circle, #3964FE light /
+   #679EFE dark — the info-fill pair (500→400), NOT button-primary (ink);
+   white glyph; empty text = 0.4 opacity. */
+.primary {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  corner-shape: round;
+  background: var(--dsw-alias-button-info-fill);
+  color: var(--dsw-alias-button-info-foreground);
+  cursor: pointer;
+  transition: background-color 100ms ease;
+  /* Opts out of the row's 2px downward shift (.row top pad): the send circle
+     keeps its original seat while the smaller chips sit lower. Transform, not
+     margin, so flex centering math is untouched. */
+  transform: translateY(-2px);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--dsw-alias-button-info-hover);
+}
+
+.primary:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.retry {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Delivery is an explicit user choice and shares the normal submit path. */
+/* 会话态（active）右侧比首屏多一个模型选择器，「投递方式」可能被压到 104px 以下。
+   原生 select 的选中项在窄到一定程度时会**换行**，把 28px 的行高撑高、
+   进而让 `.row` 的 41px 契约在行内溢出（与 chip 被压扁是同一类事故）。
+   所以显式钉住"单行 + 省略号"：宁可把文案截成「补充当前…」，
+   也不允许它把这一行撑开。中文没有词边界，`ellipsis` 只在字符间断，
+   视觉上是"截断"，不是"碎片"。 */
+.deliverySelect { height: 28px; max-width: 128px; min-width: 0; border: 0; border-radius: 7px; padding: 4px 6px; color: var(--dsw-alias-label-secondary); background: transparent; font: inherit; font-size: 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deliverySelect:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.deliverySelect:disabled { opacity: .5; cursor: default; }
+.deliverySelect:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 2px; }
+
+.card:focus-within { --dsw-elevation-stroke-color: var(--dsw-alias-state-business-primary); }
+
+/* Session-owned voice entry lives alongside the other composer actions. */
+/* 语音入口。
+   我一度在这里加 `max-width: 120px`，想把"入口不该变宽"钉住——**那是错的**：
+   语音控件在草稿非空时会显示一条较长的禁用提示，把它压窄只会让那句话
+   折成更多行，高度从 34px 涨到 **163px**，反而在行内溢出得更厉害。
+   真正的约束不在宽度，而在**渲染时机**：首屏（`variant === 'hero'`）
+   根本不渲染它，见 `InputBar.tsx` 里的说明。 */
+.voiceEntry {
+  display: flex;
+  align-items: center;
+  /* 由内容决定宽度，但**不得参与行内收缩**（`flex: none`）：
+     否则挤压时会先压它、把提示折行，问题又回到上面那条。 */
+  flex: none;
+  min-width: 0;
+  /* 作为浮层的定位参照：语音那条错误提示**必须脱离行内流**。
+     实测证据：语音按钮宽约 34px，而它下面渲染的 `.root` 声明
+     `width: calc(100% - 32px) / max-width: 760px` —— 那句 40 字的提示
+     想要 760px，却被塞进 34px 的槽里，于是折成**竖排 6 行**、把高度从 34px 撑到 163px，
+     控制行随之被推开（用户截图"语音点完是这样的"就是这一步）。
+     这里给出的定位参照，配合下方 `.voiceEntry > :first-child` 的
+     `position: absolute` 让提示悬浮在控制行上方：几何完全不参与行高计算。 */
+  position: relative;
+}
+
+/* 语音那一列的**展开提示**改为浮层：脱离行内流，因此不再影响控制行的高度与宽度。
+   这是 `.agents/skills/qianshou-design-system` 引用的布局契约要求的做法——
+   "展开态要么浮层、要么覆盖，**不得挤占行内空间**"。
+   之前试过给它 `max-width` 压制，结果只是把提示压成更多行、高度反而更糟；
+   浮层是唯一同时满足"提示可读"与"控制行几何稳定"的做法。 */
+.voiceEntry > :first-child {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  z-index: 2;
+  width: max-content;
+  max-width: min(420px, 60vw);
+  text-align: left;
+}
+
+/* ── 右组地板的三条窄宽度覆盖 ─────────────────────────────────────────────
+   ⚠️ 这三条**必须放在本文件的最后**，而且**必须挂在 `.trailing` 上**。
+   本轮踩到此处的两个坑，留在这里当路标：
+
+   ① 不能写成 `.row { --dsh-composer-trailing-floor: … }`。
+      `@container` 的查询容器就是 `.row` 自己，而 `.row` 是它所查询元素的
+      **祖先**——容器查询永远不会命中容器自身，那条规则是死代码。
+      实测：容器 168px 时该变量仍是空值、`.trailing` 仍是 180px 地板，
+      行因此横向溢出 32px。
+
+   ② 不能放在基础规则 `.trailing { min-width: … }` 之前。
+      同优先级下**后出现者胜**——写在前面会被基础规则盖掉。
+      实测：把 `min-width: 46px` 写在文件中部时，逐条 CSSOM 记录显示
+      它的出现顺序是第 36 条、基础规则是第 54 条，计算值恒为 180px；
+      挪到文件末尾即生效。
+
+   地板值（全部来自实测需求）：520px 以下只保**发送按钮**（34px + 余量 → 46px）；
+   240px 以下再留 40px；230px 以下收到底线 34px（发送按钮自身宽度）。
+   地板之上由容器查询收起 chip，地板之下不再压右组。 */
+@container (max-width: 520px) {
+  .trailing {
+    min-width: 46px;
+  }
+}
+
+@container (max-width: 240px) {
+  .trailing {
+    min-width: 40px;
+  }
+}
+
+@container (max-width: 230px) {
+  /* 模型选择器在这个宽度只剩几像素（实测容器 48px 时它宽 3.11px），
+     已无可用性；收起它不是"丢能力"（同一件事在设置页与「+」菜单里都能做），
+     而是**不给"控件被裁"留案例**。选择器只能写 `[class*='trigger']`：
+     模型选择器是外部插槽（`conversation.input.model`），类名带 CSS Modules 哈希，
+     本包不能写死；而这一档只剩「+」与发送，没有别的 trigger 会被误伤。 */
+  [class*='trigger'] {
+    display: none;
+  }
+  .trailing {
+    min-width: 34px;
+  }
+}

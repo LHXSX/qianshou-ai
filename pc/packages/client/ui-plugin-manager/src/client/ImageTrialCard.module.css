@@ -1,0 +1,56 @@
+.activity { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; width: 100%; color: var(--dsw-alias-label-primary); }
+.activity p { margin: 0; line-height: 1.6; }
+.request { white-space: pre-wrap; overflow-wrap: anywhere; }
+.research, .resultMeta { color: var(--dsw-alias-label-secondary); font-size: 12px; }
+.activity a, .recheck { color: var(--dsw-alias-state-business-primary); }
+.recheck { padding: 0; border: 0; background: none; font: inherit; font-size: 12px; cursor: pointer; }
+.recheck:hover { text-decoration: underline; }
+.recheck:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 4px; }
+.image { max-width: 100%; max-height: 640px; object-fit: contain; border-radius: 10px; }
+
+.progressPanel {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 18px;
+  max-width: 600px;
+  padding: 4px 0;
+}
+.workerPanel { display: flex; flex: none; flex-direction: column; align-items: center; gap: 2px; }
+.workerPanel small { color: var(--dsw-alias-label-secondary); font-size: 11px; }
+.worker { width: 108px; height: 84px; overflow: visible; color: var(--dsw-alias-state-business-primary); }
+.workerGround { stroke: var(--dsw-alias-border-l3); stroke-width: 3; stroke-linecap: round; }
+.workerCard { fill: color-mix(in srgb, currentColor 12%, var(--dsw-alias-bg-layer-1)); stroke: currentColor; stroke-width: 3; }
+.workerLegs, .workerFace, .workerAntenna, .workerArmLeft, .workerArmRight, .workerGear, .workerSpark {
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.workerBody { transform-origin: 59px 74px; animation: workerEffort 850ms ease-in-out infinite; }
+.workerArmLeft { transform-origin: 35px 48px; animation: workerPush 850ms ease-in-out infinite; }
+.workerArmRight { transform-origin: 84px 48px; animation: workerPush 850ms ease-in-out infinite reverse; }
+.workerSweat { fill: currentColor; opacity: 0.55; animation: workerSweat 1700ms ease-out infinite; }
+.workerGear { transform-origin: 61px 84px; animation: workerTurn 2400ms linear infinite; }
+.workerSpark { opacity: 0.5; }
+.progressDetails { display: flex; flex: 1; flex-direction: column; gap: 8px; min-width: 0; }
+.progressLabel { font-weight: 600; }
+.progressTrack { height: 6px; overflow: hidden; border-radius: 999px; background: var(--dsw-alias-border-l2); }
+.progressPulse { display: block; width: 36%; height: 100%; border-radius: inherit; background: var(--dsw-alias-state-business-primary); animation: imageProgressPulse 1800ms ease-in-out infinite; }
+.progressElapsed { color: var(--dsw-alias-label-secondary); font-size: 12px; font-variant-numeric: tabular-nums; }
+.progressHint { color: var(--dsw-alias-label-caption); font-size: 12px; line-height: 1.5; }
+@keyframes workerEffort { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(3px) rotate(2deg); } }
+@keyframes workerPush { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes workerSweat { 0% { transform: translateY(-2px); opacity: 0; } 35% { opacity: 0.6; } 100% { transform: translateY(7px); opacity: 0; } }
+@keyframes workerTurn { to { transform: rotate(360deg); } }
+@keyframes imageProgressPulse { from { transform: translateX(-110%); } to { transform: translateX(380%); } }
+@media (prefers-reduced-motion: reduce) {
+  .workerBody, .workerArmLeft, .workerArmRight, .workerSweat, .workerGear, .progressPulse { animation: none; }
+  .workerSweat { opacity: 0.55; }
+  .progressPulse { transform: translateX(85%); }
+}
+@media (max-width: 520px) {
+  .progressPanel { gap: 10px; }
+  .worker { width: 76px; height: 62px; }
+  .workerPanel small { max-width: 76px; text-align: center; }
+}

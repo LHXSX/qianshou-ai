@@ -1,0 +1,28 @@
+{
+  "name": "@qianshou/companion",
+  "productName": "千手协作端",
+  "description": "Paired remote development companion with local approval and RustDesk handoff",
+  "version": "0.2.1",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsdown --config tsdown.config.ts",
+    "start": "electron .",
+    "package:mac": "node scripts/package-mac.mjs",
+    "package:portable": "python3 scripts/package-portable.py",
+    "verify:packaged": "node scripts/verify-packaged-loopback.mjs"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-host-remote-devices": "workspace:^",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "electron": "^44.0.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^6.0.3",
+    "tsdown": "^0.22.2"
+  },
+  "channel": "preview"
+}

@@ -1,0 +1,10 @@
+{
+  "note": "由 packages/host/model-gateway/tools/capture-wire.mjs 从真实网关抓取；消费端应把它当作线上字节来解析。",
+  "capturedAt": "2026-09-15T19:02:06.042Z",
+  "chatPath": "/api/qianshou/ai/chat",
+  "success": "data: {\"type\":\"delta\",\"text\":\"你好\"}\n\ndata: {\"type\":\"delta\",\"text\":\"，世界\"}\n\ndata: {\"type\":\"done\",\"model\":\"千手·迅捷\",\"requestedModel\":\"千手·迅捷\",\"chargedSp\":0.07,\"downgraded\":false,\"usageSource\":\"provider\",\"credit\":{\"remainingMonthlySp\":389.93,\"usedInWindowSp\":0.07}}\n\n",
+  "downgraded": "data: {\"type\":\"delta\",\"text\":\"你好\"}\n\ndata: {\"type\":\"delta\",\"text\":\"，世界\"}\n\ndata: {\"type\":\"done\",\"model\":\"千手·迅捷\",\"requestedModel\":\"千手·强力\",\"chargedSp\":0.07,\"downgraded\":true,\"downgradeNote\":\"「千手·强力」在普通版里用不了，这次由「千手·迅捷」作答。\",\"usageSource\":\"provider\",\"credit\":{\"remainingMonthlySp\":389.86,\"usedInWindowSp\":0.14}}\n\n",
+  "rejectedQuota": "data: {\"type\":\"error\",\"kind\":\"rejected\",\"message\":\"这次的内容太长了（约 200000 token），普通版单次上限是 64000 token。把内容拆成几次，或升级到更高档位。\",\"status\":400,\"rejection\":{\"ok\":false,\"kind\":\"context-too-long\",\"message\":\"这次的内容太长了（约 200000 token），普通版单次上限是 64000 token。把内容拆成几次，或升级到更高档位。\"}}\n\n",
+  "rejectedUnknownModel": "data: {\"type\":\"error\",\"kind\":\"rejected\",\"message\":\"这个模型不存在。\",\"status\":404,\"rejection\":{\"ok\":false,\"kind\":\"unknown-model\",\"message\":\"这个模型不存在。\"}}\n\n",
+  "rejectedBadBody": "{\"ok\":false,\"message\":\"请求格式不对。\"}"
+}

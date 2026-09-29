@@ -1,0 +1,66 @@
+{
+  "extends": "../../../tsconfig.base.client.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../../api/remotes/tsconfig.client.json"
+    },
+    {
+      "path": "../../boot/plugin-manager"
+    },
+    {
+      "path": "../../test-support/client-runtime"
+    },
+    {
+      "path": "../locale"
+    },
+    {
+      "path": "../ui-agent-preset"
+    },
+    {
+      "path": "../store"
+    },
+    {
+      "path": "../ui-layout"
+    },
+    {
+      "path": "../ui-primitives"
+    },
+    {
+      "path": "../ui-qianshou"
+    },
+    {
+      "path": "../ui-qianshou-account"
+    },
+    {
+      "path": "../ui-renderer"
+    },
+    {
+      "path": "../ui-sidebar"
+    },
+    {
+      "path": "../ui-slots"
+    },
+    {
+      "path": "../ui-tool"
+    },
+    {
+      "path": "../ui-workspace"
+    },
+    {
+      "path": "../../util/crypto"
+    },
+    {
+      "path": "../ui-chat"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+<a href="/#/downloads#download">← 返回下载</a><h3>千手生态 v3：开发与上架指南</h3>
+<p>更新于 2026-09-07。目标是让开发者上传规范源码，经双端原生构建、审核签名后，在千手生态商店安装、从“我的应用”启动，并使用统一账号、任务与资产服务。独立应用不另建登录系统，也不要求普通用户单独下载安装器。</p>
+<p>本文依据当前应用登记、发布服务、通用模板和宿主页面。<strong>上海独立发布、CMS、应用登记、审核与组件签名服务已上线；GitHub App 安装授权尚未收到，完整无人值守构建发布仍未激活。</strong> 当前只向管理员配置的开发者账号试运行；未开通返回403，机器身份或相关服务未就绪返回503。普通开发者仅查看自己的记录，不能执行管理员审核。</p>
+<p>安装器：<a href="/#/downloads#download">Windows / Mac 下载</a>。</p>
+<p>工具包：<a href="/eco-v3/downloads/qianshou-ecosystem-v3-developer-kit-20260907-v2.zip">下载开发源码工具包 v2（95,036 字节）</a>。SHA256：<code>329dc02a0093b7ef20121cab4c5abbc8961baee0c836795f7a4ff38f06b03d37</code>。</p>
+<h2 id="dev-section-1">一、先选择合适的开发方式</h2>
+<p>新应用使用本次交付的 <code>开发源码工具包-20260907-v2.zip</code>，其中包含通用模板、源码打包工具、真实 App Kit 校验器及所依赖的共享 SDK 源码。v2 修复了 Windows 默认编码导致中文模板生成失败的问题，补齐可直接执行的 PowerShell 示例。旧版“源码打包工具.zip”和“通用应用模板候选.zip”保留历史记录，不要混用旧脚本覆盖新工具。</p>
+<p>通用配方为 <code>eco-app.tauri-python.v1</code>，固定结构是：</p>
+<pre><code>qianshou.app.json        应用与任务契约
+qianshou-source.json     明确的源码文件列表
+frontend/               Vue界面、测试、package-lock.json
+backend/                Python业务与固定诊断入口
+desktop/src-tauri/     Rust/Tauri、Cargo.lock、图标
+</code></pre>
+<p>上面 <code>desktop</code> 与 <code>frontend</code> 同级。通用应用目前目标为 <strong>Windows x64、Mac ARM64</strong>；不包含 Intel Mac、Windows ARM64，也不会把任意 Electron、Java、现成服务器或所有第三方依赖自动转换成双端应用。文件路径、原生依赖、权限、外部程序和数据目录仍需开发者逐项适配，分别原生验证。</p>
+<p>官方构建工厂、图片工厂保留各自固定配方。通用模板不应套用其他应用的打包布局；应用发行无需重发宿主安装包。</p>
+<h2 id="dev-section-2">二、开发一个新应用</h2>
+<ol>
+<li>解压工具包，准备 Python <strong>3.11 或以上</strong>、可用的 Node，以及对应平台 Rust/Tauri 开发环境。源码打包器使用 Python 标准库 <code>tomllib</code>，后台服务器的 Python3.10兼容性不代表打包器也支持3.10。</li>
+<li>使用真实平台账号 ID 命名。例如账号167的新应用可叫 <code>dev-167-notes</code>；若以后开通账号999，则用 <code>dev-999-notes</code>，不需要另改配方。<code>qianshou-*</code> 是官方保留身份，不能自行占用。</li>
+<li>在工具包目录执行：</li>
+</ol>
+<pre><code>python3 generic-template/generate.py --app-id dev-167-notes --output /ABS/my-notes
+</code></pre>
+<p>Windows PowerShell 使用下面的一行命令，替换实际路径；输出目录必须不存在。生成不会申请身份、联网、执行构建或发布。</p>
+<pre><code>py -3.11 -X utf8 generic-template/generate.py --app-id dev-167-notes --output &quot;C:/Projects/my-notes&quot;
+</code></pre>
+<ol>
+<li>实现真实业务，保留模板的 scoped bridge、<code>app.ready</code>、<code>app.session</code> 与 backend 诊断合同。修改图标和显示文案，确认 <code>qianshou.app.json</code> 的软件版本、Cargo/Tauri/前端版本一致。任务协议版本可以独立于软件补丁版本；但任务契约内容与已审批记录必须一致。</li>
+<li>本地先做界面和合同验证：</li>
+</ol>
+<pre><code>cd /ABS/my-notes/frontend
+npm ci --ignore-scripts
+npm test
+npm run build
+cd ../desktop/src-tauri
+cargo test --locked --lib
+cargo check --locked --features desktop
+</code></pre>
+<p>这些检查不等于生成可分发的独立应用；本地真实启动还需要受信组装步骤提供对应平台 runtime。不要把开发机 Node/Python 整个目录直接塞进源码包。</p>
+<p>开发时应记录依赖选择、决策理由、已知限制和复现步骤；变更后更新必要测试。不要使用假余额、假任务、假成功或随机演示数据代替未接通的服务。</p>
+<h2 id="dev-section-3">三、复用统一账号、任务与资产</h2>
+<p>应用从生态启动时，原生主进程通过固定启动协议和 stdin 接收限定到该应用的上下文。令牌和宿主地址由原生层保管，不能传到渲染层、日志、URL、源码 ZIP 或 CI 输入。</p>
+<ul>
+<li><code>app.ready</code> 是真实界面和必要运行时就绪后的健康握手；不能启动即盲报成功。</li>
+<li><code>app.session</code> 提供受限会话元数据，不导出账号全局 token。账号切换、退出或撤销后，旧会话不能继续使用。</li>
+<li>业务操作通过已批准 <code>taskContract.operations</code> 和统一 task bus；使用已有能力、输入合同和资产类型。没有对应能力时显示未就绪，不能自行换成任意 shell、URL 或未经授权任务类型。</li>
+<li>素材和生成结果使用平台资产引用与已授权的文件选择/保存接口；不读取任意本地目录，不把私有文件上传到陌生节点。</li>
+<li>账单继续使用平台已有机制，不另建假扣费流程。源码构建运行于当前受控 CI 路径，<strong>不代表平台算力积分计费、公共节点调度或所有生成能力已完整接通</strong>。</li>
+</ul>
+<p>当前通用模板只实现连通性与本地诊断，未内置任务提交、取消和资产选择/保存的业务适配。随包 <code>client-sdk/</code> 提供实际共享协议源码与测试；应用仍需在原生层实现限定到该应用的桥接，并接入宿主已部署的任务能力。仅增加 operations 字段不会自动产生业务接口。</p>
+<p>新增任务能力必须单独评审。开发者描述文件、CMS文案和“显示一个按钮”都不能授予执行权限。</p>
+<h2 id="dev-section-4">四、登记身份与任务契约</h2>
+<p>在生态进入 <strong>开发工坊 → 应用开发与上传</strong>，内部路由为 <code>/workshop/apps</code>。构建工厂的“上传与双端构建”入口也打开这一宿主页面，使用当前账号。</p>
+<p>选择项目 <code>qianshou.app.json</code>，核对应用 ID、配方和任务契约后提交登记。提交体只包含：</p>
+<pre><code>{
+  &quot;appId&quot;: &quot;dev-167-notes&quot;,
+  &quot;recipeId&quot;: &quot;eco-app.tauri-python.v1&quot;,
+  &quot;taskContract&quot;: {
+    &quot;protocol&quot;: 1,
+    &quot;id&quot;: &quot;dev-167-notes&quot;,
+    &quot;version&quot;: &quot;0.1.0&quot;,
+    &quot;operations&quot;: {}
+  }
+}
+</code></pre>
+<p>这个空 operations 例子只适合没有平台业务任务的应用；不能冒充视频、生成或构建能力。实际使用项目内的真实契约。</p>
+<p>登记先进入 <code>pending</code>。管理员在 <code>/workshop/releases</code> 的应用登记审核区查看归属和任务能力，填写说明后批准。缺少服务端私有签名目录或正确材料时，不会批准为可发行。</p>
+<p>审批中可短暂显示 <code>approving</code>；它是密钥分配待核实，不是成功。成功为 <code>approved</code>，之后才能上传源码。专属签名私钥仅在受控服务端目录生成并保存，开发者不需要、也不应该获得它。官方应用必须有预置官方授权并复用已审核密钥。</p>
+<p>相同身份、配方、契约的重复登记会返回现有记录。当前不支持在本 API 中直接覆盖已审批任务契约；新增权限需另行审核迁移，不要悄悄改 JSON 后继续上传。</p>
+<h2 id="dev-section-5">五、制作并上传源码包</h2>
+<p>在 <code>qianshou-source.json</code> 中列出确实需要的源码、锁文件、测试、图标及许可证。新增模块后更新此列表；工具不会自动推断所有动态依赖。禁止加入 <code>.env</code>、密钥、账号数据、个人素材、<code>.git</code>、<code>node_modules</code>、<code>target</code>、<code>dist</code> 或预制 runtime。</p>
+<p>从解压的工具包目录执行：</p>
+<pre><code>python3 source-kit/pack-source.py \
+  --source /ABS/my-notes \
+  --output /ABS/my-notes-source-package \
+  --app-kit /ABS/tools/app-kit/bin/qianshou-app.mjs \
+  --node /ABS/node
+</code></pre>
+<p>Windows PowerShell 可直接执行这一行，保持含空格路径的引号，并把 App Kit 和 Node 路径替换为实际位置：</p>
+<pre><code>py -3.11 -X utf8 source-kit/pack-source.py --source &quot;C:/Projects/my-notes&quot; --output &quot;C:/Packages/my-notes-source&quot; --app-kit &quot;C:/Tools/app-kit/bin/qianshou-app.mjs&quot; --node &quot;C:/Program Files/nodejs/node.exe&quot;
+</code></pre>
+<p><code>--output</code> 必须是源码目录外的新目录。产物包含 <code>source.zip</code>、<code>pack-result.json</code>、逐文件清单和 AppKit 检查报告。报告中的 <code>nativeBuilt:false</code>、<code>published:false</code> 是正确状态：打包不等于构建或上架。</p>
+<p>在宿主上传 <code>source.zip</code>，当前上限统一为 <strong>64 MiB</strong>。前端计算 SHA256，后台重新测量并校验 ZIP、路径、重复项、敏感文件、AppKit清单和同账号已批准登记，不能只相信浏览器报告。AppKit 的 valid 仅说明声明格式有效；<code>recipeRegistered:false</code> 或 capability missing 不应手改成true，应核对实际后台登记和能力部署。</p>
+<p>上传成功后检查真实源码审核记录，创建构建。保留同一 <code>clientRequestId</code> 的幂等语义；出现“提交未确认”时先查看原记录，不连续点新建来重试。服务端控制 GitHub仓库、工作流、控制commit和令牌，开发者不能上传这些参数。</p>
+<h2 id="dev-section-6">六、构建、核验和上架</h2>
+<p>后台把已审核源包绑定到不可变源码 commit。Windows/Mac 原生运行器分别执行固定配方、测试、编译和真实 WebView 健康/会话握手，并回传日志、target回执和产物摘要。</p>
+<p>GitHub 显示绿色只是第一步。发布服务还必须下载实际制品，核对来源、run/attempt、目标集合、文件大小和 SHA256，再生成可审核结果。开发者在原记录刷新状态、读取已验证日志；日志接口只展示末尾64KiB，完整日志仍属于受控制品。</p>
+<p>管理员在 <code>/workshop/releases</code>：</p>
+<ol>
+<li>读取待审核记录，核对源码、平台、日志、摘要和验证结果。</li>
+<li>填写审核说明，批准这个<strong>具体构建版本</strong>。批准应用身份不等于所有版本自动通过。</li>
+<li>执行“签名并上架生态”。QSU1签完整应用载荷，QSR1根签受信应用目录；两个平台索引和目录准备完整后，原子切换公开版本。</li>
+<li>用户再从生态商店安装，在“我的应用”启动并完成健康确认。只有宿主自身向普通用户提供原生安装器，子应用不另设下载登录入口。</li>
+</ol>
+<p>每次软件发行提高版本，任务协议未变化可以保持原协议版本。原生二进制签名、公证与QSU组件签名各有用途；QSU不能冒充Apple公证或微软Authenticode。</p>
+<h2 id="dev-section-7">七、内容更新与三类软件更新</h2>
+<p><strong>CMS内容</strong>：在审核页面的“首页与应用内容后台”编辑幻灯片、推荐顺序、应用介绍和公告，保存草稿→预览服务端草稿→发布。发布带草稿版本、当前发布版本和内容摘要，别人修改后会返回409，必须重新读取。客户端下次读取或刷新内容即可生效，无需编译或重发应用。CMS的显示/隐藏和推荐不改变代码安装信任。</p>
+<p><strong>QSU网页界面组件</strong>：更新宿主已有桥接协议能支持的前端资源，仍需签名、兼容性和健康检查。不能通过前端包增加尚不存在的Rust命令或原生依赖。上海 release04 已提供正常 UI 软件版本发布入口 <code>deploy.ui_version_publish</code>，与每日续期共用连续发布记录和锁。已签的双端 UI 包必须拥有相同新版本，各自 version 与 sequence 均高于当前版本（包括日常续期提升后的 sequence）；默认先检查，审核输入摘要后再提交。不要再用历史的一次性安装脚本直接改 UI 指针。</p>
+<p><strong>QSU独立应用</strong>：可更新完整Mac <code>.app</code> 或Windows exe+resources载荷。文件、入口、平台、最低宿主版本、任务权限必须与签名目录一致；可以在不重编宿主的情况下新增经过根审批的应用。</p>
+<p><strong>宿主原生框架</strong>：Rust/Tauri主程序、内置桥接实现、启动信任根等变化，需要重新构建宿主两端安装包并走原生更新流程。网页热更新不能代替它。现场原生OTA是否已启用，以实际版本策略、签名源与安装验收为准。</p>
+<p>安装或更新会遵守当前业务工作状态，不应为更新强杀未保存项目。候选启动失败或健康确认超时可按宿主状态回退到上次健康版本；有运行任务时先妥善处理任务。回退不清除安全高水位：修复已失败候选应提高软件版本和sequence，不覆盖同一已签版本，不手改active/pending/state文件。</p>
+<p>签名清单有有效期。上海已经启用应用与UI的每日维护服务：剩余有效期7天以内时，重新验证完整签名、文件与授权后续签清单；保留软件版本和文件，仅增加元数据sequence与有效期。它用于保持发行有效性，不强制重新安装同版本，也不会绕过宿主高水位。自动维护发现过期、篡改或未完成提交会停止，需操作员核对原记录。CMS历史回退是重新发布旧内容为新内容版本，与应用二进制回滚不同。</p>
+<h2 id="dev-section-8">八、接口速查与诊断</h2>
+<p>以下路径均以 <code>https://www.qianshousuanli.com</code> 为站点；宿主使用统一transport和当前登录会话，不要求开发者复制token。</p>
+<ul>
+<li>登记：<code>POST/GET /api/v8/developer/applications</code>。</li>
+<li>登记审核：<code>GET /api/v8/admin/releases/applications</code>；<code>POST /api/v8/admin/releases/applications/{appId}/review</code>。</li>
+<li>源码：<code>POST /api/v8/developer/sources</code>，原始ZIP，<code>Content-Type: application/zip</code>及<code>X-Source-SHA256</code>；<code>GET /api/v8/developer/sources/{sourceId}</code>。</li>
+<li>构建：<code>POST /api/v8/developer/builds</code>，仅<code>{sourceId,clientRequestId}</code>；<code>GET /api/v8/developer/builds</code>及<code>/{buildId}</code>；<code>POST /{buildId}/refresh</code>、<code>/cancel</code>；<code>GET /{buildId}/logs/{target}</code>。</li>
+<li>构建审核：<code>GET /api/v8/admin/releases</code>及<code>/{buildId}</code>；<code>POST /{buildId}/review</code>为<code>{expectedRevision,action,note}</code>；<code>POST /{buildId}/publish</code>为<code>{expectedRevision}</code>。</li>
+<li>CMS：公开<code>GET /api/v8/content/pages/eco-home</code>；管理前缀<code>/api/v8/admin/content/pages/eco-home</code>下的<code>GET/PUT draft</code>、<code>GET preview</code>、<code>POST publish</code>、<code>GET history</code>、<code>GET history/{revision}</code>、<code>POST rollback</code>。使用已有管理员RBAC。</li>
+</ul>
+<p>常见问题：</p>
+<ul>
+<li><strong>401</strong>：会话失效，重新登录，不在源码中写token。</li>
+<li><strong>403</strong>：开发者未开通或缺管理员权限；请管理员检查账号白名单/RBAC，不修改客户端绕过。</li>
+<li><strong>404</strong>：路由尚未部署、记录不存在或当前账号不可见；CMS尚无发布内容也可能404。</li>
+<li><strong>409</strong>：登记/审核版本已变化或幂等键冲突；刷新现有记录后判断，不能强制覆盖。</li>
+<li><strong>413/64MiB错误</strong>：源码过大，移除生成目录/运行时/用户数据，不分拆成未支持的上传协议。</li>
+<li><strong>422</strong>：应用归属、任务契约、ZIP内容或描述格式不符；先核对AppKit报告与已批准记录。</li>
+<li><strong>503</strong>：GitHub App、配方、签名目录、空间或服务未就绪；不是“已经排队成功”。保存记录ID、应用版本、源码SHA和出错时间交给管理员，不附密码/密钥。</li>
+<li><strong>submission_unknown / publication_unknown / approving</strong>：结果待核实；先对照原run、对象hash或已分配签名身份恢复，不重复派发或重签同sequence。</li>
+<li><strong>更新校验失败</strong>：保留错误码、组件版本、目标平台、envelope摘要和健康状态。不要手改清单、放宽签名或删除高水位。</li>
+</ul>
+<p>取消请求不等于任务已经停止，以后端确认状态为准。CMS UI当前仅显示最近30条历史；更早内容回退需管理员通过已存在历史分页接口核对，不能假称页面已支持无限历史。</p>
+<h2 id="dev-section-9">九、当前已完成与待验收</h2>
+<p>已完成的可核验证据：</p>
+<ul>
+<li>上海独立发布、CMS、应用登记、审核与签名服务已上线。CMS公开首页当前发布 revision 2；内容可单独发布，无需重新编译宿主。</li>
+<li>普通开发者账号167已验证能够查看自己的发布记录；访问管理员接口返回403。开发者权限不等于管理员权限，其他账号仍需按服务端配置开通。</li>
+<li>Windows 宿主 RC4 已完成真实原生 CI、安装与启动验证；Mac RC4 已完成原生构建、DMG真实挂载和完整应用文件核验。双端安装包及原生更新清单已公开发布，原生更新签名经过实际插件同实现的验证器核对。Mac应用尚未做新版本GUI启动验收；Windows验收不包含账户登录及生态应用安装。当前不声明微软 Authenticode 证书或 Apple 公证已齐全。</li>
+<li>两个安装包采用统一宿主与生态商店方式分发，未预捆绑各业务应用；开发者后续上架应用无需重编宿主。</li>
+<li>上海发布服务为 release04；两项每日维护定时器已启用，正式维护检查通过且当时未到续期时间。新增 UI 软件发布工具通过39项验证，包括真实临时签名下的升级→每日续期→再升级。未用虚构软件版本在生产制造发布记录。</li>
+<li>两个平台的 UI 更新已经完成真实 HTTPS 下载、Rust <code>stage</code> / <code>activate</code> 以及失败回退测试；GUI 健康确认仍未验收，不能把核心更新测试当作完整界面更新验收。</li>
+</ul>
+<p>仍待收口：GitHub App 实际安装授权和无人值守构建入口；真实账户下的生态应用安装、GUI健康、业务生成与更新全流程验收。未承诺任意源码自动跨平台、所有业务能力可用、陌生公共构建节点安全开放或系统级代码签名、公证已经齐全。</p>
+<p>v2 工具包已通过49项测试：7项源码打包、2项关闭UTF-8模式的真实子进程生成/校验/打包、40项 AppKit 与共享 SDK 测试。包内52个文件逐一验证摘要；SDK源码与宿主对应文件相同。工具测试不等于模板已完成原生编译或发布，也不为示例账号开放平台权限。</p>

@@ -1,0 +1,39 @@
+/* Qianshou-only interaction layer. Palette values come from the active theme snapshot. */
+body {
+  --ds-transition-duration: 120ms;
+  --ds-transition-duration-fast: 80ms;
+  --ds-transition-duration-slow: 120ms;
+}
+
+::selection { background: var(--dsw-specific-bubble-highlight); color: var(--dsw-alias-label-primary); }
+
+/* Zero specificity so any plugin's own `transition` on a control still wins. */
+:where(html[data-qianshou-product] button, html[data-qianshou-product] [role="button"]) {
+  transition:
+    background-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    border-color var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    box-shadow var(--ds-transition-duration-fast) var(--ds-ease-in-out),
+    transform var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+}
+
+:where(button, a, input, textarea, select, [role="button"]):focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 3px;
+}
+
+:where(button, [role="button"]):disabled,
+:where(button, [role="button"])[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body { --ds-transition-duration: 0ms; --ds-transition-duration-fast: 0ms; --ds-transition-duration-slow: 0ms; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

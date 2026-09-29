@@ -1,0 +1,14 @@
+.root { display: block; max-width: 100%; }
+.open { display: block; max-width: 100%; padding: 0; border: 0; border-radius: 8px; background: var(--dsw-alias-bg-base); cursor: zoom-in; }
+.image { display: block; width: auto; max-width: 100%; height: auto; border-radius: 8px; object-fit: contain; }
+.toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 20px; }
+.toolbar button { padding: 4px 10px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 8px; color: var(--dsw-alias-label-primary); background: var(--dsw-alias-bg-layer-1); cursor: pointer; font: inherit; }
+.toolbar button:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.toolbar button:disabled { opacity: 0.5; cursor: default; }
+.toolbar strong { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 30%; }
+.dialog { width: min(1100px, 94vw); max-height: 92vh; padding: 16px; gap: 12px; }
+.viewer { display: flex; flex-direction: column; min-height: 0; gap: 12px; }
+.viewer .toolbar { flex: none; margin-top: 0; }
+.stage { height: 70vh; overflow: auto; border-radius: 12px; background: var(--dsw-alias-bg-base); }
+.stage img { display: block; max-width: none; height: auto; margin: auto; }
+.notice { display: block; color: var(--dsw-alias-label-secondary); font-size: 12px; margin-top: 4px; }

@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "displayName": "法律材料预处理",
+  "category": "text",
+  "permissions": [],
+  "networkOrigins": [],
+  "dataScope": "task-inputs",
+  "operations": [
+    {
+      "toolName": "qianshou_legal_redact",
+      "inputSchema": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"], "additionalProperties": false },
+      "outputSchema": { "type": "object", "properties": { "redacted": { "type": "string" }, "hitCount": { "type": "integer" }, "matchedKinds": { "type": "array", "items": { "type": "string" } }, "notice": { "type": "string" } }, "required": ["redacted", "hitCount", "matchedKinds", "notice"], "additionalProperties": false },
+      "maxInputBytes": 65536,
+      "maxOutputBytes": 131072,
+      "maxRunMs": 5000,
+      "samples": [
+        { "name": "手机号等长遮蔽", "input": { "text": "联系 13800138000" }, "expected": { "redacted": "联系 138****8000", "hitCount": 1, "matchedKinds": ["mobile"], "notice": "仅供材料整理，可能漏检；不构成法律意见，须由执业律师复核。" } },
+        { "name": "已遮蔽内容幂等", "input": { "text": "联系 138****8000" }, "expected": { "redacted": "联系 138****8000", "hitCount": 0, "matchedKinds": [], "notice": "仅供材料整理，可能漏检；不构成法律意见，须由执业律师复核。" } },
+        { "name": "拒绝额外字段", "input": { "text": "测试", "filePath": "/tmp/secret" }, "error": "INVALID_ARGUMENT" }
+      ]
+    },
+    {
+      "toolName": "qianshou_legal_terms",
+      "inputSchema": { "type": "object", "properties": { "text": { "type": "string" } }, "required": ["text"], "additionalProperties": false },
+      "outputSchema": { "type": "object", "properties": { "matches": { "type": "array", "items": { "type": "object", "properties": { "term": { "type": "string" }, "index": { "type": "integer" } }, "required": ["term", "index"], "additionalProperties": false } }, "termCount": { "type": "integer" }, "notice": { "type": "string" } }, "required": ["matches", "termCount", "notice"], "additionalProperties": false },
+      "maxInputBytes": 65536,
+      "maxOutputBytes": 131072,
+      "maxRunMs": 5000,
+      "samples": [
+        { "name": "定位易混术语", "input": { "text": "定金和订金" }, "expected": { "matches": [{ "term": "定金", "index": 0 }, { "term": "订金", "index": 3 }], "termCount": 2, "notice": "仅供材料整理，可能漏检；不构成法律意见，须由执业律师复核。" } },
+        { "name": "最长匹配", "input": { "text": "保证责任" }, "expected": { "matches": [{ "term": "保证责任", "index": 0 }], "termCount": 1, "notice": "仅供材料整理，可能漏检；不构成法律意见，须由执业律师复核。" } },
+        { "name": "拒绝路径", "input": { "text": "定金", "path": "case.docx" }, "error": "INVALID_ARGUMENT" }
+      ]
+    },
+    {
+      "toolName": "qianshou_calendar_add",
+      "inputSchema": { "type": "object", "properties": { "startDate": { "type": "string" }, "durationDays": { "type": "integer" } }, "required": ["startDate", "durationDays"], "additionalProperties": false },
+      "outputSchema": { "type": "object", "properties": { "date": { "type": "string" }, "approximate": { "type": "boolean" }, "notice": { "type": "string" } }, "required": ["date", "approximate", "notice"], "additionalProperties": false },
+      "maxInputBytes": 1024,
+      "maxOutputBytes": 2048,
+      "maxRunMs": 5000,
+      "samples": [
+        { "name": "闰年跨月", "input": { "startDate": "2024-02-28", "durationDays": 2 }, "expected": { "date": "2024-03-01", "approximate": true, "notice": "只做自然日加算，不处理法定节假日、法定期间或送达规则；不得作为法律截止日使用。" } },
+        { "name": "拒绝非法日期", "input": { "startDate": "2024-02-30", "durationDays": 1 }, "error": "INVALID_ARGUMENT" },
+        { "name": "拒绝零日", "input": { "startDate": "2024-02-28", "durationDays": 0 }, "error": "INVALID_ARGUMENT" }
+      ]
+    }
+  ]
+}

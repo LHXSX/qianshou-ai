@@ -1,0 +1,43 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  min-height: 32px;
+  margin: 0 2px 9px;
+  padding: 2px;
+  border: 0.5px solid var(--dsw-alias-border-l3);
+  border-radius: 10px;
+  background: var(--dsw-alias-fill-tsp-secondary);
+}
+
+.option,
+.selected {
+  min-width: 0;
+  min-height: 26px;
+  padding: 2px 7px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.selected {
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px color-mix(in srgb, black 8%, transparent);
+}
+
+.option:hover,
+.selected:hover {
+  color: var(--dsw-alias-label-primary);
+}
+
+.option:focus-visible,
+.selected:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: -1px;
+}

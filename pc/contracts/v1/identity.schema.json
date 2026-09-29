@@ -1,0 +1,52 @@
+{
+  "title": "qianshou/identity/v1",
+  "description": "Who is acting, who owns the actor, and — mandatory — which component actually verified that claim. Section 1 of the cross-boundary contract. See contracts/README.md §2.1. FIELD PROVENANCE: kind/id/owner_id/scope come from the phase brief; auth.verified_by was called out by the brief as mandatory; the `auth` object wrapper and the `contract` const are added by this draft (design judgment, README §7). NOTE: this schema is deliberately CLOSED (additionalProperties: false). Identity is written by exactly two components, so an unknown key is a bug, not a newer writer — a misspelled `scope` must hard-fail rather than silently produce an unscoped identity. NOT EXPRESSIBLE in the repository's enforced schema subset (packages/core/tools/src/json-schema.ts): string patterns, numeric bounds, and conditional requirements. So `id` format, `expires_at` ordering, and 'owner_id is required when kind != account' are documented here but NOT machine-enforced in v1.",
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "qianshou/identity/v1",
+      "description": "Contract discriminator. Lets a reader reject a v1 payload without guessing from shape."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["account", "worker", "device"],
+      "description": "account = a human/organisation principal; worker = a compute contributor identity; device = a physical machine. The three are not interchangeable: only a worker can be a ledger beneficiary."
+    },
+    "id": {
+      "type": "string",
+      "description": "Stable identifier inside its kind's namespace. Unique per kind, not globally."
+    },
+    "owner_id": {
+      "type": "string",
+      "description": "account_id of the principal that owns this actor. Absent for kind=account that owns itself; the draft does not machine-enforce that rule (see the schema description)."
+    },
+    "auth": {
+      "type": "object",
+      "description": "How the presented credential was handled, and by WHOM. This is the field that makes today's /h3/api/ defect visible: nginx injects a token for every anonymous request, so an identity exists that no platform component ever verified. The contract must be able to say so.",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["bearer", "hmac", "none"],
+          "description": "bearer = opaque token; hmac = request signature over method+path+body; none = no credential was presented at all. `none` is a legal, honest value: it is what an anonymous request really is."
+        },
+        "verified_by": {
+          "type": "string",
+          "enum": ["platform", "nginx", "node"],
+          "description": "MANDATORY. The component that made the trust decision: `platform` = the Python core checked the credential itself; `nginx` = the edge injected or pre-validated it and the core trusted that; `node` = the node daemon's own local trust store. A scope whose assurance requirement is `platform` MUST NOT be granted to an identity carrying `verified_by: nginx`. With method=none this names the component that decided the request was anonymous — it remains a trust-location answer, not an authentication claim."
+        }
+      },
+      "required": ["method", "verified_by"],
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What this identity may do, as `<resource>.<action>` optionally suffixed `:own` or `:any` (e.g. `task.submit`, `ledger.read:own`, `ledger.read:any`). The grammar is documented here rather than pattern-enforced because `pattern` is outside the enforced subset. scope is REQUIRED and may be empty — an empty array means 'authenticated but authorises nothing', which is different from an absent scope and must not default to allow-all."
+    }
+  },
+  "required": ["contract", "kind", "id", "auth", "scope"],
+  "additionalProperties": false
+}

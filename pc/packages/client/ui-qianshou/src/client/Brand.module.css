@@ -1,0 +1,7 @@
+.mark { display: block; flex: none; border-radius: 22%; object-fit: cover; }
+.name { display: flex; flex-direction: row; align-items: baseline; gap: 8px; min-width: 0; }
+.name strong { font-size: 17px; font-weight: 650; letter-spacing: .08em; line-height: 23px; }
+.name > span { color: var(--dsw-alias-label-secondary); font-size: 10px; line-height: 15px; white-space: nowrap; }
+.cloud { display: inline-flex; align-items: center; justify-content: flex-start; gap: 7px; min-width: 32px; min-height: 32px; padding: 3px 7px; border-radius: 8px; color: var(--dsw-alias-label-secondary); text-decoration: none; font-size: 12px; }
+.cloud:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+.cloud:focus-visible { outline: 2px solid var(--dsw-alias-interactive-primary); outline-offset: 3px; }

@@ -1,0 +1,11 @@
+Qianshou website source
+Copyright 2026 Qianshou contributors
+
+Original source in src/, tests/, and top-level website build/config
+files is licensed under Apache License 2.0 (see LICENSE). External npm packages
+retain their own licenses as recorded by package-lock.json.
+
+The project owner confirms rights to publish the included brand and marketing
+images in this source repository. The Apache grant above does not cover those
+images, any download artifacts under public/, or third-party material embedded
+in a file. Reuse of such material needs its own permission or license.

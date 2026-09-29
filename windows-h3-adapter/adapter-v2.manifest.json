@@ -1,0 +1,60 @@
+{
+  "schema": "qianshou.h3-adapter-upgrade.v2",
+  "installationScope": "existing-canonical-h3-api-only",
+  "baseline": {
+    "path": "workbench/workbench_node.py",
+    "sha256": "0650d18bc9060efda379185944ef6841a0dcae5ce0ed3cec24076fefd512a2f2",
+    "lineEndings": "lf"
+  },
+  "patch": {
+    "path": "workbench_node.v2.patch",
+    "sha256": "58cb96e873b5e2af7efb986c96046271eaf5294e89525a1f16947bf155d321a2"
+  },
+  "target": {
+    "path": "workbench/workbench_node.py",
+    "sha256": "9f39917c1980d1855c1a9a11e20f86eef434f4cd3706d184ecc998eb40d90e51",
+    "lineEndings": "lf"
+  },
+  "newModules": [
+    {
+      "source": "recipe_identity_v2.py",
+      "target": "workbench/recipe_identity_v2.py",
+      "sha256": "df371e075d6d478d5f7612473d7f31c008b35c204a58c1953d500103dbd040d8",
+      "lineEndings": "lf"
+    }
+  ],
+  "unchangedModules": [
+    {
+      "path": "workbench/recipe_identity.py",
+      "sha256": "b5b8d8e3966ab41b8cfbe1584106af3fc75e98dbd04e92f73c7dc24bf423ff3d"
+    },
+    {
+      "path": "workbench/runtime_attestation.py",
+      "sha256": "8a62cd1e7d91f2985cffa91bff4a1bab9447d816be6473f155c0360152a88286"
+    }
+  ],
+  "newRoutes": {
+    "identity": "GET /v2/recipes/qs_new4/identity",
+    "submit": "POST /v2/jobs",
+    "poll": "GET /v2/jobs/{id}"
+  },
+  "schemas": {
+    "identity": "qs.h3.recipe-identity.v2",
+    "expected": "qs.h3.execution-expected.v2",
+    "job": "qs.h3.job-identity.v2"
+  },
+  "preconditions": [
+    "fixed baseline source and unchanged modules",
+    "trusted private stage and source snapshot",
+    "no unknown existing V2 helper",
+    "CAS final write and conflict preservation",
+    "fresh explicit V2 owner self-test after installation"
+  ],
+  "notPerformed": [
+    "Windows V2 installation",
+    "actual Windows YAML compatibility",
+    "GPU generation",
+    "complete new-machine bootstrap"
+  ],
+  "legacy": "V1 algorithms and explicit routes remain; changed adapter source cannot reuse old source identity or upgrade V1 evidence."
+}

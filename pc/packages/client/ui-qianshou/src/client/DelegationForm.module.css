@@ -1,0 +1,9 @@
+.form { display: flex; flex-direction: column; gap: 12px; padding: 14px; }
+.form > p { margin: 0; }
+.form label { display: flex; flex-direction: column; gap: 7px; font-size: 12px; color: var(--dsw-alias-label-primary); }
+.form select, .form input, .form textarea { width: 100%; box-sizing: border-box; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: 8px; padding: 9px; background: var(--dsw-alias-bg-layer-1); color: var(--dsw-alias-label-primary); font: inherit; }
+.form textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+.form .help { margin-top: -6px; font-size: 11px; }
+.form button { padding: 10px; border: 0; border-radius: 8px; color: var(--qianshou-brand-ink); background: var(--dsw-alias-interactive-primary); cursor: pointer; }
+.form button:disabled { opacity: .5; cursor: default; }
+.form select:focus-visible, .form input:focus-visible, .form textarea:focus-visible { outline: 2px solid var(--dsw-alias-interactive-primary); outline-offset: 1px; }

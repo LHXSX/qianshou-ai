@@ -1,0 +1,15 @@
+[
+  {
+    "type": "shard_progress",
+    "payload": { "shard_id": "shard-1", "attempt": 3, "lease_token": "fixture-only-lease", "pct": 0 }
+  },
+  {
+    "type": "shard_result",
+    "payload": {
+      "shard_id": "shard-1", "workload_id": "workload-1", "worker_id": "worker-1",
+      "attempt": 3, "lease_token": "fixture-only-lease", "ok": true,
+      "inline_output": "{\"status\":\"ok\",\"schema_version\":\"v1\",\"task_type\":\"word_count\",\"elapsed_ms\":0,\"summary\":{\"input_bytes\":30,\"total_tokens\":4,\"unique_tokens\":3,\"top_n_returned\":3,\"jieba_enabled\":false},\"result_lines\":[\"hello\\t2\",\"世界\\t1\",\"constructor\\t1\"]}",
+      "elapsed_ms": 49
+    }
+  }
+]

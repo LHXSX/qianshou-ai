@@ -1,0 +1,11 @@
+{
+  "name": "qianshou-mac-drawn-video-fixture",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "description": "千手 Mac 本地五秒绘制视频验收包；仅注册主程序提供的固定能力。",
+  "license": "MIT",
+  "files": ["index.js", "cordis.patch.yml"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+}

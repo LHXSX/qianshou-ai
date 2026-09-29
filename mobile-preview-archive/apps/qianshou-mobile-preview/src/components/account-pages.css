@@ -1,0 +1,224 @@
+/* Account routes occupy the app surface; all rules stay inside the account host. */
+.account-pages.account-pages.account-dialog-center {
+  --account-ink: #17213a;
+  --account-muted: #717a8d;
+  --account-line: #e7eaf0;
+  --account-accent: #6251db;
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0;
+  z-index: 24;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #f6f7fb;
+  color: var(--account-ink);
+  box-shadow: none;
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  isolation: isolate;
+}
+.account-pages.account-pages[hidden] { display: none !important; }
+.account-pages.account-pages.account-dialog-center *, .account-pages.account-pages.account-dialog-center *::before, .account-pages.account-pages.account-dialog-center *::after { box-sizing: border-box; }
+.account-pages.account-pages.account-dialog-center h2, .account-pages.account-pages.account-dialog-center h3, .account-pages.account-pages.account-dialog-center h4,
+.account-pages.account-pages.account-dialog-center p { margin: 0; color: inherit; }
+.account-pages.account-pages.account-dialog-center button, .account-pages.account-pages.account-dialog-center input, .account-pages.account-pages.account-dialog-center select { font: inherit; }
+.account-pages.account-pages .account-page-header {
+  position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center; padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+  background: #f6f7fb; border-bottom: 1px solid var(--account-line); min-height: 60px;
+}
+.account-pages.account-pages .account-page-header h2 { font-size: 18px; line-height: 1.35; font-weight: 700; text-align: center; letter-spacing: -.3px; }
+.account-pages.account-pages .account-back { display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; border: 0; border-radius: 50%; background: transparent; color: var(--account-ink); }
+.account-pages.account-pages .account-back svg { width: 24px; height: 24px; }
+.account-pages.account-pages .account-page-body { display: flex; flex-direction: column; gap: 20px; width: min(100%, 520px); margin: 0 auto; padding: 24px 20px max(28px, env(safe-area-inset-bottom)); }
+.account-pages.account-pages .account-page-intro { font-size: 14px; line-height: 1.7; color: var(--account-muted); }
+.account-pages.account-pages .account-overview.account-hero { display: block; margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none; color: var(--account-ink); }
+.account-pages.account-pages .account-overview-identity { display: grid; grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: auto auto; gap: 0 16px; align-items: center; }
+.account-pages.account-pages .account-avatar.account-avatar-gradient { grid-column: 1; grid-row: 1 / 3; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 22px; font-size: 22px; font-weight: 750; letter-spacing: -.5px; color: #fff; background: #7660de; box-shadow: none; }
+.account-pages.account-pages .account-overview-copy { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.account-pages.account-pages .account-overview-copy h3 { order: -1; font-size: 23px; line-height: 1.25; font-weight: 750; overflow-wrap: anywhere; }
+.account-pages.account-pages .account-overview-copy p { font-size: 13px; color: var(--account-muted); overflow-wrap: anywhere; }
+.account-pages.account-pages .account-status-chip { font-size: 11px; font-weight: 600; color: #268470; background: none; border: 0; padding: 0; }
+.account-pages.account-pages .account-overview-id { grid-column: 2; color: var(--account-muted); font-size: 11px; margin-top: 4px; }
+.account-pages.account-pages .account-overview-hint { display: none; }
+.account-pages.account-pages .account-shanghai-balance { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-top: 16px; font-size: 12px; color: var(--account-muted); }
+.account-pages.account-pages .account-shanghai-balance strong { color: var(--account-ink); font-size: 15px; }
+.account-pages.account-pages .account-quota-card { padding: 20px; border-radius: 22px; background: #282448; color: #fff; display: flex; flex-direction: column; gap: 9px; }
+.account-pages.account-pages .account-eyebrow { font-size: 12px; color: #c6bfdc; }
+.account-pages.account-pages .account-quota-plan { font-size: 22px; font-weight: 700; }
+.account-pages.account-pages .account-quota-facts { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: #e0ddec; }
+.account-pages.account-pages .account-quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 9px; }
+.account-pages.account-pages .account-primary, .account-pages.account-pages .account-secondary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; padding: 10px 16px; border-radius: 13px; font-weight: 650; font-size: 14px; text-decoration: none; border: 1px solid transparent; background: var(--account-accent); color: white; cursor: pointer; }
+.account-pages.account-pages .account-secondary { color: var(--account-ink); background: #fff; border-color: var(--account-line); }
+.account-pages.account-pages .account-quota-card .account-primary { background: #d6caff; color: #302551; }
+.account-pages.account-pages .account-quota-card .account-secondary { background: #403957; color: #fff; border-color: #5a516f; }
+.account-pages.account-pages button:disabled { opacity: .5; cursor: default; }
+.account-pages.account-pages button:focus-visible, .account-pages.account-pages a:focus-visible { outline: 3px solid #a59aea; outline-offset: 2px; }
+.account-pages.account-pages .account-menu { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--account-line); border-radius: 18px; overflow: hidden; }
+.account-pages.account-pages .account-menu-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 57px; padding: 16px 18px; border: 0; border-radius: 0; background: #fff; color: var(--account-ink); font-size: 15px; font-weight: 550; text-align: left; }
+.account-pages.account-pages .account-menu-row + .account-menu-row { border-top: 1px solid var(--account-line); }
+.account-pages.account-pages .account-menu-row svg { width: 17px; height: 17px; color: #a3a9b7; flex-shrink: 0; }
+.account-pages.account-pages .account-bottom-actions { display: block; padding: 0; margin: 0; border: 0; }
+.account-pages.account-pages .account-logout { width: 100%; min-height: 44px; padding: 10px; border: 0; border-radius: 12px; background: transparent; color: #c45361; font-size: 14px; font-weight: 550; }
+.account-pages.account-pages .account-version { text-align: center; color: #9a9fac; font-size: 12px; padding-top: 8px; }
+.account-pages.account-pages .account-group, .account-pages.account-pages .account-order, .account-pages.account-pages .account-plan, .account-pages.account-pages .account-purchase-confirm { padding: 20px; background: #fff; border: 1px solid var(--account-line); border-radius: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.account-pages.account-pages .account-section-title, .account-pages.account-pages .account-plan-heading h3, .account-pages.account-pages .account-purchase-confirm h3 { font-size: 16px; font-weight: 700; }
+.account-pages.account-pages .account-channel { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid var(--account-line); }
+.account-pages.account-pages .account-channel > div { min-width: 0; overflow-wrap: anywhere; }
+.account-pages.account-pages .account-channel strong { display: block; font-size: 14px; }
+.account-pages.account-pages .account-channel small { display: block; margin-top: 3px; }
+.account-pages.account-pages .account-badge { flex-shrink: 0; font-size: 11px; line-height: 1.6; font-weight: 600; background: #f0eef9; color: #77668a; padding: 3px 9px; border-radius: 7px; }
+.account-pages.account-pages .account-badge-success { background: #e8f5ef; color: #238567; }
+.account-pages.account-pages .account-muted, .account-pages.account-pages .account-empty p { color: var(--account-muted); font-size: 13px; line-height: 1.7; }
+.account-pages.account-pages .account-checkout { display: flex; flex-direction: column; gap: 12px; }
+.account-pages.account-pages .account-ledger-note { font-size: 12px; color: #7d6943; line-height: 1.7; background: #fff7e9; border-radius: 12px; padding: 13px 15px; }
+.account-pages.account-pages .account-order-heading, .account-pages.account-pages .account-plan-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-width: 0; }
+.account-pages.account-pages .account-order-heading > * { min-width: 0; overflow-wrap: anywhere; }
+.account-pages.account-pages .account-order-heading strong { font-size: 21px; }
+.account-pages.account-pages .account-order code { overflow-wrap: anywhere; color: var(--account-muted); font-size: 12px; }
+.account-pages.account-pages .account-subscription-balance { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 18px; border-radius: 15px; background: #eeeaf9; color: #504073; font-size: 13px; }
+.account-pages.account-pages .account-subscription-balance strong { font-size: 20px; }
+.account-pages.account-pages .account-plan-price { font-size: 28px; font-weight: 750; letter-spacing: -.6px; line-height: 1.3; }
+.account-pages.account-pages .account-purchase-status { font-size: 13px; line-height: 1.7; color: #685398; overflow-wrap: anywhere; }
+.account-pages.account-pages .account-empty { padding: 28px 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; }
+.account-pages.account-pages .account-empty strong { font-size: 16px; }
+.account-pages.account-pages .account-profile-form { padding: 0; border: 0; background: none; }
+.account-pages.account-pages .account-profile-summary { display: none; }
+.account-pages.account-pages .account-profile-fields { display: flex; flex-direction: column; gap: 8px; }
+.account-pages.account-pages .setting-row { padding: 10px 0; gap: 14px; border-bottom: 1px solid var(--account-line); font-size: 14px; display: flex; align-items: baseline; justify-content: space-between; }
+.account-pages.account-pages .setting-row strong { text-align: right; font-size: 14px; overflow-wrap: anywhere; min-width: 0; }
+.account-pages.account-pages .profile-form, .account-pages.account-pages .security-list { display: flex; flex-direction: column; gap: 16px; padding: 18px; margin: 10px 0 0; border-radius: 18px; background: #fff; border: 1px solid var(--account-line); }
+.account-pages.account-pages.account-dialog-center label { display: flex; flex-direction: column; gap: 7px; font-size: 13px; color: #596176; }
+.account-pages.account-pages.account-dialog-center input, .account-pages.account-pages.account-dialog-center select { width: 100%; min-height: 46px; padding: 11px 12px; color: var(--account-ink); background: #f8f9fc; border: 1px solid var(--account-line); border-radius: 10px; font-size: 16px; }
+.account-pages.account-pages .password-row { display: flex; position: relative; }
+.account-pages.account-pages .password-row input { padding-right: 84px; }
+.account-pages.account-pages .password-toggle { position: absolute; inset: 0 8px 0 auto; padding: 0 5px; width: auto; min-width: 64px; font-size: 12px; border: 0; background: transparent; color: var(--account-accent); }
+.account-pages.account-pages.account-dialog-center .primary-button { min-height: 46px; border-radius: 12px; font-size: 14px; color: #fff; background: var(--account-accent); border: 0; }
+.account-pages.account-pages .session-row { display: flex; flex-direction: column; align-items: flex-start; padding: 18px; gap: 5px; border: 1px solid var(--account-line); border-radius: 16px; background: #fff; font-size: 14px; }
+.account-pages.account-pages .session-row small { font-size: 12px; color: var(--account-muted); }
+.account-pages.account-pages .session-row button, .account-pages.account-pages .account-detail-page > .text-button { color: var(--account-accent); font-size: 13px; }
+.account-pages.account-pages .form-error { color: #c45361; font-size: 13px; }
+.account-pages.account-pages .form-success { color: #238567; font-size: 13px; }
+.account-pages.account-pages .totp-secret { display: block; padding: 16px; border-radius: 12px; background: #fff; color: var(--account-ink); overflow-wrap: anywhere; }
+.account-pages.account-pages .promotion-hero, .account-pages.account-pages .account-notice { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.account-pages.account-pages .account-notice { display: flex; flex-direction: column; gap: 8px; }
+.account-pages.account-pages .account-detail-page h3 { font-size: 17px; }
+.account-pages.account-pages .account-detail-page > .muted { font-size: 13px; line-height: 1.7; color: var(--account-muted); }
+@media (min-width: 700px) { .account-pages.account-pages .account-page-body { padding-top: 32px; } }
+@media (prefers-reduced-motion: no-preference) { .account-pages.account-pages .account-page-body { animation: account-page-enter 140ms ease-out; } @keyframes account-page-enter { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } } }
+
+.account-pages.account-pages.account-dialog-login:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-content: safe center;
+  gap: 16px;
+}
+
+/* Brand and controls stay one reading column. Remaining height must not
+   split the motto from the form (`margin-bottom: auto` on `.auth-intro`
+   previously parked the inputs on the viewport floor). */
+.account-pages.account-pages.account-dialog-login {
+  position: absolute; inset: 0; z-index: 24; width: 100%; height: 100%; min-height: 100%; max-height: none;
+  margin: 0; padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+  border: 0; border-radius: 0; box-shadow: none; overflow: auto; background: #f2f2f7; color: #17213a;
+}
+.account-pages.account-pages.account-dialog-login > * { width: min(100%, 340px); flex-shrink: 0; }
+.account-pages.account-pages.account-dialog-login .auth-hero { display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin: 0; padding: 0; text-align: left; }
+.account-pages.account-pages.account-dialog-login .auth-mark { width: 34px; height: 38px; margin: 0; }
+.account-pages.account-pages.account-dialog-login .auth-hero-copy strong { font-size: 22px; line-height: 1.2; font-weight: 650; color: #17213a; }
+.account-pages.account-pages.account-dialog-login .auth-hero-copy span { display: none; }
+.account-pages.account-pages.account-dialog-login .auth-intro { margin: 0 0 8px; padding: 0; }
+.account-pages.account-pages.account-dialog-login .auth-manifesto {
+  margin: 0; color: #25213f; white-space: normal;
+  font-size: 22px; line-height: 32px; letter-spacing: 0.06em; font-weight: 650;
+}
+.account-pages.account-pages.account-dialog-login .auth-intro p { margin: 8px 0 0; font-size: 14px; color: #7c7890; line-height: 22px; }
+.account-pages.account-pages.account-dialog-login .login-form { display: grid; gap: 8px; margin: 0; }
+.account-pages.account-pages.account-dialog-login .login-form label { font-size: 13px; color: #727587; gap: 8px; }
+.account-pages.account-pages.account-dialog-login .login-form input { min-height: 44px; border-radius: 10px; padding: 12px; background: #fff; color: #17213a; border: 1px solid #e2e5ee; font-size: 16px; }
+.account-pages.account-pages.account-dialog-login .password-row { position: relative; background: none; border: 0; padding: 0; }
+.account-pages.account-pages.account-dialog-login .password-row input { padding-right: 80px; }
+.account-pages.account-pages.account-dialog-login .password-toggle { position: absolute; inset: 0 8px 0 auto; margin: 0; padding: 0 4px; color: #6957ce; border: 0; background: none; font-size: 12px; }
+.account-pages.account-pages.account-dialog-login .auth-methods { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.account-pages.account-pages.account-dialog-login .auth-method { min-height: 44px; height: auto; padding: 10px 14px; font-size: 15px; text-align: center; border-radius: 10px; border: 1px solid #e2e5ee; background: #fff; color: #2e3046; }
+.account-pages.account-pages.account-dialog-login .auth-method-active { background: #6350d1; border-color: #6350d1; color: white; }
+.account-pages.account-pages.account-dialog-login .auth-method-register { color: #6957ce; }
+.account-pages.account-pages.account-dialog-login .auth-method-notice { min-height: 0; margin: 0; font-size: 12px; color: #86774f; }
+.account-pages.account-pages.account-dialog-login .auth-method-notice:empty, .account-pages.account-pages.account-dialog-login .form-error:empty { display: none; }
+.account-pages.account-pages.account-dialog-login .auth-legal { margin: 0; color: #9293a1; font-size: 12px; line-height: 18px; text-align: center; }
+.account-pages.account-pages.account-dialog-login .auth-legal-link { font-size: inherit; }
+.account-pages.account-pages.account-dialog-login .auth-session { display: block; margin-top: 4px; }
+.account-pages.account-pages.account-dialog-login:has(.register-form) .auth-intro { display: none; }
+.account-pages.account-pages.account-dialog-login:has(.register-form) .auth-title { margin-top: 16px; font-size: 22px; }
+.account-pages.account-pages.account-dialog-login .register-form { margin-top: 0; }
+
+.account-pages.account-pages .account-preferences { display: flex; flex-direction: column; gap: 0; }
+.account-pages.account-pages .account-preferences h3 { padding: 0 3px 10px; font-size: 13px; color: #7b8293; }
+.account-pages.account-pages.account-dialog-center .account-preference { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; background: #fff; border-bottom: 1px solid #edf0f5; }
+.account-pages.account-pages .account-preference:first-of-type { border-radius: 16px 16px 0 0; }
+.account-pages.account-pages .account-preference:last-of-type { border-radius: 0 0 16px 16px; border-bottom: 0; }
+.account-pages.account-pages .account-preference > span { min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.account-pages.account-pages .account-preference strong { color: #273048; font-size: 14px; font-weight: 600; }
+.account-pages.account-pages .account-preference small { color: #888d9d; font-size: 11px; line-height: 1.6; }
+.account-pages.account-pages.account-dialog-center .account-preference input { appearance: none; flex: 0 0 43px; width: 43px; min-height: 26px; height: 26px; border: 0; border-radius: 20px; background: #d6d9e2; padding: 3px; position: relative; cursor: pointer; }
+.account-pages.account-pages .account-preference input::after { content: ''; display: block; width: 20px; height: 20px; border-radius: 50%; background: white; box-shadow: 0 1px 3px #1820381a; }
+.account-pages.account-pages.account-dialog-center .account-preference input:checked { background: #7160ce; }
+.account-pages.account-pages .account-preference input:checked::after { transform: translateX(17px); }
+.account-pages.account-pages .account-preference input:focus-visible { outline: 3px solid #b9afe8; outline-offset: 3px; }
+.account-pages.account-pages .account-speech-preference select { max-width: 44%; min-width: 132px; padding: 8px 26px 8px 10px; border: 1px solid #dfe2ea; border-radius: 10px; background: #fff; color: #273048; font: inherit; font-size: 12px; }
+.account-pages.account-pages .account-speech-preference select:disabled { color: #888d9d; background: #f5f6f9; }
+.account-pages.account-pages .account-speech-preference select:focus-visible { outline: 3px solid #b9afe8; outline-offset: 2px; }
+
+/* Recharge uses Shanghai CNY order facts, with one compact confirmation in the account page. */
+.account-pages.account-pages .account-recharge-panel { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.account-pages.account-pages .recharge-channel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.account-pages.account-pages .recharge-channel-choice { min-height: 54px; padding: 10px; border: 1px solid var(--account-line); border-radius: 12px; background: #fff; color: var(--account-ink); font-size: 14px; font-weight: 650; }
+.account-pages.account-pages .recharge-channel-choice[aria-pressed="true"] { border-color: #25a46b; background: #effaf3; color: #166b48; }
+.account-pages.account-pages .recharge-channel-choice:disabled { opacity: .48; cursor: not-allowed; }
+.account-pages.account-pages .recharge-wechat-qr { display: grid; place-items: center; padding: 16px; border: 1px solid var(--account-line); border-radius: 14px; background: #fff; }
+.account-pages.account-pages .recharge-wechat-qr svg { width: min(100%, 244px); height: auto; display: block; }
+.account-pages.account-pages .phone-auth-form .phone-code-send { min-height: 42px; justify-self: start; }
+.account-pages.account-pages .recharge-wallet { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 4px 0 14px; border-bottom: 1px solid var(--account-line); }
+.account-pages.account-pages .recharge-wallet span { color: var(--account-muted); font-size: 12px; }
+.account-pages.account-pages .recharge-wallet strong { font-size: 24px; font-weight: 750; letter-spacing: -.5px; }
+.account-pages.account-pages .recharge-entry { display: grid; gap: 14px; }
+.account-pages.account-pages .recharge-entry label { display: grid; gap: 8px; font-size: 13px; font-weight: 650; }
+.account-pages.account-pages .recharge-entry input { width: 100%; min-width: 0; max-width: 100%; min-height: 52px; padding: 12px 14px; font-size: 22px; border: 1px solid var(--account-line); border-radius: 12px; background: #fff; color: var(--account-ink); }
+.account-pages.account-pages .recharge-entry input::placeholder { font-size: 14px; }
+.account-pages.account-pages .recharge-order { display: grid; gap: 12px; min-width: 0; }
+.account-pages.account-pages .recharge-order:empty { display: none; }
+.account-pages.account-pages .recharge-order h3 { font-size: 14px; }
+.account-pages.account-pages .recharge-order-heading { display: flex; justify-content: space-between; align-items: center; }
+.account-pages.account-pages .recharge-order-heading strong { font-size: 24px; }
+.account-pages.account-pages .recharge-order code { font: 12px/1.5 ui-monospace, monospace; overflow-wrap: anywhere; }
+.account-pages.account-pages .recharge-notice, .account-pages.account-pages .recharge-order .account-muted { font-size: 12px; line-height: 1.7; color: var(--account-muted); overflow-wrap: anywhere; }
+.account-pages.account-pages .recharge-links { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.account-pages.account-pages .recharge-links button { font-size: 12px; padding: 10px 8px; }
+
+/* A single RMB balance leads the subscription page; usage remains a separate metric. */
+.account-wallet-summary { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px 20px; padding: 24px; border-radius: 22px; background: #6150c7; color: #fff; }
+.account-wallet-summary .account-eyebrow { color: #e3ddff; grid-column: 1; }
+.account-wallet-summary .account-wallet-amount { font-size: clamp(27px, 7vw, 36px); line-height: 1.2; letter-spacing: -.8px; font-weight: 720; overflow-wrap: anywhere; }
+.account-wallet-summary .account-secondary { background: #fff; color: #5140ad; grid-column: 2; grid-row: 1 / 3; min-width: 70px; min-height: 44px; }
+.account-usage-summary { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 18px 2px; font-size: 14px; color: var(--concept-ink, #202331); }
+.account-usage-summary small { flex-basis: 100%; color: var(--concept-muted, #71717a); font-size: 12px; line-height: 1.7; }
+.account-plan-list { display: grid; gap: 12px; }
+.account-plan-list .account-plan { border: 1px solid var(--concept-line, #e7e7ec); border-radius: 18px; padding: 20px; }
+.account-plan-list .account-plan.is-current { border-color: #b8acef; background: #f9f7ff; }
+.account-plan-list .account-plan-heading h3 { margin: 0; font-size: 17px; font-weight: 650; }
+.account-plan-list .account-plan-price { margin: 12px 0 8px; font-size: 27px; font-weight: 700; }
+.account-plan-list .account-secondary { min-height: 44px; margin-top: 12px; }
+.account-purchase-confirm { display: grid; gap: 16px; }
+.account-purchase-confirm > h3, .account-purchase-confirm > p { margin: 0; }
+.account-purchase-confirm .account-plan-price { font-size: 36px; line-height: 1.2; }
+.account-order-number { overflow-wrap: anywhere; white-space: normal; font-size: 11px; color: var(--concept-muted, #71717a); }
+.account-balance-shortfall, .account-quote-error { color: #a54444; font-size: 14px; line-height: 1.6; }

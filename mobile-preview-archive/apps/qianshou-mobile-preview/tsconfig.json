@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "target": "ES2024", "lib": ["ES2024", "DOM", "DOM.Iterable"], "module": "ESNext", "moduleResolution": "Bundler", "strict": true, "noEmit": true, "allowImportingTsExtensions": true, "skipLibCheck": true, "isolatedModules": true, "composite": false, "incremental": false },
+  "include": ["src", "tests", "vite.config.ts"]
+}

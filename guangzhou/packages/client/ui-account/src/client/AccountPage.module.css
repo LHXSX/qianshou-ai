@@ -1,0 +1,140 @@
+/**
+ * 个人中心页的外壳视觉（标题 / 标签页栏 / 面板 / 页脚动作）。
+ *
+ * 分组卡片的样式在 `tabs/tabs.module.css`——外壳只管"页在哪、四个视图怎么切"，
+ * 不掺内容排版。这样加第五个标签页时只碰 `tabs/`。
+ *
+ * 全圆角半径一律同规则配 `corner-shape: round`：主题的角形平滑会把超椭圆应用到
+ * 全部圆角上，而超椭圆会把胶囊两端压成方形（`ui-theme` 的审计钉这条）。
+ */
+
+.page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  padding: 30px clamp(20px, 5vw, 56px) 56px;
+  overflow-y: auto;
+  background: var(--dsw-alias-bg-base, transparent);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 820px;
+}
+
+.headText {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 30px;
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  max-width: 620px;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.headActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.readAt {
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ghost {
+  padding: 5px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: 9px;
+  background: var(--dsw-alias-layer-1, transparent);
+  color: var(--dsw-alias-label-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 140ms var(--ds-ease-in-out, ease), color 140ms var(--ds-ease-in-out, ease);
+}
+
+.ghost:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+/* ── 标签页栏 ─────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 820px;
+  padding: 3px;
+  border: 0.5px solid var(--dsw-alias-border-l1);
+  border-radius: 12px;
+  background: var(--dsw-alias-layer-1, transparent);
+  align-self: flex-start;
+}
+
+.tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 140ms var(--ds-ease-in-out, ease), color 140ms var(--ds-ease-in-out, ease);
+}
+
+.tab:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+/* 选中态：底色 + 字重 + 一道主题色内描边。三重信号是为了不依赖颜色单独传达状态
+   （对色觉障碍与高对比模式都仍然可读）。 */
+.tab[data-active='1'] {
+  background: var(--dsw-alias-accent-soft, #dbeafe);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dsw-alias-brand-primary) 26%, transparent);
+  color: var(--dsw-alias-brand-primary, #1d4ed8);
+  font-weight: 650;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 1px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 820px;
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ghost,
+  .tab {
+    transition: none;
+  }
+}

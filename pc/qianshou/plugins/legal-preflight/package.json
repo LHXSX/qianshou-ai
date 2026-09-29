@@ -1,0 +1,10 @@
+{
+  "name": "qianshou-legal-preflight",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "description": "法律材料的确定性前处理：号码遮蔽、术语定位和自然日加算；不输出法律意见。",
+  "files": ["index.js", "cordis.patch.yml", "qianshou.contract.json"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+}

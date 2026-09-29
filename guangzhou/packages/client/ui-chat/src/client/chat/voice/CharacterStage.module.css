@@ -1,0 +1,69 @@
+.stage {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 900;
+  width: min(220px, calc(100vw - 24px));
+  height: min(330px, calc(100dvh - 24px));
+  transform: translate3d(var(--character-x, 12px), var(--character-y, 12px), 0);
+  pointer-events: none;
+  color: var(--dsw-alias-label-primary);
+  font-size: 12px;
+}
+.art { position: absolute; inset: 0 0 38px; overflow: hidden; }
+.art, .art * { pointer-events: none; }
+.art button { pointer-events: auto; }
+.art canvas { display: block; width: 100%; height: 100%; }
+.toolbar {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  box-sizing: border-box;
+  min-height: 34px;
+  padding: 3px 4px;
+  border-radius: 13px;
+  background: var(--dsw-specific-menu);
+  box-shadow: var(--dsw-elevation-panel);
+  pointer-events: auto;
+}
+.button, .drag, .interrupt {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+}
+.drag { width: 22px; cursor: grab; touch-action: none; user-select: none; }
+.drag:active { cursor: grabbing; }
+.button:hover, .drag:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.button:active, .interrupt:active { background: var(--dsw-alias-interactive-bg-active); }
+.button:focus-visible, .drag:focus-visible, .interrupt:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: -2px; }
+.interrupt { background: var(--dsw-alias-state-business-tertiary); color: var(--dsw-alias-state-business-primary); }
+.interrupt:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.status { min-width: 0; flex: 1; padding-inline: 2px; overflow: hidden; font-size: 10px; line-height: 16px; white-space: nowrap; text-overflow: ellipsis; }
+.details {
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+  position: absolute;
+  inset-inline: 0;
+  bottom: 42px;
+  box-sizing: border-box;
+  max-height: min(var(--character-details-max-height, 240px), calc(100dvh - 90px));
+  padding: 12px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: 16px;
+  background: var(--dsw-specific-menu);
+  box-shadow: var(--dsw-elevation-panel);
+  pointer-events: auto;
+}
+.details[hidden] { display: none; }

@@ -1,0 +1,46 @@
+- button "新建会话"
+- button "收起侧边栏":
+  - img
+- group "工作区模式":
+  - button "日常"
+  - button "工作" [pressed]
+- button "新建会话":
+  - img
+  - text: 新会话
+- navigation "全局面板":
+  - button "技能"
+  - button "接单"
+  - button "记忆与知识"
+  - button "使用帮助"
+  - button "讨论区"
+- text: 工作区
+- button "搜索会话":
+  - img
+- textbox "搜索会话…"
+- button "视图选项":
+  - img
+- button "添加工作区":
+  - img
+- tree "会话": 暂无会话
+- button "打开个人中心":
+  - strong: 千手账号
+  - text: 未登录
+- button "千手账号菜单"
+- text: 千手，你的工作助理 预览版
+- button "选择工作区":
+  - img
+  - text: 选择工作区
+  - img
+- button "CEO 模式":
+  - img
+  - text: CEO 模式
+  - img
+- textbox "选择工作区"
+- button "添加文件或调用指令" [disabled]:
+  - img
+- button "发送消息" [disabled]
+- dialog "欢迎使用千手":
+  - heading "欢迎使用千手" [level=2]
+  - paragraph: 通过对话处理文件、编写代码并跟踪任务过程。开始前，请先连接千手云端账号。
+  - paragraph: 当前为开发测试版本。允许访问本机文件或执行命令前，请确认工作区和工具授权范围。
+  - button "继续"

@@ -1,0 +1,13 @@
+- dialog "添加插件":
+  - heading "添加插件" [level=2]
+  - button "关闭":
+    - img
+  - paragraph: 输入插件包名、仓库地址、本地目录或已下载的 .tgz 安装包绝对路径。
+  - text: 包名或地址
+  - textbox "包名或地址":
+    - /placeholder: 例如 @deepseek-ai/dsh-experimental-auto-review
+    - text: slow-package
+  - button "不知道该填什么？":
+    - img
+    - text: 不知道该填什么？
+  - button "安装"

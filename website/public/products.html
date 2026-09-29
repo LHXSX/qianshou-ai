@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>千手产品｜千手 PC 与插件生态 · 千手算力</title>
+<meta name="description" content="从千手 PC 的自然对话、本机能力与插件生态开始。了解安装、私有插件草稿、机主授权和企业接入；律所工作台作为独立垂直产品展示。" />
+<meta name="keywords" content="千手 PC,千手插件生态,自然对话,机主授权,千手律所" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href="https://qsnode.com/products.html" />
+<style>
+  :root {
+    --bg: #f6f8fc;
+    --ink: #0b1220;
+    --ink2: #2c3a52;
+    --sub: #5b6b86;
+    --mut: #8b97ad;
+    --line: #e4eaf3;
+    --card: #ffffff;
+    --brand: #0d685e;
+    --brand-mid: #147d72;
+    --brand-soft: #e6f4ef;
+    --ok: #0f766e;
+    --ok-bg: #ecfdf8;
+    --amber: #b45309;
+    --amber-bg: #fff7ed;
+    --r: 14px;
+    --sh: 0 12px 36px rgba(15, 30, 60, .07);
+    --max: 1080px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--brand-mid); text-decoration: none; }
+  a:hover { color: var(--brand); }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 22px; }
+
+  /* nav */
+  nav {
+    position: sticky; top: 0; z-index: 40;
+    backdrop-filter: saturate(1.5) blur(12px);
+    background: rgba(246, 248, 252, .9);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .in {
+    max-width: var(--max); margin: 0 auto; padding: 12px 22px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 9px;
+    font-weight: 750; font-size: 15px; color: var(--ink);
+  }
+  .brand .lg {
+    width: 28px; height: 28px; flex: none;
+    display: grid; place-items: center;
+  }
+  .brand .lg img { display:block; width:100%; height:100%; }
+  .nav-acts { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .navlink {
+    font-size: 13px; color: var(--sub);
+    border: 1px solid var(--line); background: #fff;
+    padding: 7px 14px; border-radius: 999px; white-space: nowrap;
+  }
+  .navlink:hover { color: var(--brand-mid); border-color: #a8d6c9; }
+  .navlink.on { color: #fff; background: var(--brand); border-color: var(--brand); }
+
+  /* hero — 一屏一意：品牌 + 标题 + 一句说明 + CTA */
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(900px 420px at 85% -10%, rgba(20, 125, 114, .14), transparent 55%),
+      radial-gradient(700px 380px at 0% 20%, rgba(18, 84, 74, .1), transparent 50%),
+      linear-gradient(180deg, #edf6f2 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .hero .in { padding: 56px 0 48px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 650; letter-spacing: .4px;
+    color: var(--brand); background: var(--brand-soft);
+    border: 1px solid #c5e1d6; padding: 6px 13px; border-radius: 999px;
+  }
+  .eyebrow i {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--brand-mid);
+    box-shadow: 0 0 0 3px rgba(20, 125, 114, .2);
+  }
+  .hero h1 {
+    margin-top: 18px; font-size: clamp(28px, 4.2vw, 40px);
+    font-weight: 820; letter-spacing: -.5px; line-height: 1.2;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(120deg, #0b5d55, #199783);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub {
+    margin-top: 14px; max-width: 640px;
+    font-size: 16px; color: var(--sub); line-height: 1.7;
+  }
+  .pc-feature{background:#e8f3ee;border:1px solid #bedbd0;border-radius:20px;padding:34px;margin:4px 0 36px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+  .pc-feature .eyebrow{background:#effaf5;color:#087867;border-color:#bfdfd0}.pc-feature .eyebrow i{background:#16836d;box-shadow:0 0 0 3px #16836d21}
+  .pc-feature h2{font-size:32px;line-height:1.28;margin:17px 0 12px;letter-spacing:-.04em}.pc-feature p{color:#456158;line-height:1.8;font-size:15px}
+  .pc-feature .pc-points{display:grid;gap:10px}.pc-feature .pc-points span{background:#fff;border:1px solid #c9ded1;border-radius:10px;padding:12px 15px;font-size:13px;color:#285c4c}
+  .pc-feature .pc-note{font-size:12px;color:#5c776b;margin-top:12px}
+  .pc-feature .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .pc-feature .btn-p{background:#0e7e6e}.pc-feature .btn-p:hover{background:#076c5f}
+  .hero .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 12px 20px; border-radius: 12px;
+    font-size: 14.5px; font-weight: 700; transition: .15s;
+  }
+  .btn-p { background: var(--brand); color: #fff !important; }
+  .btn-p:hover { background: #162f72; color: #fff !important; transform: translateY(-1px); }
+  .btn-g {
+    background: #fff; color: var(--brand) !important;
+    border: 1px solid #c9d7f2;
+  }
+  .btn-g:hover { border-color: var(--brand-mid); color: var(--brand-mid) !important; }
+
+  section { padding: 48px 0; }
+  .sh { margin-bottom: 22px; }
+  .sh .k { font-size: 12.5px; font-weight: 700; color: var(--brand-mid); letter-spacing: .4px; }
+  .sh h2 { font-size: 24px; font-weight: 800; margin-top: 6px; letter-spacing: -.3px; }
+  .sh p { color: var(--sub); font-size: 14.5px; margin-top: 8px; max-width: 720px; }
+
+  /* featured product */
+  .feat {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; overflow: hidden; box-shadow: var(--sh);
+  }
+  .feat-top {
+    display: grid; grid-template-columns: 1.15fr .85fr; gap: 0;
+  }
+  .feat-copy { padding: 32px 32px 28px; }
+  .tag {
+    display: inline-block; font-size: 11.5px; font-weight: 700;
+    color: var(--ok); background: var(--ok-bg);
+    border: 1px solid #b8ebd9; padding: 4px 10px; border-radius: 999px;
+  }
+  .feat-copy h3 {
+    margin-top: 12px; font-size: 26px; font-weight: 820; letter-spacing: -.3px; line-height: 1.25;
+  }
+  .feat-copy .lead { margin-top: 12px; color: var(--ink2); font-size: 15px; line-height: 1.75; }
+  .feat-copy .bullets {
+    margin-top: 16px; display: grid; gap: 8px;
+  }
+  .feat-copy .bullets li {
+    list-style: none; font-size: 14px; color: var(--sub);
+    padding-left: 18px; position: relative;
+  }
+  .feat-copy .bullets li::before {
+    content: ""; position: absolute; left: 0; top: 9px;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--brand-mid);
+  }
+  .feat-side {
+    background:
+      linear-gradient(160deg, #123d37 0%, #0c645a 45%, #1a927b 120%);
+    color: #fff; padding: 32px 28px; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .feat-side .hint { font-size: 12.5px; opacity: .78; letter-spacing: .3px; }
+  .feat-side .big {
+    margin-top: 18px; font-size: 20px; font-weight: 750; line-height: 1.45;
+  }
+  .feat-side .flow {
+    margin-top: 22px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    font-size: 12.5px; font-weight: 650;
+  }
+  .feat-side .flow span {
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18);
+    padding: 6px 10px; border-radius: 8px;
+  }
+  .feat-side .flow em { font-style: normal; opacity: .55; padding: 0 2px; }
+
+  /* access modes */
+  .modes {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    padding: 0 22px 22px; margin-top: -4px;
+  }
+  .mode {
+    background: #f8fafd; border: 1px solid var(--line);
+    border-radius: 14px; padding: 18px 16px; transition: .15s;
+  }
+  .mode:hover { transform: translateY(-2px); box-shadow: var(--sh); background: #fff; }
+  .mode .mk {
+    font-size: 11.5px; font-weight: 750; letter-spacing: .3px;
+    color: var(--brand-mid); margin-bottom: 6px;
+  }
+  .mode h4 { font-size: 16px; font-weight: 780; }
+  .mode p { margin-top: 7px; font-size: 13.2px; color: var(--sub); line-height: 1.6; min-height: 42px; }
+  .mode a {
+    display: inline-block; margin-top: 12px;
+    font-size: 13.5px; font-weight: 700; color: var(--brand) !important;
+  }
+  .mode a:hover { color: var(--brand-mid) !important; }
+
+  .feat-actions {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 0 22px 24px;
+  }
+
+  /* second product */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(16,32,64,.04);
+    transition: .15s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--sh); }
+  .card .ic {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center; font-size: 18px; font-weight: 800; margin-bottom: 12px;
+  }
+  .card h3 { font-size: 18px; font-weight: 780; }
+  .card p { margin-top: 8px; font-size: 14px; color: var(--sub); line-height: 1.65; }
+  .card .links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .card .links a { font-size: 13.5px; font-weight: 700; }
+
+  /* compare */
+  .table-wrap {
+    overflow-x: auto; background: #fff; border: 1px solid var(--line);
+    border-radius: 16px; box-shadow: 0 1px 2px rgba(16,32,64,.04);
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 680px; }
+  th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--line); font-size: 13.8px; }
+  th { background: #f3f6fb; font-weight: 750; color: var(--ink2); }
+  td { color: var(--sub); }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child, th:first-child { color: var(--ink); font-weight: 650; }
+
+  /* contact */
+  .contact {
+    background: linear-gradient(135deg, #123d37, #0c645a 55%, #1a927b);
+    color: #fff; border-radius: 20px; padding: 36px 28px; text-align: center;
+  }
+  .contact h2 { font-size: 24px; font-weight: 800; }
+  .contact p { margin-top: 10px; opacity: .85; font-size: 14.5px; }
+  .contact .row {
+    margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  }
+  .contact .chip {
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+    padding: 10px 16px; border-radius: 12px; font-size: 13.5px; color: #fff !important;
+  }
+  .contact .chip:hover { background: rgba(255,255,255,.2); }
+
+  footer {
+    padding: 28px 0 40px; color: var(--mut); font-size: 12.5px; text-align: center;
+  }
+  footer a { color: var(--sub); }
+
+  @media (max-width: 900px) {
+    .feat-top { grid-template-columns: 1fr; }
+    .modes { grid-template-columns: 1fr; padding: 0 16px 16px; }
+    .feat-copy, .feat-side { padding: 24px 20px; }
+    .feat-actions { padding: 0 16px 20px; }
+    .grid2 { grid-template-columns: 1fr; }
+    .hero .in { padding: 40px 0 36px; }
+    .pc-feature { grid-template-columns:1fr;padding:24px;gap:20px; }
+  }
+  @media (max-width: 520px) {
+    nav .in { padding: 10px 14px; gap: 8px; }
+    .brand { white-space: nowrap; flex: 0 0 auto; font-size: 14px; }
+    .brand .lg { width: 26px; height: 26px; }
+    .nav-acts { gap: 5px; justify-content: flex-end; }
+    .navlink { font-size: 11px; padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="in">
+    <a class="brand" href="/">
+      <span class="lg"><img src="/favicon.svg" alt="" aria-hidden="true" width="28" height="28"/></span>
+      千手
+    </a>
+    <div class="nav-acts">
+      <a class="navlink" href="/">首页</a>
+      <a class="navlink on" href="/products.html">千手旗下产品</a>
+      <a class="navlink" href="/private-deploy.html">私有化</a>
+      <a class="navlink" href="/#/login">登录</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap in">
+    <span class="eyebrow"><i></i>千手旗下产品</span>
+    <h1>从千手 PC 开始<br/><em>连接对话、插件与设备能力</em></h1>
+    <p class="sub">千手 PC 是面向个人的智能体入口。插件创作助手帮助把本机方法整理成私有草稿；公开市场、购买出售与通用接单仍在接入和验收中。律所工作台作为独立垂直产品继续展示。</p>
+    <div class="cta">
+      <a class="btn btn-p" href="#pc">了解千手 PC</a>
+      <a class="btn btn-g" href="#law">查看律所产品</a>
+    </div>
+  </div>
+</header>
+
+<section id="pc">
+  <div class="wrap">
+    <div class="pc-feature">
+      <div>
+        <span class="eyebrow"><i></i>当前产品主线 · 千手 PC</span>
+        <h2>一个客户端，<br/>为自己做事，也可以选择分享能力。</h2>
+        <p>先自然对话，再看这台电脑真实拥有的工具和插件。部分已登记的本机能力支持在机主逐次授权后样例试跑和私有使用；插件投稿、购买、出售和跨设备接单还在分阶段开放。</p>
+        <div class="cta"><a class="btn btn-p" href="/#/">认识千手生态</a><a class="btn btn-g" href="/#/downloads">查看 Mac / Windows 安装包状态</a></div>
+        <p class="pc-note">官网只在安装包经过签名、校验及对应系统的安装验收后开放下载。</p>
+      </div>
+      <div class="pc-points" aria-label="千手 PC 产品能力方向"><span>01　自然对话与任务计划</span><span>02　本机插件草稿、检查和试用</span><span>03　机主控制设备与能力授权</span><span>04　可信市场和订单链路逐步开放</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="law">
+  <div class="wrap">
+    <div class="sh">
+      <div class="k">独立垂直产品 · 演示入口</div>
+      <h2>千手律所 · 自动办案工作台</h2>
+      <p>千手律所是面向律师事务所的独立产品演示方向。卷宗提取、依据核对、文书草稿与律师复核等流程以演示版本和实际验收为准，不能把演示理解为正式办案交付。</p>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top">
+        <div class="feat-copy">
+          <span class="tag">首款垂直产品</span>
+          <h3>交一卷宗，系统出一稿<br/>律师勾选后才能导出</h3>
+          <p class="lead">演示重点是可核对的依据、案件进度和人工复核。正式使用前，需逐项核实资料范围、模型表现、律师审核责任和部署条件。</p>
+          <ul class="bullets">
+            <li>演示主线：收案提交 → 辅助整理 → 律师复核</li>
+            <li>复核方向：事实 / 依据 / 文书分别核对</li>
+            <li>知识沉淀方向：难点卡与本所资料整理</li>
+            <li>演示材料：以现场可验证内容为准</li>
+          </ul>
+        </div>
+        <aside class="feat-side">
+          <div>
+            <div class="hint">WORKFLOW</div>
+            <div class="big">拖卷宗进来，<br/>带着可核验依据走完一案。</div>
+            <div class="flow">
+              <span>提交</span><em>→</em>
+              <span>办理</span><em>→</em>
+              <span>交付</span><em>→</em>
+              <span>追踪 / 经验</span>
+            </div>
+          </div>
+          <div style="margin-top:28px;font-size:12.5px;opacity:.75">沈阳千手执棋网络科技有限公司 · 千手律所产品线</div>
+        </aside>
+      </div>
+
+      <div class="feat-actions">
+        <a class="btn btn-p" href="/download.html">查看千手 PC 下载</a>
+        <a class="btn btn-g" href="/case-digest-demo.html">在线演示 · 智能阅卷</a>
+        <a class="btn btn-g" href="#intro">产品介绍</a>
+        <a class="btn btn-g" href="#deploy">共享 / 私有 / 内网</a>
+        <a class="btn btn-g" href="mailto:330814121@qq.com?subject=%E5%8D%83%E6%89%8B%E5%BE%8B%E6%89%80%E4%BA%A7%E5%93%81%E5%92%A8%E8%AF%A2">预约现场演示</a>
+      </div>
+
+      <div class="modes" id="deploy">
+        <div class="mode">
+          <div class="mk">DEMO</div>
+          <h4>在线演示</h4>
+          <p>可查看智能阅卷演示页面。完整工作台与正式交付需单独核验。</p>
+          <a href="/case-digest-demo.html">打开阅卷 Demo →</a>
+        </div>
+        <div class="mode">
+          <div class="mk">INTRO</div>
+          <h4>产品介绍</h4>
+          <p>了解依据核对、人工复核、案件追踪和知识沉淀的设计方向。</p>
+          <a href="#intro">阅读介绍要点 →</a>
+        </div>
+        <div class="mode">
+          <div class="mk">SHARED</div>
+          <h4>共享版</h4>
+          <p>共享服务和计费方式属于待确认的合作方案；需按实际数据边界、服务能力与商务条款逐项评估。</p>
+          <a href="mailto:330814121@qq.com?subject=%E5%8D%83%E6%89%8B%E5%BE%8B%E6%89%80%C2%B7%E5%85%B1%E4%BA%AB%E7%89%88">咨询共享版 →</a>
+        </div>
+        <div class="mode">
+          <div class="mk">PRIVATE</div>
+          <h4>私有化版本</h4>
+          <p>独立部署、品牌和权限边界需要结合律所制度、基础设施与验收要求具体评估。</p>
+          <a href="/private-deploy.html">了解私有化能力 →</a>
+        </div>
+        <div class="mode">
+          <div class="mk">INTRANET</div>
+          <h4>内网部署</h4>
+          <p>内网部署与既有系统对接需要先核验网络、数据流向、接口和维护责任，再确定可交付范围。</p>
+          <a href="/private-deploy.html#contact">谈内网方案 →</a>
+        </div>
+        <div class="mode">
+          <div class="mk">DESKTOP</div>
+          <h4>桌面壳 / 本机优先</h4>
+          <p>桌面体验与资料存放位置，以对应产品的真实安装包、配置说明和验收结果为准。</p>
+          <a href="/download.html">查看千手 PC 下载 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="intro" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sh">
+      <div class="k">介绍要点 · 给客户听得懂</div>
+      <h2>和「法律聊天机器人」差在哪</h2>
+      <p>以下为演示与设计要点。法律结论与文书始终需要执业律师核对，具体可用范围以实际验收为准。</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="ic">1</div>
+        <h3>自动办案流水线</h3>
+        <p>演示从卷宗材料提取要点、梳理争点并形成草稿的辅助流程。</p>
+      </div>
+      <div class="card">
+        <div class="ic">2</div>
+        <h3>可核验依据</h3>
+        <p>引用依据需能追溯到权威来源；每条引用的准确性和时效性仍需人工复核。</p>
+      </div>
+      <div class="card">
+        <div class="ic">3</div>
+        <h3>导出前律师门禁</h3>
+        <p>设计中区分事实、依据和文书复核，正式导出规则以部署版本及权限配置为准。</p>
+      </div>
+      <div class="card">
+        <div class="ic">4</div>
+        <h3>审级 · 期限 · 经验</h3>
+        <p>案件阶段、期限提醒与本所经验整理可按业务场景评估，不能替代律师工作判断。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="sh">
+      <div class="k">怎么选部署形态</div>
+      <h2>共享版 · 私有化 · 内网部署</h2>
+      <p>以下是接入方案的比较维度，不表示各版本均已交付。功能、数据边界和价格以项目验证及合同为准。</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>能力</th>
+            <th>共享版</th>
+            <th>私有化</th>
+            <th>内网部署</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>数据边界</td>
+            <td>本机优先 + 受控云端推理</td>
+            <td>独立租户 / 独立库</td>
+            <td>数据不出客户内网</td>
+          </tr>
+          <tr>
+            <td>品牌</td>
+            <td>千手律所默认品牌</td>
+            <td>可白标（所名 / Logo）</td>
+            <td>可白标 + 内网域名</td>
+          </tr>
+          <tr>
+            <td>账号与权限</td>
+            <td>标准席位</td>
+            <td>按所组织架构定制</td>
+            <td>可对接所内账号体系</td>
+          </tr>
+          <tr>
+            <td>升级维护</td>
+            <td>云端统一升级</td>
+            <td>约定窗口升级</td>
+            <td>离线包 / 内网源升级</td>
+          </tr>
+          <tr>
+            <td>适合谁</td>
+            <td>中小所、先试用</td>
+            <td>中大型所、多分支</td>
+            <td>强合规、涉密办案环境</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="platform">
+  <div class="wrap">
+    <div class="sh">
+      <div class="k">平台与企业接入方向</div>
+      <h2>千手的设备协作与企业连接</h2>
+      <p>千手 PC 正在把本机智能体、真实插件能力和机主授权接单连到同一条可核对的任务链路。企业部署方案需要按实际环境评估。</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="ic">算</div>
+        <h3>边缘算力网络</h3>
+        <p>使用千手 PC 管理本机智能体与可开放的能力；设备能否接单，由你在客户端内选择并按实际条件验证。</p>
+        <div class="links">
+          <a href="/download.html">查看千手 PC 下载 →</a>
+          <a href="/faq.html">常见问题 →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ic">私</div>
+        <h3>企业接入与专有环境</h3>
+        <p>围绕现有设备、工作流、插件能力、数据与网络边界评估方案；正式交付范围以项目核验为准。</p>
+        <div class="links">
+          <a href="/private-deploy.html">私有化方案 →</a>
+          <a href="/">返回官网首页 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="contact" id="contact">
+      <h2>想看真演示，或谈部署？</h2>
+      <p>告诉我们所规模、是否必须内网、希望白标与否——我们按共享版 / 私有化 / 内网三条路径给方案。</p>
+      <div class="row">
+        <a class="chip" href="mailto:330814121@qq.com">邮箱 330814121@qq.com</a>
+        <a class="chip" href="tel:15668866606">电话 156 6886 6606</a>
+        <a class="chip" href="/case-digest-demo.html">先看阅卷 Demo</a>
+        <a class="chip" href="/private-deploy.html">私有化说明</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    © 2026 千手算力 · 沈阳千手执棋网络科技有限公司 ·
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">辽ICP备2026012682号</a>
+    · <a href="/">官网首页</a>
+    · <a href="/products.html">千手旗下产品</a>
+  </div>
+</footer>
+
+</body>
+</html>

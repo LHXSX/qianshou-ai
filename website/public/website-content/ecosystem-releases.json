@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "product": "qianshou-eco-v3-preview",
+  "releases": [
+    {
+      "version": "3.0.0-rc.12",
+      "date": "2026-09-11",
+      "title": "V3 客户端双端预览版",
+      "changes": [
+        "提供 Windows x64 与 Mac Apple Silicon 安装包，使用生态账号进入统一工作空间。"
+      ],
+      "action": "第一次使用请下载对应平台安装包。已有用户先按客户端提示检查更新；需要手动安装新版时，先保存工作并退出旧版，再安装到原位置。应用更新按生态商店和应用内提示处理。",
+      "knownIssues": [
+        "当前为预览版本。Apple 公证与 Microsoft Authenticode 尚未齐备，首次安装可能出现系统提示。",
+        "Mac 安装包适用于 Apple Silicon，暂不支持 Intel Mac。",
+        "独立应用的 Windows 与 Mac 版本可能分批更新，实际版本和可用能力请以生态商店及应用内显示为准。"
+      ],
+      "artifacts": {
+        "windows-x64": "245f1d5445f9ecf8c388abecb26b034a99e552977db0d938f6e1bf6fb656efc7",
+        "macos-arm64": "b3f88b3ffe14ff1a06cee16ba37ee07cb03fa1a1f1ba9cef46d7306dd5e1ec59"
+      }
+    }
+  ]
+}

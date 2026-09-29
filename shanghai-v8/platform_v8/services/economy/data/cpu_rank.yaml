@@ -1,0 +1,314 @@
+# CPU 综合排行 → 调度 cpu_coeff
+# 替换本文件或设 V8_CPU_RANK_PATH 指向新文件后调用 reload / 重启即可
+#
+# ── 来源与更新口径（2026-09-17 补记 · 仅注释，未改动任何条目值）──────────────
+# ⚠️ 既有 48 条条目的原始依据【无从考证】：仓库内无生成脚本、无基准说明、无维护者
+#    记录、无更新日期口径（已全仓检索 cpu_rank / CPU 排行 / PassMark / Geekbench，
+#    零命中）。在补证前，下表条目应视为"未经审计"的排序。
+# ▶ 建议的更新口径（提案 · 待 owner 确认后生效；确认前不构成既定规则）：
+#     数据基准（候选 · 公开可引用）：
+#       - PassMark CPU Mark              https://www.cpubenchmark.net/
+#       - Geekbench Browser（单/多核）    https://browser.geekbench.com/
+#     维护者：<待指定>
+#     更新节奏：<待定>
+#     更新方式：替换本文件，或 V8_CPU_RANK_PATH 指向新表 + reload/重启
+# ▶ 匹配口径提醒：`match` 为"小写子串匹配"，必须与节点实际上报的 cpu_brand 形态对齐。
+#    实测：大量 Intel 笔记本 HX/H/U 与 AMD 全系匹配不上 → cpu_coeff=0 → 落兜底上限 0.55。
+# ───────────────────────────────────────────────────────────────────────
+
+# ── 编辑规范（2026-09-17 · 配合 loader 的显式 coeff 支持）─────────────────
+# 改这张表时【优先给新条目写显式 coeff】。原因：档内系数是「档位基准 × (1 − 0.08 × i/n)」
+# 算出来的，n = 该档条目总数 ⇒ 纯靠 grade/rank 新增一条会【重排同档所有既有条目】。
+# 写了 coeff 的条目不进入 i/n 统计 ⇒ 对既有条目零影响（2026-09-17 新增 20 条即按此办理）。
+# 非法 coeff（负数 / >1 / 非数字）会让整表回退空表并打 logger.error，不会静默取值。
+version: 1
+grade_coeffs:
+  S: 1.0
+  A: 0.80
+  B: 0.60
+  C: 0.40
+entries:
+  - match: "i9-14900ks"
+    grade: S
+    rank: 1
+    # i9-14900KS
+  - match: "m3 ultra"
+    grade: S
+    rank: 2
+    # M3 Ultra(满血32核CPU）
+  - match: "i9-14900k"
+    grade: S
+    rank: 3
+    # i9-14900K/14900KF
+  - match: "m2 ultra"
+    grade: S
+    rank: 4
+    # M2 Ultra(满血24核CPU）
+  - match: "i9-13900ks"
+    grade: S
+    rank: 5
+    # i9-13900KS
+  - match: "i9-13900k"
+    grade: S
+    rank: 6
+    # i9-13900K/13900KF
+  - match: "m1 ultra"
+    grade: S
+    rank: 7
+    # M1 Ultra(满血20核CPU）
+  - match: "i9-12900ks"
+    grade: S
+    rank: 8
+    # i9-12900KS
+  - match: "i7-14700k"
+    grade: S
+    rank: 9
+    # i7-14700K/14700KF
+  - match: "m4 max"
+    grade: S
+    rank: 10
+    # M4Max(满血16核CPU）
+  - match: "i7-13700k"
+    grade: S
+    rank: 11
+    # i7-13700K/13700KF
+  - match: "ultra 9 185h"
+    grade: S
+    rank: 12
+    # CoreUltra 9 185H
+  - match: "m5 pro"
+    grade: S
+    rank: 13
+    # M5 Pro满血12核CPU）
+  - match: "ultra 7 165h"
+    grade: S
+    rank: 14
+    # CoreUltra 7 165H/155H
+  - match: "m3 max"
+    grade: A
+    rank: 15
+    # M3 Max(满血24核CPU）
+  - match: "i9-12900k"
+    grade: A
+    rank: 16
+    # i9-12900K/12900KF
+  - match: "i5-14900k"
+    grade: A
+    rank: 17
+    # i5-14900K/14600KF
+  - match: "i5-13600k"
+    grade: A
+    rank: 18
+    # i5-13600K/13600KF
+  - match: "m4 pro"
+    grade: A
+    rank: 19
+    # M4 Pro(满血14核CPU）
+  - match: "i7-12700k"
+    grade: A
+    rank: 20
+    # i7-12700K/12700KF
+  - match: "i5-12600k"
+    grade: A
+    rank: 21
+    # i5-12600K/12600KF
+  - match: "m2 max"
+    grade: A
+    rank: 22
+    # M2 Max满血12核CPU）
+  - match: "i9-11900k"
+    grade: A
+    rank: 23
+    # i9-11900K/11900KF
+  - match: "ultra 5 135h"
+    grade: A
+    rank: 24
+    # CoreUltra 5 135H/125H
+  - match: "m5"
+    grade: A
+    rank: 25
+    # M5 (满血10核CPU）
+  - match: "i9-10900k"
+    grade: A
+    rank: 26
+    # i9-10900K/10900KF
+  - match: "i7-11700k"
+    grade: A
+    rank: 27
+    # i7-11700K/11700KF
+  - match: "i7-10700k"
+    grade: A
+    rank: 29
+    # i7-10700K/10700KF
+  - match: "m1 max"
+    grade: B
+    rank: 30
+    # M1 Max(满血10核CPU）
+    coeff: 0.6
+  - match: "i5-11600k"
+    grade: B
+    rank: 31
+    # i5-11600K/11600KF
+    coeff: 0.596
+  - match: "i5-10600k"
+    grade: B
+    rank: 32
+    # i5-10600K/10600KF
+    coeff: 0.592
+  - match: "i3-14100"
+    grade: B
+    rank: 33
+    # i3-14100/14100K
+    coeff: 0.588
+  - match: "m2 pro"
+    grade: B
+    rank: 34
+    # M2 Pro(满血10核CPU）
+    coeff: 0.584
+  - match: "i3-13100"
+    grade: B
+    rank: 35
+    # i3-13100/13100K
+    coeff: 0.58
+  - match: "i3-12100"
+    grade: B
+    rank: 36
+    # i3-12100/12100K
+    coeff: 0.576
+  - match: "m4"
+    grade: A
+    rank: 28
+    coeff: 0.760381
+    # M4 (满血10核CPU）
+  - match: "i9-9900ks"
+    grade: B
+    rank: 38
+    # i9-9900KS/9900K
+    coeff: 0.568
+  - match: "i3-10325"
+    grade: B
+    rank: 39
+    # i3-10325/10320/10300/10105/10100
+    coeff: 0.564
+  - match: "m1 pro"
+    grade: B
+    rank: 40
+    # M1 Pro(满血10核CPU）
+    coeff: 0.56
+  - match: "ultra 3 100u"
+    grade: B
+    rank: 41
+    # CoreUltra 3 100U
+    coeff: 0.556
+  - match: "m3"
+    grade: C
+    rank: 42
+    # M3 (满血8核CPU）
+  - match: "pentium"
+    grade: C
+    rank: 43
+    # Pentium Gold G7400/G6605/G6505/G6400
+  - match: "m2"
+    grade: C
+    rank: 44
+    # M2 满血8核CPU）
+  - match: "celeron"
+    grade: C
+    rank: 45
+    # Celeron G6900
+  - match: "m1"
+    grade: C
+    rank: 46
+    # M1 (满血8核CPU）
+  - match: "i3-9100"
+    grade: C
+    rank: 47
+    # i3-9100/9100F i3-8100
+  - match: "m3ultra"
+    grade: S
+    rank: 2
+  - match: "m4max"
+    grade: S
+    rank: 10
+
+# ── 2026-09-17 提案新增（生产实际出现但表内缺失 · 全部写显式 coeff ⇒ 不重排既有条目）──
+  - match: "i9-14900hx"
+    grade: A
+    rank: 900
+    coeff: 0.746
+  - match: "i5-14600k"
+    grade: A
+    rank: 901
+    coeff: 0.745
+  - match: "i5-14600kf"
+    grade: A
+    rank: 902
+    coeff: 0.744
+  - match: "ryzen 9 5950x"
+    grade: A
+    rank: 903
+    coeff: 0.743
+  - match: "ryzen 7 7800x3d"
+    grade: A
+    rank: 904
+    coeff: 0.742
+  - match: "ultra 9 275hx"
+    grade: A
+    rank: 905
+    coeff: 0.741
+  - match: "i7-12800hx"
+    grade: B
+    rank: 906
+    coeff: 0.578
+  - match: "i7-13620h"
+    grade: B
+    rank: 907
+    coeff: 0.576
+  - match: "i7-12650h"
+    grade: B
+    rank: 908
+    coeff: 0.574
+  - match: "i7-9750h"
+    grade: B
+    rank: 909
+    coeff: 0.572
+  - match: "i5-12400f"
+    grade: B
+    rank: 910
+    coeff: 0.57
+  - match: "i5-13400f"
+    grade: B
+    rank: 911
+    coeff: 0.569
+  - match: "i5-11400f"
+    grade: B
+    rank: 912
+    coeff: 0.568
+  - match: "i5-12450h"
+    grade: B
+    rank: 913
+    coeff: 0.566
+  - match: "ryzen z1 extreme"
+    grade: B
+    rank: 914
+    coeff: 0.565
+  - match: "apple silicon"
+    grade: B
+    rank: 915
+    coeff: 0.564
+  - match: "i7-10510u"
+    grade: B
+    rank: 916
+    coeff: 0.56
+  - match: "i7-7700"
+    grade: B
+    rank: 917
+    coeff: 0.558
+  - match: "xeon e5-2697 v4"
+    grade: B
+    rank: 918
+    coeff: 0.556
+  - match: "ultra 5 125h"
+    grade: A
+    rank: 919
+    coeff: 0.74

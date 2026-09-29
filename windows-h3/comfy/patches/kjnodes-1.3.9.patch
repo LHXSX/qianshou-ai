@@ -1,0 +1,24 @@
+diff --git a/nodes/model_optimization_nodes.py b/nodes/model_optimization_nodes.py
+index c257564..36d1a3f 100644
+--- a/nodes/model_optimization_nodes.py
++++ b/nodes/model_optimization_nodes.py
+@@ -32,7 +32,18 @@ def get_sage_func(sage_attention, allow_compile=False):
+     elif sage_attention == "sageattn_qk_int8_pv_fp16_cuda":
+         from sageattention import sageattn_qk_int8_pv_fp16_cuda
+         def sage_func(q, k, v, is_causal=False, attn_mask=None, tensor_layout="NHD"):
+-            return sageattn_qk_int8_pv_fp16_cuda(q, k, v, is_causal=is_causal, attn_mask=attn_mask, pv_accum_dtype="fp32", tensor_layout=tensor_layout)
++            # The pinned Windows SM 12.0 path needs CUDA per-warp quantization.
++            # Other devices must use the auto mode until this explicit HQ mode is validated.
++            if q.device.type != "cuda" or torch.cuda.get_device_capability(q.device) != (12, 0):
++                raise RuntimeError("Explicit SageAttention HQ CUDA mode requires validated SM 12.0; use auto on other devices")
++            return sageattn_qk_int8_pv_fp16_cuda(
++                q, k, v,
++                is_causal=is_causal,
++                attn_mask=attn_mask,
++                pv_accum_dtype="fp32",
++                qk_quant_gran="per_warp",
++                tensor_layout=tensor_layout,
++            )
+     elif sage_attention == "sageattn_qk_int8_pv_fp16_triton":
+         from sageattention import sageattn_qk_int8_pv_fp16_triton
+         def sage_func(q, k, v, is_causal=False, attn_mask=None, tensor_layout="NHD"):

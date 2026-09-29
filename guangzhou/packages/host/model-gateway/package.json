@@ -1,0 +1,45 @@
+{
+  "name": "@deepseek-ai/dsh-host-model-gateway",
+  "version": "0.1.5-rc.2",
+  "description": "Qianshou subscription model gateway: tiers, model routing, token metering, quota enforcement",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./plugin": {
+      "types": "./lib/types/plugin.d.ts",
+      "default": "./lib/plugin.js"
+    },
+    "./admin-read-plugin": {
+      "types": "./lib/types/admin-read-plugin.d.ts",
+      "default": "./lib/admin-read-plugin.js"
+    }
+  },
+  "scripts": {
+    "bundle": "tsdown",
+    "test:market": "node --experimental-strip-types --test tests/plugin-market.node-test.mjs"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/plugin.js",
+    "lib/types/**/*.d.ts",
+    "lib/admin-read-plugin.js"
+  ],
+  "devDependencies": {
+    "@deepseek-ai/cordis": "workspace:^",
+    "@deepseek-ai/dsh-client-connection": "workspace:^"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-credentials-local": "workspace:^",
+    "@deepseek-ai/dsh-home-paths": "workspace:^",
+    "@deepseek-ai/dsh-host-account-session": "workspace:^"
+  }
+}

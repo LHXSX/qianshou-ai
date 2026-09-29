@@ -1,0 +1,36 @@
+# Isolated development policy. Limits are conservative client caps, not claims
+# about the gateway's full capability. Secrets belong in the credential store.
+locale:
+  preference: zh
+ui-theme:
+  preference: system
+permission:
+  defaultPreset: workspace-write
+llm-pi-ai:
+  providers:
+    qianshou-cloud:
+      displayName: 千手模型
+      api: openai-completions
+      baseURL: https://app.qianshousuanli.com/api/qianshou/ai
+      apiKeyEnv: QIANSHOU_ACCOUNT_ACCESS_TOKEN
+      retryPolicy:
+        mode: normal
+        maxRetries: 1
+      reasoning: high
+      compat:
+        supportsDeveloperRole: false
+        supportsStore: false
+        maxTokensField: max_tokens
+        thinkingFormat: deepseek
+      models:
+        - id: 千手·迅捷
+          name: 千手v4
+          contextWindow: 1000000
+          maxTokens: 65536
+          input: [text, image]
+          reasoningEfforts:
+            off: null
+            high: high
+agent-default-model:
+  provider: qianshou-cloud
+  model: 千手·迅捷

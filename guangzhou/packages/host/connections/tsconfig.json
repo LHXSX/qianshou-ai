@@ -1,0 +1,12 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "lib/types", "types": ["node"] },
+  "include": ["src"],
+  "references": [
+    { "path": "../../../vendor/cordis" }, { "path": "../../../vendor/schemastery" },
+    { "path": "../../util/brand" }, { "path": "../../util/atomic-write" },
+    { "path": "../../core/tools" }, { "path": "../../core/agent" },
+    { "path": "../../subprocess/subprocess" }, { "path": "../../credentials/credentials" },
+    { "path": "../../preset/agent-presets" }, { "path": "../../client/connection/tsconfig.host.json" }
+  ]
+}

@@ -1,0 +1,5 @@
+.controls { display: inline-flex; align-items: center; gap: 0; flex-shrink: 0; }
+.hold { touch-action: none; user-select: none; }
+.status { display: flex; flex-direction: column; gap: 8px; margin: 8px 0; padding: 10px 12px; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: 12px; color: var(--dsw-alias-label-primary); background: var(--dsw-alias-fill-tsp-secondary); font-size: 13px; overflow-wrap: anywhere; }
+.transcript { max-height: 140px; overflow: auto; white-space: pre-wrap; }
+.actions { display: flex; gap: 6px; flex-wrap: wrap; }

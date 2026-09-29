@@ -1,0 +1,89 @@
+/* Public site art direction. Business consoles use the shared stable UI tokens. */
+.qs-website .qs-wrap {
+  width: min(1320px, calc(100% - 96px));
+}
+.qs-website .qs-eyebrow {
+  font-size: 12px;
+  letter-spacing: 1.6px;
+  line-height: 1.6;
+}
+.qs-website .qs-description {
+  font-size: 17px !important;
+  line-height: 1.95;
+}
+.qs-website .qs-heading {
+  font-size: clamp(34px, 3.3vw, 48px);
+  font-weight: 570;
+  line-height: 1.4;
+}
+.qs-website .qs-tag {
+  font-size: 12px;
+  background: #edf3f8;
+  color: #4d657c;
+}
+.qs-website .qs-button {
+  font-size: 15px;
+  min-height: 50px;
+}
+.qs-website .qs-link {
+  font-size: 16px;
+}
+.qs-website [data-motion-section] {
+  position: relative;
+}
+.qs-website [data-motion-section]:not(.is-visible) *,
+.qs-website [data-motion-section]:not(.is-visible) *:before,
+.qs-website [data-motion-section]:not(.is-visible) *:after,
+.qs-website.motion-paused *,
+.qs-website.motion-paused *:before,
+.qs-website.motion-paused *:after {
+  animation-play-state: paused !important;
+}
+.qs-website .has-entered .section-heading {
+  animation: qs-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes qs-enter {
+  from {
+    transform: translateY(22px);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1100px) {
+  .qs-website .qs-wrap {
+    width: calc(100% - 64px);
+  }
+}
+@media (max-width: 800px) {
+  .qs-website .qs-wrap {
+    width: calc(100% - 40px);
+  }
+  .qs-website .qs-section {
+    padding: 72px 0;
+  }
+  .qs-website .qs-description {
+    font-size: 16px !important;
+  }
+  .qs-website .qs-heading {
+    font-size: 34px;
+  }
+  .qs-website .qs-eyebrow {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qs-website *,
+  .qs-website *:before,
+  .qs-website *:after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .qs-website .deploy-travel {
+    display: none;
+  }
+}

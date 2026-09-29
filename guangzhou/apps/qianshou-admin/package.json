@@ -1,0 +1,31 @@
+{
+  "name": "@qianshou/admin-web",
+  "description": "千手 AI 运营管理台（admin.qianshousuanli.com）前端工程：独立于算力运营台，按 packages/host/admin-console/API.md 契约实现。",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host --port 4175",
+    "dev:mock": "QIANSHOU_ADMIN_DEV_MOCK=1 vite --host --port 4175",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
+    "build:only": "vite build",
+    "test": "vitest run --config vitest.config.ts",
+    "preview": "vite preview --host --port 4175"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "element-plus": "^2.14.5",
+    "vue": "^3.5.39",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/server-renderer": "^3.5.39",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vue-tsc": "^3.1.0"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@deepseek-ai/dsh-host-dispatch-adapter",
+  "description": "Transport-neutral Qianshou dispatch control-plane adapter",
+  "version": "0.1.5-rc.2",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": ["lib"],
+  "dependencies": { "@deepseek-ai/dsh-compute-core": "workspace:^" },
+  "peerDependencies": { "@deepseek-ai/cordis": "workspace:^" },
+  "devDependencies": { "@deepseek-ai/dsh-compute-core": "workspace:^" }
+}

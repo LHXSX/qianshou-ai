@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "code": "workbench_outcome_unknown",
+  "message": "工作台执行结果未确认，请保留本次操作号核查，勿另建操作或重复提交。",
+  "ref": "<operation-ref>"
+}

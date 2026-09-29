@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Qianshou portable native H3 execution binding v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtimeAbi",
+    "runtime",
+    "executionRecipeSha256",
+    "modelSha256",
+    "schema",
+    "taskType",
+    "capabilityId",
+    "inputKinds",
+    "outputKind",
+    "contractVersion",
+    "category",
+    "platformDispatchable",
+    "firstFrameSha256"
+  ],
+  "properties": {
+    "runtimeAbi": {
+      "const": "qianshou.order-runtime.native-h3.v2"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine",
+        "version",
+        "entrySha256",
+        "runtimeSha256"
+      ],
+      "properties": {
+        "engine": {
+          "const": "h3"
+        },
+        "version": {
+          "const": "h3-runtime-v2"
+        },
+        "entrySha256": {
+          "const": "47e701742c3f4a38845e562ab7d578cb4de16877f9f13f60dca35d509ba860b8"
+        },
+        "runtimeSha256": {
+          "const": "2c4690b84aefc3fcf036de2b9ccc73f4b68fca33560b208123a9c5ffff239bdf"
+        }
+      }
+    },
+    "executionRecipeSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "modelSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "schema": {
+      "const": "qianshou.native-h3-binding.v2"
+    },
+    "taskType": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,63}$"
+    },
+    "capabilityId": {
+      "const": "video.render"
+    },
+    "inputKinds": {
+      "const": [
+        "inline"
+      ]
+    },
+    "outputKind": {
+      "const": "artifact_ref"
+    },
+    "contractVersion": {
+      "const": "v2"
+    },
+    "category": {
+      "const": "video"
+    },
+    "platformDispatchable": {
+      "const": true
+    },
+    "firstFrameSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "contractBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "runtimeAbi",
+        "runtime",
+        "executionRecipeSha256",
+        "modelSha256",
+        "firstFrameSha256"
+      ],
+      "properties": {
+        "runtimeAbi": {
+          "const": "qianshou.order-runtime.native-h3.v2"
+        },
+        "runtime": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "engine",
+            "version",
+            "entrySha256",
+            "runtimeSha256"
+          ],
+          "properties": {
+            "engine": {
+              "const": "h3"
+            },
+            "version": {
+              "const": "h3-runtime-v2"
+            },
+            "entrySha256": {
+              "const": "47e701742c3f4a38845e562ab7d578cb4de16877f9f13f60dca35d509ba860b8"
+            },
+            "runtimeSha256": {
+              "const": "2c4690b84aefc3fcf036de2b9ccc73f4b68fca33560b208123a9c5ffff239bdf"
+            }
+          }
+        },
+        "executionRecipeSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "modelSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "schema": {
+          "const": "qianshou.native-h3-execution-binding.v2"
+        },
+        "firstFrameSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

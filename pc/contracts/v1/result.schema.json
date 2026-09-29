@@ -1,0 +1,150 @@
+{
+  "title": "qianshou/result/v1",
+  "description": "Who actually executed, and therefore who may be paid (section 4). See contracts/README.md §2.4 and decision three. FIELD PROVENANCE: status/output{kind}/executor{kind,worker_id,worker_name,owner_id,capability,impl}/provenance{endpoint,model,elapsed_ms}/billing{charged_to,paid_to,basis} come from the phase brief. The `billing.basis` VALUE SET, the `contract` const, and the executor/registry coupling rule are this draft's design judgments (README §7). WHY THIS SECTION DECIDES WHETHER THE BOOKS EVER BALANCE: today a result carries NO field saying who computed it. So `llm_chat` — where the node contributes zero compute and merely forwards to the platform's own cloud LLM — is indistinguishable from real node work and receives a completion share, and `compute_origin_of()` has zero production call sites. The pair (executor.kind, billing.basis) is what makes each payment auditable instead of guessed.",
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "qianshou/result/v1",
+      "description": "Contract discriminator."
+    },
+    "task_id": {
+      "type": "string",
+      "description": "The task this result answers, as received in task.schema.json."
+    },
+    "workload_id": {
+      "type": "string",
+      "description": "Platform workload identity. Optional because a result may be produced before/without workload bookkeeping in some local paths; the ledger is the place where workload identity is mandatory."
+    },
+    "shard_id": {
+      "type": "string",
+      "description": "Shard this result covers. Optional for unsliced work. When present the ledger's idempotency key is built from it."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "failed", "cancelled", "partial"],
+      "description": "Terminal outcome of THIS shard. `partial` exists so an incomplete delivery is not silently reported as `ok`; it must not be settled as a full delivery."
+    },
+    "output": {
+      "type": "object",
+      "description": "What was produced. `kind` is mandatory so a reader never has to infer from the presence of fields.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["inline", "ref", "stream", "none"],
+          "description": "`none` is required for failed/cancelled shards: an explicit 'no output' is different from a missing output field."
+        },
+        "value": {
+          "description": "Inline payload, unconstrained JSON. Shape belongs to the task_type."
+        },
+        "uri": {
+          "type": "string",
+          "description": "Reference for kind=ref. The platform verifies ownership and integrity before the artifact is collected into a settlement."
+        },
+        "sha256": {
+          "type": "string",
+          "description": "Digest of the produced artifact. Proves transfer consistency, not content correctness."
+        }
+      },
+      "required": ["kind"],
+      "additionalProperties": false
+    },
+    "executor": {
+      "type": "object",
+      "description": "MANDATORY. Who computed this, and with which binding. Absence of this block is exactly the current defect and must be treated as 'unknown executor', never defaulted to `node`.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["node", "platform", "human"],
+          "description": "Who is paid, not which LLM binary answered. node = contributor hardware ran it; platform = the platform's own service ran it (this is the llm_chat case: the node forwarded, the platform's cloud LLM computed); human = a person did the work. `platform` is NOT a failure state and NOT a node job — paying a node share for it is a billing error. When an LLM answered, the three plug-in routes (external API / intranet gateway / local model) are recorded on `provenance.llm_route`; they do not add values here. Mapping: external API and intranet gateway stay `platform`; a local model on contributor hardware is `node`, on platform hardware is `platform`."
+        },
+        "worker_id": {
+          "type": "string",
+          "description": "Identity of the actual executor. For kind=platform this is the platform's own service identity, NOT the id of the node that relayed the request. Required by the contract test for every executor kind."
+        },
+        "worker_name": {
+          "type": "string",
+          "description": "Human-readable executor label for operator-facing surfaces. Never a key: do not join ledgers on it."
+        },
+        "owner_id": {
+          "type": "string",
+          "description": "account_id that owns the executor, i.e. the candidate beneficiary. Kept alongside worker_id because a worker can change owner without changing id, and the ledger needs the owner at settlement time, not at payout time."
+        },
+        "capability": {
+          "type": "string",
+          "description": "Semantic capability that was exercised. When kind=node this MUST be a registered capability AND `impl.runtime` must be a registered implementation for it; when kind=platform the capability need not appear in the node supply registry (platform services are not node supply)."
+        },
+        "impl": {
+          "type": "object",
+          "description": "The concrete implementation that ran, e.g. {runtime:'ffmpeg',version:'8.0.1'}. Recorded so a disputed result can be reproduced without trusting the winner's own narration.",
+          "properties": {
+            "runtime": {
+              "type": "string",
+              "description": "Implementation id, e.g. `ffmpeg` or `pytesseract`; for platform-executed work, the platform service's own runtime label."
+            },
+            "version": {
+              "type": "string",
+              "description": "Version actually used, as reported by the executor."
+            },
+            "path": {
+              "type": "string",
+              "description": "Executable path, when a binary was invoked."
+            }
+          },
+          "required": ["runtime"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["kind", "worker_id", "capability", "impl"],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "description": "How the execution was reached, for diagnosis and for the platform's own cost accounting. This is NOT the billing basis — an endpoint string must never be parsed to decide who is paid.",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "description": "Upstream endpoint or service address that produced the value. Free-form; used for operational forensics only."
+        },
+        "model": {
+          "type": "string",
+          "description": "Model identifier when an LLM was involved. Mandatory in spirit for llm.* capabilities; not machine-enforced in v1."
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "description": "Wall-clock milliseconds, as measured by the executor. MUST NOT be used as the metering basis: an existing rule already forbids paying directly on a node's self-reported duration (docs/handoff/01-规划与产品方案/02-能力任务与计费协议草案.md)."
+        },
+        "llm_route": {
+          "type": "string",
+          "enum": ["external_api", "intranet_gateway", "local_model"],
+          "description": "Which LLM implementation answered, when an LLM was involved. Orthogonal to executor.kind. external_api = a public LLM HTTP endpoint; intranet_gateway = an in-network gateway (kind stays platform; endpoint is the intranet URL); local_model = a model process on contributor or platform hardware. Absent when no LLM ran. task.schema.json and ledger.schema.json do not branch on this field — the three routes share one task/result/ledger interface. Optional so results written before this field still validate."
+        }
+      },
+      "required": ["elapsed_ms"],
+      "additionalProperties": false
+    },
+    "billing": {
+      "type": "object",
+      "description": "Who pays, who is paid, and on what basis. MANDATORY, and `basis` is mandatory inside it — a payment whose basis cannot be named is a payment nobody can audit.",
+      "properties": {
+        "charged_to": {
+          "type": "string",
+          "description": "account_id that bears the cost."
+        },
+        "paid_to": {
+          "type": "string",
+          "description": "account_id credited for this work. May legitimately equal the platform's own account for platform-executed work — that is the honest outcome for llm_chat, not a bug."
+        },
+        "basis": {
+          "type": "string",
+          "enum": ["node_compute", "platform_llm_forward", "platform_relay", "none"],
+          "description": "Why money moves. node_compute = contributor hardware did the work; platform_llm_forward = the platform's own model computed it and the node only forwarded (the llm_chat pathology — the basis that today's ledger cannot express); platform_relay = the platform transported data without computing; none = no chargeable work (e.g. a rejected or deduplicated task). This enum MUST stay identical to ledger.beneficiary.basis; the contract test asserts the equality, because a credit whose basis cannot be matched to a result is precisely how a zero-compute node gets paid. These four values are this draft's design judgment, derived from the three revenue lines in the existing protocol draft plus the observed llm_chat mispayment (README §7)."
+        }
+      },
+      "required": ["charged_to", "paid_to", "basis"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["contract", "task_id", "status", "output", "executor", "provenance", "billing"],
+  "additionalProperties": false
+}

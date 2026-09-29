@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string>千手智能体</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<!-- 相机权限说明。没有这条键，App 一调用相机就会被系统终止。
+	     文案必须说清「用途 + 数据去向」：只在本机识别，图像不上传。 -->
+	<key>NSCameraUsageDescription</key>
+	<string>千手智能体需要用相机扫描二维码，把二维码里的内容交给地址栏。识别只在本机完成，不会上传图像。</string>
+	<!-- 相册：使用 PHPickerViewController（进程外选择器），系统不要求相册权限，
+	     因此这里故意不写 NSPhotoLibraryUsageDescription——少要一个权限就少一份审核追问。 -->
+	<!-- ATS：不再对网页内容放开明文。默认地址是 https://203.0.113.20:18443/，
+	     入口地址里的 ?token= 不会再明文过公网；而且 WKWebView 只在安全上下文里提供
+	     getUserMedia（语音）与 BarcodeDetector（网页内扫码），放开明文等于这两项功能全废。
+	     只为「本机与局域网设备」保留明文：NSAllowsLocalNetworking 覆盖 .local 名、
+	     不带域后缀的主机名与私网地址，公网域名仍强制 HTTPS（与 WebAddress 的策略一致）。
+	     公网明文 http://<公网 IP> 在 WebAddress 这一层就被拒（模拟器实测）；ATS 这边
+	     不再对网页内容整体放开明文，局域网明文仍然可用（实测 http://172.30.x.x:8099 可载入）。 -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<!-- 未使用自定义加密，声明它可以免去 App Store 反复回答出口合规问题。 -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+</dict>
+</plist>

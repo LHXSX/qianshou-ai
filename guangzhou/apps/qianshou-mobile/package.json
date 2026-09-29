@@ -1,0 +1,27 @@
+{
+  "name": "@qianshou/mobile",
+  "productName": "千手 AI",
+  "description": "Dedicated Qianshou phone shell. It is not a responsive copy of the desktop workbench.",
+  "version": "0.2.1",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host --port 4174",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview --host --port 4174"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-api-session-controller": "workspace:^",
+    "@deepseek-ai/dsh-client-account": "workspace:^",
+    "@deepseek-ai/dsh-client-pc-window-bridge": "workspace:^",
+    "@types/react": "~18.3.1",
+    "@types/react-dom": "~18.3.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^6.0.3",
+    "uqr": "^0.1.3",
+    "vite": "^6.0.0"
+  }
+}

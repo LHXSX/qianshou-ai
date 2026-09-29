@@ -1,0 +1,12 @@
+- region "子代理任务":
+  - strong: 子代理任务
+  - paragraph: CEO 安排分工，你可以随时查看执行细节。
+  - button "清理已结束" [disabled]
+  - button "关闭任务窗口": ×
+  - navigation "子代理工作区":
+    - button "任务列表" [pressed]
+    - button "派发设置"
+  - strong: CEO 尚未派发子代理任务
+  - paragraph: 把目标告诉 CEO。需要专业分工时，真实任务会出现在这里。
+  - text: 暂未运行不代表已验收完成
+  - button "刷新"

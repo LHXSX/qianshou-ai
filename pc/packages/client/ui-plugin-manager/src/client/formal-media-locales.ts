@@ -1,0 +1,37 @@
+/** Official media quote and receipt copy owned by the conversation integration. */
+export const zh = {
+  title: '官方媒体任务', quote: '官方报价', confirming: '正在确认提交…', confirm: '确认报价并派单', reQuote: '重新报价',
+  quoting: '正在读取官方报价…', quoteFailed: '暂时无法取得官方报价；当前没有发单。',
+  expired: '报价已过期，请重新报价。', balance: '余额不足，请充值后重新报价。',
+  uncertain: '提交结果待核查；恢复只查询原 requestId，请勿重复发单。', refresh: '查询原任务',
+  failed: '原任务未完成，请查看平台回执。', waiting: '等待调度', running: '正在生成',
+  awaiting_settlement: '等待结算确认', settled: '平台已确认结算', delivery_pending: '等待媒体交付',
+  cancelled: '任务已取消', elapsed: '已等待', progress: '任务进度', download: '下载结果', invalid: '保存的任务记录无法核验。',
+  empty: '请提供 1 到 8192 UTF-8 字节的原始描述。', missingQuality: '请在原消息中明确极速、标准、清晰或高清。',
+  missingOrientation: '请在原消息中明确横屏、竖屏或方形。', missingSeconds: '请在原消息中明确视频秒数。',
+  conflict: '消息中的参数有冲突或不支持的写法，请明确一组画质、方向和秒数。',
+  profileUnavailable: '官方目录中没有唯一匹配的已验证档位；请保留原文并核对画质、方向和秒数。',
+  assetsUnavailable: '附件尚未取得广州的正式资产回执；原文和附件已保留，当前没有报价或发单。',
+  notReady: '当前会话尚未准备好；原文和附件已保留。', hint: '描述内容并明确画质、横竖屏和视频秒数；官方报价后由你确认。',
+  previewFailed: '结果预览失败；可查询原任务后重新读取交付，不会重新生成或计费。',
+  assetsPending: '附件登记结果待核查；只查询原 assetId，不会重新上传、报价或派单。', assetStatus: '查询原附件登记',
+} as const
+export type FormalMediaKey = keyof typeof zh
+export const en: Record<FormalMediaKey, string> = {
+  title: 'Official media task', quote: 'Official quote', confirming: 'Confirming submission…', confirm: 'Confirm price and dispatch', reQuote: 'Get a new quote',
+  quoting: 'Reading the official quote…', quoteFailed: 'The official quote is unavailable. No task was submitted.',
+  expired: 'The quote expired. Get a new quote.', balance: 'Insufficient balance. Add funds and get a new quote.',
+  uncertain: 'Submission is uncertain. Recovery only queries the original requestId. Do not create another task.', refresh: 'Query original task',
+  failed: 'The original task did not complete. Check the platform receipt.', waiting: 'Waiting for dispatch', running: 'Generating',
+  awaiting_settlement: 'Waiting for settlement', settled: 'Settlement confirmed by platform', delivery_pending: 'Waiting for media delivery',
+  cancelled: 'Task cancelled', elapsed: 'Elapsed', progress: 'Task progress', download: 'Download result', invalid: 'The saved task record could not be verified.',
+  empty: 'Provide an original description of 1 to 8192 UTF-8 bytes.', missingQuality: 'Specify fast, standard, clear or HD in your message.',
+  missingOrientation: 'Specify landscape, portrait or square in your message.', missingSeconds: 'Specify the video duration in seconds in your message.',
+  conflict: 'The message contains conflicting or unsupported parameters. Specify one quality, orientation and duration.',
+  profileUnavailable: 'No unique verified official profile matches these parameters. Keep the original text and check quality, orientation and duration.',
+  assetsUnavailable: 'The attachments have no formal Guangzhou asset receipt. Your text and attachments are retained; no quote or task was created.',
+  notReady: 'The conversation is not ready. Your text and attachments are retained.', hint: 'Describe the content and specify quality, orientation and video duration. Confirm the official quote before dispatch.',
+  previewFailed: 'Preview failed. Query the original task and read delivery again without regenerating or charging again.',
+  assetsPending: 'Attachment registration is uncertain. Only the original assetId is queried; no re-upload, quote or dispatch.',
+  assetStatus: 'Query original attachment registration',
+}

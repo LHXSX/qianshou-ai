@@ -1,0 +1,18 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types",
+    /* 部署形态是「服务器上直接跑 src/main.ts」（Node 22.23.2 的类型剥离模式），
+       因此这里**必须**禁用不可擦除的 TypeScript 语法（构造器参数属性、
+       `enum`、`namespace` 等）。理由不是洁癖：实测在服务器上跑
+       `constructor(public readonly code: string, …)` 会直接
+       `ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`，**整个管理台起不来**。
+       加上这一行之后，这类语法在 `pnpm typecheck` 阶段就会被拦下，
+       而不是等部署到线上才发现。 */
+    "erasableSyntaxOnly": true
+  },
+  "include": [
+    "src"
+  ]
+}

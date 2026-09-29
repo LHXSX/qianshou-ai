@@ -1,0 +1,18 @@
+{
+  "name": "qianshou-text-tools-fixture",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "description": "千手本地文本统计验收包；无网络或文件访问。",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "cordis.patch.yml"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

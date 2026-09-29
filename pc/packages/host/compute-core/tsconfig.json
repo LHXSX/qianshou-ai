@@ -1,0 +1,16 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "lib/types", "types": ["node"] },
+  "include": ["src"],
+  "references": [
+    { "path": "../../../vendor/cordis" },
+    { "path": "../../../vendor/schemastery" },
+    { "path": "../../util/brand" },
+    { "path": "../../util/atomic-write" },
+    { "path": "../../core/tools" },
+    { "path": "../../session/session-persistence" },
+    { "path": "../../client/connection/tsconfig.host.json" },
+    { "path": "../../client/file-upload/tsconfig.host.json" },
+    { "path": "../../attachment/attachment" }
+  ]
+}

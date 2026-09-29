@@ -1,0 +1,16 @@
+.activity { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; width: 100%; min-width: 0; color: var(--dsw-alias-label-primary); }
+.activity p { margin: 0; line-height: 1.6; }
+.activity small { color: var(--dsw-alias-label-secondary); }
+.prompt { white-space: pre-wrap; overflow-wrap: anywhere; }
+.video { width: 100%; max-width: 900px; max-height: 640px; border-radius: 10px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.actions button, .refresh { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; color: var(--dsw-alias-state-business-primary); }
+.actions a { color: var(--dsw-alias-state-business-primary); }
+.actions button:disabled { color: var(--dsw-alias-label-disabled); cursor: default; }
+.refresh { font-size: 12px; }
+.progress { width: min(100%, 600px); display: flex; flex-direction: column; gap: 8px; }
+.track { height: 6px; overflow: hidden; border-radius: 999px; background: var(--dsw-alias-border-l2); }
+.pulse, .value { display: block; height: 100%; border-radius: inherit; background: var(--dsw-alias-state-business-primary); }
+.pulse { width: 36%; animation: videoPulse 1800ms ease-in-out infinite; }
+@keyframes videoPulse { from { transform: translateX(-110%); } to { transform: translateX(380%); } }
+@media (prefers-reduced-motion: reduce) { .pulse { animation: none; transform: translateX(85%); } }

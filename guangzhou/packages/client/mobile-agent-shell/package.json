@@ -1,0 +1,23 @@
+{
+  "name": "@deepseek-ai/dsh-client-mobile-agent-shell",
+  "description": "Provider-neutral mobile agent shell and lifecycle adapter contracts for Qianshou",
+  "version": "0.1.5-rc.2",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": { "bundle": "tsdown" },
+  "license": "MIT",
+  "devDependencies": {
+    "@deepseek-ai/dsh-authorization": "workspace:^",
+    "@deepseek-ai/dsh-client-ui-compute": "workspace:^",
+    "@deepseek-ai/dsh-host-platform-observability-contract": "workspace:^",
+    "@deepseek-ai/dsh-host-platform-foundation": "workspace:^"
+  },
+  "files": ["lib/index.js", "lib/types/**/*.d.ts"],
+  "private": true
+}

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "types": ["vite/client"],
+    // 手机壳直接引用账号与 PC 窗口桥的源码；这份独立快照不带其 lib 产物。
+    // 桥仅从两个上游大类型模块取品牌 ID，指向与上游定义一致的类型映射。
+    // 运行时代码仍取桥的原始源码，不能用此映射代替服务端身份验证。
+    "paths": {
+      "@deepseek-ai/dsh-client-account": ["../../packages/client/account/src/index.ts"],
+      "@deepseek-ai/dsh-client-pc-window-bridge": ["../../packages/client/pc-window-bridge/src/index.ts"],
+      "@deepseek-ai/dsh-api-session-controller/types": ["./src/bridge-domain-types.ts"],
+      "@deepseek-ai/dsh-session/types": ["./src/bridge-domain-types.ts"],
+      "@deepseek-ai/dsh-brand": ["../../packages/util/brand/src/index.ts"]
+    }
+  },
+  "include": ["src", "tests", "vite.config.ts"]
+}

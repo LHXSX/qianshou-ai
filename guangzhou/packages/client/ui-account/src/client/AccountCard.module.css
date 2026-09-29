@@ -1,0 +1,198 @@
+/**
+ * 账户卡的视觉。
+ *
+ * 配色一律走 `--dsw-alias-*` 主题令牌，**不写死蓝**：这样它在蓝白主题下是我们要的
+ * 蓝白高级感，在任何别的主题下也自动成立，不会出现"换主题就变丑"的贴纸式组件。
+ *
+ * 唯一一处例外是头像的渐变底：它需要一个**比卡片自身略深**的层次，
+ * 而主题令牌里没有这个语义位；用 `color-mix` 从品牌色派生，
+ * 主题变了它跟着变，仍然不是硬编码。
+ */
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  min-width: 0;
+  border-radius: 12px;
+  transition: background 140ms var(--ds-ease-in-out, ease);
+}
+
+.card:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.hit {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hit:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 1px;
+}
+
+/* 头像：品牌色派生的浅渐变 + 一圈同色描边，全选状态下也读得出边界。 */
+.avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  /* 28 → 24：这是**侧栏里的一个身份标记**，不是头像展示位。
+     `ui-aesthetics` 的组件工艺要求"让控制显得精确，而不是显得被装饰过"——
+     28px 的渐变圆在 256px 宽的卡里压过文字，是这张卡显廉价的第二个来源。 */
+  width: 24px;
+  height: 24px;
+  /* 全圆角必须显式声明 `corner-shape: round`：主题的角形平滑会把
+     超椭圆应用到所有圆角上，而超椭圆会把**圆**挤成方圆形
+     （`ui-theme` 的 corner-shape 审计就是钉这一条）。 */
+  border-radius: 50%;
+  corner-shape: round;
+  background: linear-gradient(150deg, var(--dsw-alias-accent-soft, #dbeafe), var(--dsw-alias-brand-primary, #1d4ed8));
+  color: var(--dsw-alias-label-primary-inverted, #fff);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dsw-alias-brand-primary, #1d4ed8) 22%, transparent);
+}
+
+/* 余额偏低：头像圈变暖色，扫一眼就知道该充值了，不需要读数字。 */
+.avatar[data-low='1'] {
+  background: linear-gradient(150deg, #fde68a, #d97706);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #d97706 35%, transparent);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  color: var(--dsw-alias-label-primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 档位胶囊：字号压到 10px 但不加粗，避免和用户名抢层级。 */
+/**
+ * 档位：**次级文字**，不是胶囊。
+ *
+ * 原实现是一块浅蓝底 + 品牌蓝字的小胶囊。问题不在颜色，而在于**它是一个"块"**：
+ * 在 256px 宽的卡里，主行被切成"名字｜色块｜余额"三段，
+ * 视觉上像贴纸，也让这张卡与旁边的按钮不是同一种语言。
+ *
+ * 改成同一行里的次级文字后，层级由**字号（12.5 → 11）+ 颜色（次级）**表达，
+ * 这正是规范 §2 说的"层级靠留白、字号、颜色三件一起表达"。
+ * 同时 `corner-shape` 与背景一起消失，少一个需要维护的主题交互点。
+ */
+.tier {
+  flex: none;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.sub {
+  overflow: hidden;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11.5px;
+  line-height: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 额度条：2px 高、几乎不占视觉重量，只作"还剩一截"的直觉线索。 */
+.meter {
+  position: relative;
+  overflow: hidden;
+  height: 2px;
+  margin-top: 3px;
+  border-radius: 2px;
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+/* 总量未知时画成斜纹，明确表达"不知道"，而不是画成 0%（那是在说谎）。 */
+.meter[data-known='0'] {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--dsw-alias-border-l3) 0 3px,
+    transparent 3px 6px
+  );
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--dsw-alias-brand-primary, #1d4ed8);
+  transition: width 320ms var(--ds-ease-in-out, ease);
+}
+
+.meterFill[data-low='1'] {
+  background: #d97706;
+}
+
+/* 刷新按钮：默认隐形，hover 卡片才出现——平时不占注意力，需要时就在手边。 */
+.refresh {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--dsw-alias-label-tertiary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 140ms var(--ds-ease-in-out, ease), background 140ms var(--ds-ease-in-out, ease);
+}
+
+.card:hover .refresh,
+.refresh:focus-visible {
+  opacity: 1;
+}
+
+.refresh:hover {
+  background: var(--dsw-alias-interactive-bg-active);
+  color: var(--dsw-alias-label-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .meterFill,
+  .refresh {
+    transition: none;
+  }
+}

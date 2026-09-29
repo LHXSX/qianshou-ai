@@ -1,0 +1,38 @@
+.wizard { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.header h2 { margin: 4px 0 8px; font-size: 24px; color: var(--dsw-alias-label-primary); }
+.header p { margin: 0; color: var(--dsw-alias-label-secondary); line-height: 1.55; }
+.eyebrow { color: var(--dsw-alias-state-business-primary) !important; font-size: 12px; font-weight: 600; }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.steps li { padding: 10px 12px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 8px; color: var(--dsw-alias-label-caption); font-size: 12px; }
+.steps li[aria-current] { border-color: var(--dsw-alias-state-business-primary); color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-bg-layer-1); }
+.steps li[aria-disabled] { opacity: .62; border-style: dashed; }
+.body { display: flex; flex-direction: column; gap: 16px; max-width: 780px; }
+.card { padding: 20px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 14px; background: var(--dsw-alias-bg-layer-1); }
+.card h3 { margin: 0 0 8px; font-size: 16px; color: var(--dsw-alias-label-primary); }
+.quiet { margin: 0 0 14px; color: var(--dsw-alias-label-secondary); font-size: 13px; line-height: 1.55; }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.choice,.choiceSelected { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 10px; background: transparent; color: var(--dsw-alias-label-primary); text-align: left; cursor: pointer; }
+.choiceSelected { border-color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-bg-layer-2); }
+.choice span,.choiceSelected span { color: var(--dsw-alias-label-secondary); font-size: 13px; line-height: 1.5; }
+.field { display: flex; flex-direction: column; gap: 7px; margin-top: 14px; color: var(--dsw-alias-label-primary); font-size: 13px; font-weight: 500; }
+.field input,.field select { box-sizing: border-box; width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 8px; background: var(--dsw-alias-bg-layer-1); color: var(--dsw-alias-label-primary); font: inherit; }
+.field input:focus-visible,.field select:focus-visible,.choice:focus-visible,.choiceSelected:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 2px; }
+.mapping { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--dsw-alias-border-l2); }
+.mapping>p:first-child { margin: 0 0 12px; color: var(--dsw-alias-state-business-primary); font-size: 13px; }
+.mapping>p:last-child { margin: 12px 0 0; }
+.inputSummary { margin: 0 0 12px; color: var(--dsw-alias-label-primary); font-size: 13px; line-height: 1.55; }
+.advanced { margin: 12px 0; }
+.advanced summary { width: fit-content; color: var(--dsw-alias-state-business-primary); font-size: 13px; cursor: pointer; }
+.advanced summary:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 3px; }
+.advanced[open] { padding: 14px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 8px; }
+.advanced[open] summary { margin-bottom: 12px; }
+.footer { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.footer span { color: var(--dsw-alias-label-secondary); font-size: 12px; }
+.error { margin: 0; color: var(--dsw-alias-state-error-primary); font-size: 13px; }
+.saved { padding: 14px 16px; border: 1px solid var(--dsw-alias-state-business-primary); border-radius: 10px; color: var(--dsw-alias-label-primary); }
+.saved p { margin: 6px 0 0; font-size: 13px; color: var(--dsw-alias-label-secondary); }
+.drafts { display: flex; flex-direction: column; gap: 8px; padding: 0; margin: 12px 0 0; list-style: none; }
+.drafts li { display: flex; justify-content: space-between; gap: 8px; padding: 10px 0; border-top: 1px solid var(--dsw-alias-border-l2); }
+.drafts small { color: var(--dsw-alias-label-caption); }
+@media (max-width: 720px) { .steps { grid-template-columns: repeat(2, 1fr); } .choices { grid-template-columns: 1fr; } }
