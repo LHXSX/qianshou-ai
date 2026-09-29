@@ -136,7 +136,7 @@ async function pendingOriginalJobs(directory: string): Promise<boolean> {
     const row = db.prepare("SELECT COUNT(*) AS count FROM jobs WHERE status NOT IN ('succeeded','failed')").get()
     if (typeof row?.count !== 'number') sharingFail('STORE_INVALID')
     return row.count > 0
-  } catch { sharingFail('STORE_INVALID') }
+  } catch { return sharingFail('STORE_INVALID') }
   finally { db?.close() }
 }
 async function boundOrigin(directory: string, selected: string, legacy: string,

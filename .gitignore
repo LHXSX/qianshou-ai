@@ -1,4 +1,5 @@
 .DS_Store
+/lefthook.yml
 **/__pycache__/
 **/.pytest_cache/
 **/*.py[cod]
@@ -20,4 +21,3 @@
 **/*.ckpt
 **/*.pth
 **/*.pt
-

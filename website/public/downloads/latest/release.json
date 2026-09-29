@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "version": "8.4.3",
   "release_date": "2026-07-31",
-  "release_notes": "8.3.1 · Win/Mac 安装包同步上线 · 默认连正式服 · 支持 OTA/前端热更新",
-  "release_notes_zh": "千手节点 v8.3.1 · 2026-07-31 发布\n\n【客户端安装包】\n• macOS Apple Silicon (arm64) DMG 已更新\n• Windows x64 NSIS 安装包首次上线（门户可直接下载）\n• 默认连接正式服 www.qianshousuanli.com\n• 内置 Tauri Updater + 前端 web-manifest 热更新能力\n\nTauri 2 + Vue 3 + Rust release · macOS arm64 / Windows x64",
+  "release_notes": "Historical metadata only. All downloads are disabled; this is not the current Qianshou PC release feed.",
+  "release_notes_zh": "历史版本资料，仅供溯源。所有旧安装包均已关闭下载标记；本清单不是第四代千手 PC 的安装或更新入口。",
   "products": [
     {
       "id": "qianshou-eco",
@@ -23,8 +23,9 @@
           "url": "https://www.qianshousuanli.com/downloads/latest/千手生态-2.1.2-arm64.dmg",
           "size_mb": 110.1,
           "sha256": "8c014fa0b8cda658f0d107d671693fefa2d09ff240fcd365a706f0c0a446c8f5",
-          "available": true,
-          "url_ota": "https://www.qianshousuanli.com/static/eco-updates/千手生态-2.1.2-arm64-mac.zip"
+          "available": false,
+          "url_ota": "https://www.qianshousuanli.com/static/eco-updates/千手生态-2.1.2-arm64-mac.zip",
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "macos-intel",
@@ -35,7 +36,7 @@
           "size_mb": null,
           "sha256": "",
           "available": false,
-          "status": "Intel Mac 安装包待构建"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "windows-x64",
@@ -46,7 +47,7 @@
           "size_mb": null,
           "sha256": "",
           "available": false,
-          "status": "Windows 安装包随后上架"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         }
       ]
     },
@@ -67,9 +68,10 @@
           "url": "https://dl.qianshousuanli.com/releases/macos/v8.4.3/千手节点_8.4.3_arm64.dmg",
           "size_mb": 13.8,
           "sha256": "02d0f51fe082716efb3215e5cec99e554332b3ec9487e509f37e01f5ed47b34e",
-          "available": true,
+          "available": false,
           "url_ota": "https://dl.qianshousuanli.com/releases/macos/v8.3.1/千手节点.app.tar.gz",
-          "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTZVdISi9DWUJxRFNkM3lZb2tnRXd1ZW9hWjdXbGwveUt0RXhaZE83NnZPSDRTbTNueTlqVmx4VjRLc0t1OHZObmZJTTNiRTJuUmNOZ2Nia3FZTk9Hd0JOK09sbWhrT2dFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgzNDMxOTM5CWZpbGU65Y2D5omL6IqC54K5LmFwcC50YXIuZ3oKR1N5bUs2RnFVdFQ2b2JlT2pGZEJoRmloZjZUNkp4MDl1aFZoZ0RIdmZYRk9hQ2ZKNFBkclRoaHVoUW9LcXZOcFFCQXRYbEo4WDRGWHY5S0tTUmwwQnc9PQo="
+          "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTZVdISi9DWUJxRFNkM3lZb2tnRXd1ZW9hWjdXbGwveUt0RXhaZE83NnZPSDRTbTNueTlqVmx4VjRLc0t1OHZObmZJTTNiRTJuUmNOZ2Nia3FZTk9Hd0JOK09sbWhrT2dFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgzNDMxOTM5CWZpbGU65Y2D5omL6IqC54K5LmFwcC50YXIuZ3oKR1N5bUs2RnFVdFQ2b2JlT2pGZEJoRmloZjZUNkp4MDl1aFZoZ0RIdmZYRk9hQ2ZKNFBkclRoaHVoUW9LcXZOcFFCQXRYbEo4WDRGWHY5S0tTUmwwQnc9PQo=",
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "macos-intel",
@@ -80,7 +82,7 @@
           "size_mb": 290,
           "sha256": "",
           "available": false,
-          "status": "Intel Mac 安装包待本地构建上传"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "windows-x64",
@@ -90,7 +92,8 @@
           "url": "https://dl.qianshousuanli.com/releases/windows/v8.4.3/千手节点_8.4.3_x64-setup.exe",
           "size_mb": 13.0,
           "sha256": "2ecaf4d2801723a6f6d47236fb1631ae77e6b6769960c5156ff327e2ce52afc7",
-          "available": true
+          "available": false,
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "windows-x64-msi",
@@ -101,7 +104,7 @@
           "size_mb": null,
           "sha256": "",
           "available": false,
-          "status": "可选 · NSIS exe 为主"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         }
       ]
     },
@@ -123,7 +126,7 @@
           "size_mb": 7,
           "sha256": "",
           "available": false,
-          "status": "本地打包中"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "macos-intel",
@@ -134,7 +137,7 @@
           "size_mb": 7,
           "sha256": "",
           "available": false,
-          "status": "本地打包中"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "windows-x64",
@@ -144,7 +147,7 @@
           "url": "https://dl.qianshousuanli.com/releases/windows/v0.2.0-enterprise/千手企业智能体_0.2.0_x64-setup.exe",
           "size_mb": null,
           "available": false,
-          "status": "Windows CI 编译中"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         }
       ]
     },
@@ -166,7 +169,8 @@
           "url_cdn": "https://dl.qianshousuanli.com/releases/windows/v2.1.5/千手律所-Setup-2.1.5.exe",
           "size_mb": 405.1,
           "sha256": "aca591ab7309d8ece1b70872eecc29107bd42af6f9608d948ec181deb0340226",
-          "available": true
+          "available": false,
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         },
         {
           "platform": "macos-arm64",
@@ -177,7 +181,7 @@
           "size_mb": null,
           "sha256": "",
           "available": false,
-          "status": "macOS 安装包待打包上传"
+          "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
         }
       ]
     }
@@ -189,7 +193,8 @@
       "product": "千手节点",
       "version": "8.3.1",
       "url": "https://dl.qianshousuanli.com/releases/macos/v8.3.1/千手节点_8.3.1_arm64.dmg",
-      "available": true
+      "available": false,
+      "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
     },
     {
       "key": "node-macos-intel",
@@ -197,7 +202,8 @@
       "product": "千手节点",
       "version": "8.3.0",
       "url": "https://dl.qianshousuanli.com/releases/macos/v8.3.0/千手节点_8.3.0_x86_64.dmg",
-      "available": false
+      "available": false,
+      "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
     },
     {
       "key": "node-windows-x64",
@@ -205,7 +211,8 @@
       "product": "千手节点",
       "version": "8.3.1",
       "url": "https://dl.qianshousuanli.com/releases/windows/v8.3.1/千手节点_8.3.1_x64-setup.exe",
-      "available": true
+      "available": false,
+      "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
     },
     {
       "key": "node-windows-x64-msi",
@@ -213,7 +220,9 @@
       "product": "千手节点",
       "version": "8.3.0",
       "url": "https://dl.qianshousuanli.com/releases/windows/v8.3.0/千手节点_8.3.0_x64.msi",
-      "available": false
+      "available": false,
+      "status": "历史版本，未按第四代千手 PC 标准重新验收，不提供下载"
     }
-  ]
+  ],
+  "archive_status": "historical_unverified_do_not_install"
 }

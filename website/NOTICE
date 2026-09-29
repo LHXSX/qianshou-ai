@@ -9,3 +9,8 @@ The project owner confirms rights to publish the included brand and marketing
 images in this source repository. The Apache grant above does not cover those
 images, any download artifacts under public/, or third-party material embedded
 in a file. Reuse of such material needs its own permission or license.
+
+The legacy `public/downloads/latest/release.json` is retained only as a
+historical metadata record. Every listed download is marked unavailable;
+none is a verified fourth-generation Qianshou PC installer or update feed.
+The old one-click PowerShell installer is excluded from this source release.

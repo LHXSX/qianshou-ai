@@ -66,8 +66,9 @@ async function fixture() {
       value = { prompt_id: externalId, node_errors: {} }
     } else if (url.pathname === '/view') {
       response.writeHead(200, { 'content-type': 'image/png', 'content-length': output.length }).end(output); return
-    } else if (url.pathname === '/system_stats') value = { devices: [{ name: 'CPU fixture' }] }
+    } else if (url.pathname === '/system_stats') value = { devices: [{ name: 'CPU fixture', type: 'cpu', vram_total: 0, vram_free: 0 }] }
     else if (url.pathname === '/queue') value = { queue_running: [], queue_pending: [] }
+    else if (url.pathname === '/models') value = Object.keys(files)
     else if (url.pathname.startsWith('/models/')) value = [files[url.pathname.slice('/models/'.length)]]
     else if (url.pathname.startsWith('/object_info/')) { const name = url.pathname.slice('/object_info/'.length); value = { [name]: classes[name] } }
     else if (url.pathname.startsWith('/history/')) value = history[url.pathname.slice('/history/'.length)] ?? {}

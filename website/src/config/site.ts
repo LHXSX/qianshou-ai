@@ -12,14 +12,6 @@ export const COMPUTE_BRAND = '千手算力'
 // 2026-06-19 cutover:统一切到 qianshousuanli.com · wujisuanli/pidbai 彻底废弃
 export const DOMAIN = 'qianshousuanli.com'
 
-/** OSS CDN · 客户端 OTA 包 / release.json / 一键安装脚本 (dl 域 · edgecompute/releases/) */
-export const DL_CDN = {
-  base: 'https://dl.qianshousuanli.com/releases',
-  releaseJson: 'https://dl.qianshousuanli.com/releases/release.json',
-  installSh: 'https://dl.qianshousuanli.com/releases/install.sh',
-  installPs1: 'https://dl.qianshousuanli.com/releases/install.ps1',
-} as const
-
 // ── 公司法律主体(营业执照真实信息)──────────────────────────
 export const COMPANY = {
   legalName: '沈阳千手执棋网络科技有限公司',

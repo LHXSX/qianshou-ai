@@ -3,8 +3,8 @@ import { createServer } from 'node:http'
 import { join } from 'node:path'
 import { once } from 'node:events'
 
-const { MediaNodeStore } = await import(new URL('../../../../../../广州工作台/packages/host/model-gateway/src/media-node-store.ts', import.meta.url).href)
-const { createMediaNodeRoutes } = await import(new URL('../../../../../../广州工作台/packages/host/model-gateway/src/media-node-http.ts', import.meta.url).href)
+const { MediaNodeStore } = await import(new URL('../../../../../../guangzhou/packages/host/model-gateway/src/media-node-store.ts', import.meta.url).href)
+const { createMediaNodeRoutes } = await import(new URL('../../../../../../guangzhou/packages/host/model-gateway/src/media-node-http.ts', import.meta.url).href)
 const store = new MediaNodeStore({ path: join(process.env.MEDIA_NODE_TEST_ROOT, 'gateway.sqlite'), heartbeatIntervalMs: 1000, heartbeatTimeoutMs: 5000 })
 const routes = createMediaNodeRoutes({ store,
   verifyAccount: async request => request.headers.get('authorization') === 'Bearer owner-access-token-fixture'
