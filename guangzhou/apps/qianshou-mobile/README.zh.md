@@ -4,6 +4,8 @@
 
 `apps/qianshou-mobile` 是独立的手机产品界面。它不是桌面工作台的自适应缩小版，也不贡献算力。该外壳在 iPhone 390×844 上呈现对话、智能体目录、发现、任务、调度、账户和左侧抽屉，图标为专用 SVG，栅格素材位于 `public/media/`。
 
+这些 PNG 设计素材 **Created with Grok**。生成来源、公开权利与复用边界见 [`public/media/README.md`](public/media/README.md)；应用的源码许可不覆盖图片。
+
 ## 启动
 
 在仓库根目录执行：

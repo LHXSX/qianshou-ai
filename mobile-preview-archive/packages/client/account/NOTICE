@@ -1,0 +1,8 @@
+Qianshou account client source snapshot
+
+This package retains DeepSeek Harness-derived source under the MIT LICENSE in
+this directory, including the upstream DeepSeek copyright notice. Copyright
+in Qianshou-specific additions belongs to their respective contributors;
+those additions are offered under MIT to the extent those contributors hold
+the rights to grant it. This does not claim that upstream or third-party code
+was authored by Qianshou.

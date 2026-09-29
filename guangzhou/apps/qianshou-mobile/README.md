@@ -4,6 +4,8 @@ English | [中文](README.zh.md)
 
 `apps/qianshou-mobile` is a dedicated phone product UI. It is not a responsive copy of the desktop workbench and it is not a compute contributor. The shell presents conversation, agent catalog, discover, tasks, dispatch, account, and a left drawer at iPhone 390×844, using a designed SVG icon set and generated raster media under `public/media/`.
 
+The design PNGs are **Created with Grok**. Their source, publication rights, and reuse boundary are recorded in [`public/media/README.md`](public/media/README.md); the application source license does not cover those images.
+
 ## Start
 
 From the repository root:

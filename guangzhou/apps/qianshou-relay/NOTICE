@@ -1,0 +1,7 @@
+Qianshou relay administration tools
+Copyright 2026 Qianshou contributors
+
+The original source in this directory is licensed under Apache License 2.0
+(see LICENSE). External services and tools invoked by these scripts retain
+their own terms. This source snapshot contains no server credentials or
+production deployment authorization.

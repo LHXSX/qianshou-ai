@@ -1,3 +1,5 @@
+> **千手源码快照说明：**本目录包含 DeepSeek Harness 上游代码和千手广州新增实现。下文保留上游 README 供溯源；其中克隆、反馈和发行说明指向 DeepSeek Harness，不能当作本仓库的构建说明。千手项目的范围、许可与验收状态请先读[仓库总说明](../README.md)和[许可边界](../LICENSES/README.md)。
+
 # DeepSeek Harness
 
 [English](README.md) | 中文

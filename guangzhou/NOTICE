@@ -7,11 +7,13 @@ MIT metadata, those additions are offered under MIT only to the extent their
 contributors own the rights to grant it. This does not claim authorship of
 unchanged or adapted DeepSeek code.
 
-The original Qianshou documents specifically identified in docs/qianshou/NOTICE
-are offered under Apache License 2.0, subject to the limits stated there.
+The original Qianshou documents in docs/qianshou/ and source in
+apps/qianshou-ios/ and apps/qianshou-relay/ have local Apache License 2.0
+LICENSE and NOTICE files, subject to the limits stated there.
 Vendored source, native packages, npm/Python dependencies, model weights, and
 media keep their own terms; consult THIRD_PARTY_NOTICES.md and nested licenses.
+The generated mobile design PNGs are credited in apps/qianshou-mobile/public/media/README.md.
 
-This notice does not establish provenance for every changed or newly added file.
-Before a public release, confirm the ownership and third-party notices for
-components whose origin is not established by the available source history.
+This notice does not establish Qianshou ownership of every changed or newly
+added file. Preserve upstream and third-party notices for mixed-source files;
+do not infer original authorship solely from a source diff.

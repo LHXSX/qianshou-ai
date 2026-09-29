@@ -12,6 +12,6 @@ offered under Apache License 2.0, subject to the limits stated there. Vendored
 source, native packages, npm/Python dependencies, model weights, and media keep
 their own terms; consult THIRD_PARTY_NOTICES.md and nested license files.
 
-This notice does not establish provenance for every changed or newly added file.
-Before a public release, confirm the ownership and third-party notices for
-components whose origin is not established by the available source history.
+This notice does not establish Qianshou ownership of every changed or newly
+added file. Preserve upstream and third-party notices for mixed-source files;
+do not infer original authorship solely from a source diff.

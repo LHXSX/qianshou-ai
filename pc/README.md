@@ -1,3 +1,5 @@
+> **Qianshou source snapshot:** This directory includes DeepSeek Harness upstream code and Qianshou PC additions. The text below is the upstream README, retained for attribution; its clone, support, and release instructions refer to DeepSeek Harness, not this Qianshou snapshot. For the Qianshou scope, license boundaries, and verified status, start at the [repository README](../README.md) and [license map](../LICENSES/README.md).
+
 # DeepSeek Harness
 
 English | [中文](README.zh.md)
