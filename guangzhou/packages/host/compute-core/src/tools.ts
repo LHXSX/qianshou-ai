@@ -37,7 +37,7 @@ export function apply(ctx: Context): void {
     output: {
       schema: { type: 'string' as const },
       render: (_args: unknown, value: string) => [{ type: 'text' as const, text: value }],
-      presentationMeta: (_args, value) => planDraftCardMeta(JSON.parse(value) as Parameters<typeof planDraftCardMeta>[0]),
+      presentationMeta: (_args, value) => ({ ...planDraftCardMeta(JSON.parse(value) as Parameters<typeof planDraftCardMeta>[0]) }),
     },
     async execute(args, exec) {
       exec.signal.throwIfAborted()

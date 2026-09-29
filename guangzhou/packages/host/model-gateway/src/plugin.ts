@@ -816,7 +816,9 @@ export function apply(ctx: Context, config: Config = {}): void {
       authenticate: () => principalOf(),
       accessToken: async () => (await accountSessionOf()?.ensureAccessToken?.()) ?? null,
     })
-  const verifyMacBearer = createPluginLicenseBearerVerifier({ accountApiOrigin: config.marketLicenseAccountApiOrigin })
+  const verifyMacBearer = createPluginLicenseBearerVerifier({
+    ...(config.marketLicenseAccountApiOrigin === undefined ? {} : { accountApiOrigin: config.marketLicenseAccountApiOrigin }),
+  })
   const freeLicense = createPluginFreeLicenseService({
     ...(config.marketLicenseLedgerPath === undefined ? {} : { ledgerPath: config.marketLicenseLedgerPath }),
     releaseOptions,

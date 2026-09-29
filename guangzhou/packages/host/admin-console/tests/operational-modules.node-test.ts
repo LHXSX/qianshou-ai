@@ -69,7 +69,7 @@ async function harness(t: { after: (fn: () => unknown) => void }, scope: 'all' |
       return Response.json({ ok: false }, { status: 404 })
     } })
   await service.components.roles.save({ version: 1, roles: [{ id: 'fixture-reader', name: 'fixture reader', kind: 'custom', surface: 'ai-admin', permissions, scopeDefault: scope }] as never })
-  await service.components.admins.save({ version: 1, admins: [{ accountId: '42', displayName: 'fixture-admin', roleId: 'fixture-reader', scope, enabled: true, createdAt: 0, updatedAt: 0 }] })
+  await service.components.admins.save({ version: 1, admins: [{ accountId: '42', displayName: 'fixture-admin', roleId: 'fixture-reader', scope, enabled: true, createdAt: 0, createdBy: 'fixture' }] })
   await mkdir(join(dir, 'data'), { recursive: true })
   const topic = (id: string, official: boolean, category: string, pinned: boolean) => ({ id, official, category, pinned, visibility: 'visible', updatedAt: '2026-09-27T00:00:00Z', title: id })
   await writeFile(join(dir, 'data', 'community.json'), JSON.stringify({ version: 1, topics: [topic('official-event', true, 'activities', false), topic('pinned-help', false, 'help', true), topic('ordinary-help', false, 'help', false)], replies: [], reports: [{ id: 'open-report', status: 'open', createdAt: '' }, { id: 'resolved-report', status: 'dismissed', createdAt: '' }] }))

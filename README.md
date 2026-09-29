@@ -29,7 +29,7 @@
 
 ## 当前源码验证范围
 
-在 macOS arm64、Node 22.23.1、pnpm 11.7.0 上，从本仓库候选源码安装依赖后，`pc/` 的 `pnpm run qianshou:build` 已通过；PC 与广州研究链路的定向测试为 9/9 通过。`website/` 的 `npm run build:check` 已通过。广州媒体网关的两组定向 Node 测试为 21/21 通过，但 `guangzhou/` 的整体 `pnpm run build` 仍有主机聚合配置、跨包类型和旧测试接口不匹配等编译错误，不能宣称广州全仓可构建。上海 V8 的离线测试范围和失败项见 [`shanghai-v8/TESTING.md`](shanghai-v8/TESTING.md)。以上均不是 Windows 原生安装、现网应用部署或正式收费链路的验收。
+在 macOS arm64、Node 22.23.1、pnpm 11.7.0 上，从本仓库候选源码安装依赖后，`pc/` 的 `pnpm run qianshou:build` 已通过；PC 与广州研究链路的定向测试为 9/9 通过。`website/` 的 `npm run build:check` 已通过。广州的定向测试通过，但全仓构建仍有未解决的生成类型与管理台测试接口错误，范围与复现命令见 [`guangzhou/TESTING.md`](guangzhou/TESTING.md)。上海 V8 的 P0 离线安全测试 75 项通过，但完整测试仍有失败，详见 [`shanghai-v8/TESTING.md`](shanghai-v8/TESTING.md)。以上均不是 Windows 原生安装、现网应用部署或正式收费链路的验收。
 
 ## 源码、许可与贡献
 

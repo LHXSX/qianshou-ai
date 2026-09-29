@@ -2,7 +2,7 @@
 import { createHash } from 'node:crypto'
 
 const FORMAT = 'qianshou.reviewable-execution.v1'
-const EXECUTOR = 'qianshou.string-map.v1'
+const EXECUTOR = 'qianshou.string-map.v1' as const
 const MAX_BYTES = 256 * 1024
 const MAX_IO_BYTES = 64 * 1024
 const MAX_OPERATIONS = 16

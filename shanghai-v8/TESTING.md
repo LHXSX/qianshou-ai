@@ -2,6 +2,8 @@
 
 此页记录 2026-09-30 对基线提交 `d2443efd` 的测试结果，不代表现网验收或生产部署可重建。测试环境为 macOS arm64；下面的命令创建了 Python 3.12.13 的新虚拟环境。`requirements-test.txt` 固定了本次使用的 Python 包版本；它仅覆盖离线 pytest 环境。生产 PostgreSQL 驱动、OCR／媒体／云供应商等可选依赖及部署配置尚未锁定。请在隔离环境中操作，不要连接现网数据库或 Redis。
 
+本候选仓的 13 个 P0 安全修复源码文件与离线审阅清单的修复后 SHA-256 完全一致。补入 `platform_v8/tests/api/test_p0_models_oss.py` 后，清单中的源码和测试共 19/19 个文件匹配。对该候选仓运行账号/API Key、Worker WebSocket、模型与 OSS、文件、送达及 CORS 的 9 个定向测试文件，结果为 **75 passed、3 warnings**。这些测试使用 SQLite 内存库与模拟的外部依赖；现网服务尚未部署这份补丁，真实 Worker 重连、租约恢复和公开流量仍需单独验收。
+
 从本目录运行：
 
 ```sh

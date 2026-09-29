@@ -9,6 +9,9 @@
   ],
   "references": [
     {
+      "path": "../../client/account"
+    },
+    {
       "path": "../../client/connection/tsconfig.host.json"
     }
   ]
